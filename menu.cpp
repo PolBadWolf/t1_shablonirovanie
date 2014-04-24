@@ -31,8 +31,9 @@ namespace ns_menu
     // flag status checked password
     unsigned char flPasswordStatus = 0;
     //=================================
-  
-  unsigned char menu_nap = 0;
+    //     select configure
+    // path select menu
+    unsigned char menu_nap = 0;
     // ==============================
     //     Time out
     // count time out menu
@@ -77,7 +78,7 @@ namespace ns_menu
   void PassWrd_3(void);
   void PassWrd_4(void);
 #define md_TimeOut   3
-  void TimeOut_i(void);
+  void TimeOut_i(unsigned int TimeOut);
   void TimeOut_0(void);
   void PassChkSet(void);
 #define md_NastSel  4
@@ -406,7 +407,7 @@ namespace ns_menu
             PassWrd_0();
         else
             PassChkSet(); // end input, checked password
-  }
+    }
 // ==================================
     // init time out for delay
     void TimeOut_i(unsigned int TimeOut)
@@ -458,39 +459,51 @@ namespace ns_menu
             // password no correction
             scr->Clear();
             scr->ShowString(0, "пароль не верен" );
+            /*
       __disable_interrupt();
       menuTimeOut = 6000;
       __enable_interrupt();
       TimeOut_i();
-    }
+            */
+            TimeOut_i(6000);
+        }
   }
 // ==================================
-  void NastSel_i(void)
-  {
-    mode = md_NastSel;
-    scr->Clear();
-    scr->ShowString(0, "  Меню :        " );
+    //            mode configure
+    // init configure
+    void NastSel_i()
+    {
+        // set mode
+        mode = md_NastSel;
+        // show scr
+        scr->Clear();
+        scr->ShowString(0, "  Меню :        " );
     vNastSel = 0;
     vNastSelx = 255;
-    menu_nap = 0;
-  }
-  void NastSel_0(void)
-  {
-    if (vNastSelx!=vNastSel)
+        // path select menu
+        menu_nap = 0;
+    }
+    // view
+    void NastSel_0(void)
+    {
+        if (vNastSelx!=vNastSel)
     {
       if (vNastSel==0 ) scr->ShowString(c_stolbcov, "выбор параметра " );
 
       // уровень доступа "0"
       // уст.даты/время
       if ( vNastSel<10 ) {
-        if (mask_menu & (1<<0)) {
-          if (vNastSel>1) {
+//        if (mask_menu & (1<<0))
+        {
+          if (vNastSel>1)
+          {
             if (menu_nap) vNastSel = 1;
             else          vNastSel = 10;
           }
           else vNastSelx = vNastSel;
         }
-        else {
+//        else
+        {
           if (menu_nap) vNastSel = 79;
           else          vNastSel = 10;
         }
@@ -499,22 +512,25 @@ namespace ns_menu
       // уровень доступа "1"
       // просмотр за текущую смену
       if ( (vNastSel>=10 ) && (vNastSel<20) ) {
-        if (mask_menu & (1<<1)) {
+          /*
+//        if (mask_menu & (1<<1)) {
           if (vNastSel>10) {
             if (menu_nap) vNastSel = 10;
             else          vNastSel = 20;
           }
           else vNastSelx = vNastSel;
         }
-        else {
+//        else {
           if (menu_nap) vNastSel = 9;
           else          vNastSel = 20;
         }
+        */
       }
 
       // уровень доступа "2"
       // просмотр архива
       if ( (vNastSel>=20 ) && (vNastSel<30) ) {
+          /*
         if (mask_menu & (1<<2)) {
           if (vNastSel>20) {
             if (menu_nap) vNastSel = 20;
@@ -526,11 +542,14 @@ namespace ns_menu
           if (menu_nap) vNastSel = 19;
           else          vNastSel = 30;
         }
+          */
       }
 
       // уровень доступа "3"
       // установка кофицентов
-      if ( (vNastSel>=30 ) && (vNastSel<40) ) {
+      if ( (vNastSel>=30 ) && (vNastSel<40) )
+      {
+          /*
         if (mask_menu & (1<<3)) {
           if (vNastSel>31) {
             if (menu_nap) vNastSel = 31;
@@ -542,6 +561,7 @@ namespace ns_menu
           if (menu_nap) vNastSel = 29;
           else          vNastSel = 40;
         }
+          */
       }
 
       // уровень доступа "4"
@@ -561,6 +581,7 @@ namespace ns_menu
       // уровень доступа "6"
       // пустой
       if ( (vNastSel>=60 ) && (vNastSel<70) ) {
+          /*
         if (mask_menu & (1<<6)) {
           if (vNastSel>60) {
             if (menu_nap) vNastSel = 60;
@@ -572,6 +593,7 @@ namespace ns_menu
           if (menu_nap) vNastSel = 59;
           else          vNastSel = 70;
         }
+        */
       }
 
       // уровень доступа "7"
@@ -594,10 +616,12 @@ namespace ns_menu
   {
     scr->Clear();
     scr->ShowString(0, "выход");
+    /*
     __disable_interrupt();
     menuTimeOut = 200;
     __enable_interrupt();
-    TimeOut_i();
+    */
+    TimeOut_i(200);
   }
   void NastSel_2(void)
   {
@@ -643,13 +667,9 @@ namespace ns_menu
       PaswSel_i();
       return;
     }
-    {
-      CritSec cs;
-      menuTimeOut = 6000;
-    }
     scr->Clear();
     scr->ShowString(0, "ошибка в меню");
-    TimeOut_i();
+    TimeOut_i(6000);
   }
   //========================================================
   // выбор пароля
@@ -664,16 +684,18 @@ namespace ns_menu
   }
   void PaswSel_0()
   {
-    unsigned char accs;
+//    unsigned char accs;
     if (PaswSel_CntPsw>7) {
       PaswSel_CntPsw = 0;
       PaswSel_OldPsw = 255;
     }
     if (PaswSel_OldPsw!=PaswSel_CntPsw) {
       PaswSel_OldPsw=PaswSel_CntPsw;
+      /*
       accs = ee_psw[PaswSel_CntPsw].mask;
       scr->ShowChar(        7,'0'+PaswSel_CntPsw);
       scr->Hex(c_stolbcov + 12,accs);
+      */
     }
   }
   void PaswSel_1() {
@@ -762,6 +784,7 @@ namespace ns_menu
     }
   }
   void PaswSetAcs_3() {
+      /*
     if (mask_menu & (1<<7) ) {
       if (PaswSetAcs_count==0) {
         if ( (PaswSetAcs_mask & 0xf0)<0xf0 ) PaswSetAcs_mask += 0x10;
@@ -779,6 +802,7 @@ namespace ns_menu
         if ( (PaswSetAcs_mask & 0x0f)<0x0f ) PaswSetAcs_mask += 0x01;
       }
     }
+      */
   }
   void PaswSetAcs_4() {
     if (PaswSetAcs_count==0) {
@@ -787,7 +811,7 @@ namespace ns_menu
     }
     if (PaswSetAcs_count==1) {
       T_psw psw;
-      psw.mask = PaswSetAcs_mask;
+//      psw.mask = PaswSetAcs_mask;
       for(unsigned char i=0;i<5;i++) 
         psw.pin[i] = PaswSetPsw_Pasw[i];
       ee_psw[PaswSel_CntPsw] = psw;
@@ -1038,7 +1062,7 @@ namespace ns_menu
 //    scr->digit_uz(c_stolbcov + 9, 5, 1, kg);
     scr->dig_u (c_stolbcov +  9, 3, kg/((unsigned long)10) );
     scr->dig_uz(c_stolbcov + 13, 1, kg%((unsigned long)10) );
-    if (mask_menu & (1<<7) ) scr->dig_uz(11, 5, temp);
+//    if (mask_menu & (1<<7) ) scr->dig_uz(11, 5, temp);
   }
   void ZaSmenu_3() {
 //  if (mask_menu & (1<<7) ) vg::DataSmena.Impuls = 0;
@@ -1067,6 +1091,7 @@ namespace ns_menu
     static unsigned long kg;
 //  unsigned long temp;
 //    temp = vg::ee_Archiv[vArchivIndx].Impuls;
+    /*
     if (mask_menu & (1<<7) ) {
 //      scr->dig_uz(0, 2, vg::ee_Archiv[vArchivIndx].Date);
 //      scr->ShowChar(2, 'A' + vg::ee_Archiv[vArchivIndx].Smena);
@@ -1079,6 +1104,7 @@ namespace ns_menu
 //    scr->dig_uz(6, 2, vg::ee_Archiv[vArchivIndx].Year);
 //    scr->ShowChar(15, '1' + vg::ee_Archiv[vArchivIndx].Smena);
     }
+    */
     //scr->dig_u (10, 5, vg::ee_Archiv[vArchivIndx].Impuls);
 //  imp2data(temp, &m, &kg);
 //    scr->digit_uz(c_stolbcov + 0, 7, 3, m);
