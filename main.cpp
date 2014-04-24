@@ -12,7 +12,9 @@ void main(void)
     // set default for bad eeprom
     if (ee_FlagRes!=0x33)
     {
+#ifdef MENU
         ns_menu::InitEeprom();
+#endif
         ee_FlagRes = 0x33;
     }
     // init system

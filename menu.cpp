@@ -13,11 +13,16 @@
 
 namespace ns_menu
 {
+    //=================================
     unsigned char key;
     unsigned int  keyTout = 0;
     unsigned int  keyToutx;
     unsigned int  keyTout1 = 0;
     unsigned int  keyTout1x;
+    //=================================
+    //     select configure
+    // path select menu
+    unsigned char menuNap = 0;
     // ==========================
     //      for work password
     // new password
@@ -30,14 +35,14 @@ namespace ns_menu
     __flash T_psw flPsw= {2,2,3,6,0};
     // flag status checked password
     unsigned char flPasswordStatus = 0;
-    //=================================
-    //     select configure
-    // path select menu
-    unsigned char menu_nap = 0;
     // ==============================
     //     Time out
     // count time out menu
     unsigned int  menuTimeOut;
+    unsigned int  menuTimeOutSet;
+    // count time delay key
+    unsigned int  menuTimeDelayKey = 0;
+    void SetMenuTimeOut(unsigned int t);
     // ==============================
   unsigned int  menuTimeOutx;
   unsigned char vNastSel;
@@ -46,6 +51,10 @@ namespace ns_menu
   signed int  position_max;
   signed int  position_cur;
 //  unsigned char TimeViewInd;
+    // ================================================
+    // N mode/step menu
+    unsigned char mode;
+    // ================================================
     // bad eeprom - restore to default
     void InitEeprom()
     {
@@ -55,6 +64,7 @@ namespace ns_menu
         ns_menu::ee_psw[0].pin[3] = 4;
         ns_menu::ee_psw[0].pin[4] = 5;
     }
+    // ====================================
     // init to start system 
     void init()
     {
@@ -64,19 +74,42 @@ namespace ns_menu
         void workscr_i();
         workscr_i();
     }
-  //
-#define md_init      0
-  unsigned char mode = md_init;
-  void init();
-#define md_workscr   1
+// ====================================
+// work scr
+#define md_workscr          0
     void workscr_i();
-  void workscr_0(void);
-#define md_PassWrd   2
-  void PassWrd_i(void);
-  void PassWrd_0(void);
-  void PassWrd_2(void);
-  void PassWrd_3(void);
-  void PassWrd_4(void);
+    void workscr_0(void);
+// ------------------------------------
+// select fist menu archive
+#define md_SelectArchiv     1
+    void SelectArchiv_i();
+// select fist menu configure
+#define md_SelectConfig     2
+    void SelectConfig_i();
+// select fist menu exit
+#define md_SelectExit       3
+    void SelectExit_i();
+// ------------------------------------
+#define md_PassWrd          4
+    void PassWrd_i();
+    void PassWrd_v();
+    void PassWrd_m();
+    void PassWrd_p();
+    void PassWrd_e();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #define md_TimeOut   3
   void TimeOut_i(unsigned int TimeOut);
   void TimeOut_0(void);
@@ -215,14 +248,14 @@ namespace ns_menu
   void KkgSav_2();
   void KkgSav_3();
 
-  //
-  extern void (* const __flash MassMenu[][6])(void);
-  void timer(void)
-  {
-    if (keyTout>0) keyTout--;
-    if (keyTout1>1) keyTout1--;
-    if (menuTimeOut>0) menuTimeOut--;
-  }
+    //
+    extern void (* const __flash MassMenu[][6])(void);
+    void timer(void)
+    {
+        if (menuTimeOut>1)      menuTimeOut--;
+        if (menuTimeDelayKey>0) menuTimeDelayKey--;
+    }
+    // =====================================================================
   void imp2data(const unsigned long imp, unsigned long *m, unsigned long *Kg) {
     unsigned long  m_m;
     unsigned long  m_kg;
@@ -238,89 +271,107 @@ namespace ns_menu
     m_kg = m_kg / ((unsigned long)10);
     *Kg = (unsigned long)m_kg;
   }
-  void main(void)
-  {
-    #ifdef KEY4
-    if ( !key_read(&key) )
+// ===================================================
+    void main(void)
     {
-      key = 0;
-    }
-    else
-    {
-      if ( key==1 || key==4 )
-      {
-        __disable_interrupt();
-        keyToutx = keyTout;
-        __enable_interrupt();
-        if ( keyToutx==0 )
+#ifdef KEY4
+        if ( !key_read(&key) )
         {
-          __disable_interrupt();
-          keyTout = 100;
-          __enable_interrupt();
+            key = 0;
         }
         else
         {
-          __disable_interrupt();
-          keyTout = 250;
-          __enable_interrupt();
-          key = 0;
+            if ( (key==1) || (key==4) )
+            {
+                unsigned int temp;
+                {
+                    CritSec csMenuMain;
+                    temp = menuTimeDelayKey;
+                }
+                if (temp==0)
+                {
+                    CritSec csMenuMain;
+                    menuTimeDelayKey = 100;
+                }
+                else
+                {
+                    CritSec csMenuMain;
+                    menuTimeDelayKey = 250;
+                    key = 0;
+                }
+            }
         }
-      }
+        if ( key==0 )
+        {
+            unsigned int temp;
+            {
+                CritSec csMenuMain;
+                temp = menuTimeOut;
+            }
+            if (temp==1)
+            {
+                CritSec csMenuMain;
+                menuTimeOut = 0;
+                key = 5;
+            }
+        }
+        else
+        {
+            CritSec csMenuMain;
+            menuTimeOut = menuTimeOutSet;
+        }
+#else
+        key = 0;
+#endif
+        MassMenu[mode][key]();
+        if (key==5)
+        {
+            CritSec csMenuMain;
+            menuTimeOut = menuTimeOutSet;
+        }
     }
-    if ( key==0 )
+    void SetMenuTimeOut(unsigned int t)
     {
-      __disable_interrupt();
-      keyTout1x = keyTout1;
-      __enable_interrupt();
-      if ( keyTout1x==1 )
-      {
-        __disable_interrupt();
-        keyTout1 = 0;
-        __enable_interrupt();
-        key = 5;
-      }
+        CritSec csMenuMain;
+        menuTimeOutSet = t;
+        menuTimeOut = t;
     }
-    else
+// ============================================
+// work screen
+void workscr_i()
+{
+    SetMenuTimeOut(0);
+#ifdef CLOCK
+    if (clockrt::time[CT_YEAR]==0)
     {
-      __disable_interrupt();
-      keyTout1 = 60000;
-      __enable_interrupt();
+        zero();
+        return;
     }
-    #else
-      key = 0;
-    #endif
-    MassMenu[mode][key]();
-  }
-  void workscr_i(void)
-  {
-    #ifdef CLOCK
-    if (clockrt::time[CT_YEAR]==0) {
-      zero();
-      return;
-    }
-    #endif
+#endif
     scr->Clear();
     mode = md_workscr;
     scr->ShowChar(2, '.');
     scr->ShowChar(5, '.');
     scr->ShowString(9, "Смена");
-    //scr->ShowChar(c_stolbcov +  9, 'Т');
-    //scr->ShowChar(c_stolbcov + 12, 'И');
-  }
-  void workscr_0(void)
-  {
-    #ifdef CLOCK
-    if (clockrt::tik_cn==0) {
-          scr->ShowChar(c_stolbcov + 2, ':');
-          scr->ShowChar(c_stolbcov + 5, ':');
+    // scr->ShowChar(c_stolbcov +  9, 'Т');
+    // scr->ShowChar(c_stolbcov + 12, 'И');
+}
+void workscr_0()
+{
+#ifdef CLOCK
+    if (clockrt::tik_cn==0)
+    {
+        scr->ShowChar(c_stolbcov + 2, ':');
+        scr->ShowChar(c_stolbcov + 5, ':');
     }
-    if (clockrt::tik_cn==1) {
-          scr->ShowChar(c_stolbcov + 2, ' ');
-          scr->ShowChar(c_stolbcov + 5, ' ');
+    if (clockrt::tik_cn==1)
+    {
+        scr->ShowChar(c_stolbcov + 2, ' ');
+        scr->ShowChar(c_stolbcov + 5, ' ');
     }
     if (clockrt::tik)
     {
-      clockrt::tik = 0;
+        clockrt::tik = 0;
 //      vg::THourSmena sm;
 //    sm.Year   = clockrt::time[CT_YEAR];
 //    sm.Mounth = clockrt::time[CT_MONTH];
@@ -328,40 +379,74 @@ namespace ns_menu
 //    sm.Hour   = clockrt::time[CT_HOUR];
       //PowerDown::smena(&sm);
 //    scr->ShowChar(15, '1' + sm.Smena);
-      scr->dig_uz(0, 2, clockrt::time[CT_DATE] );
-      scr->dig_uz(3, 2, clockrt::time[CT_MONTH] );
-      scr->dig_uz(6, 2, clockrt::time[CT_YEAR] );
-      scr->dig_uz(c_stolbcov + 0, 2, clockrt::time[CT_HOUR] );
-      scr->dig_uz(c_stolbcov + 3, 2, clockrt::time[CT_MINUTE] );
-      scr->dig_uz(c_stolbcov + 6, 2, clockrt::time[CT_SECOND] );
+        scr->dig_uz(0, 2, clockrt::time[CT_DATE] );
+        scr->dig_uz(3, 2, clockrt::time[CT_MONTH] );
+        scr->dig_uz(6, 2, clockrt::time[CT_YEAR] );
+        scr->dig_uz(c_stolbcov + 0, 2, clockrt::time[CT_HOUR] );
+        scr->dig_uz(c_stolbcov + 3, 2, clockrt::time[CT_MINUTE] );
+        scr->dig_uz(c_stolbcov + 6, 2, clockrt::time[CT_SECOND] );
     }
-    #endif
-    //scr->ShowChar(c_stolbcov + 10, '0'+og::D_Tok->fl);
-    //scr->ShowChar(c_stolbcov + 13, '0'+og::D_Tahometr->fl);
-    if ( og::D_Tok->fl ) {
-      scr->ShowChar(c_stolbcov +  9, '_');
-      scr->ShowChar(c_stolbcov + 10, '_');
-      scr->ShowChar(c_stolbcov + 11, '_');
+#endif
+    // scr->ShowChar(c_stolbcov + 10, '0'+og::D_Tok->fl);
+    // scr->ShowChar(c_stolbcov + 13, '0'+og::D_Tahometr->fl);
+    if ( og::D_Tok->fl )
+    {
+        scr->ShowChar(c_stolbcov +  9, '_');
+        scr->ShowChar(c_stolbcov + 10, '_');
+        scr->ShowChar(c_stolbcov + 11, '_');
     }
-    else {
-      scr->ShowChar(c_stolbcov +  9, 'Т');
-      scr->ShowChar(c_stolbcov + 10, 'О');
-      scr->ShowChar(c_stolbcov + 11, 'К');
+    else
+    {
+        scr->ShowChar(c_stolbcov +  9, 'Т');
+        scr->ShowChar(c_stolbcov + 10, 'О');
+        scr->ShowChar(c_stolbcov + 11, 'К');
     }
     if ( og::D_Tahometr->fl ) {
-      scr->ShowChar(c_stolbcov + 13, 'и');
-      scr->ShowChar(c_stolbcov + 14, 'м');
-      scr->ShowChar(c_stolbcov + 15, 'п');
+        scr->ShowChar(c_stolbcov + 13, 'и');
+        scr->ShowChar(c_stolbcov + 14, 'м');
+        scr->ShowChar(c_stolbcov + 15, 'п');
     }
-    else {
-      scr->ShowChar(c_stolbcov + 13, 'И');
-      scr->ShowChar(c_stolbcov + 14, 'М');
-      scr->ShowChar(c_stolbcov + 15, 'П');
+    else
+    {
+        scr->ShowChar(c_stolbcov + 13, 'И');
+        scr->ShowChar(c_stolbcov + 14, 'М');
+        scr->ShowChar(c_stolbcov + 15, 'П');
     }
-  }
-  // ===================================================
+}
+// ===================================================
+// select fist menu archive
+void SelectArchiv_i()
+{
+    SetMenuTimeOut(60000);
+    mode = md_SelectArchiv;
+    scr->Clear();
+    scr->ShowString(0, "меню :" );
+    scr->ShowString(0, "архив" );
+}
+// ===================================================
+// select fist menu configure
+void SelectConfig_i()
+{
+    SetMenuTimeOut(60000);
+    mode = md_SelectArchiv;
+    scr->Clear();
+    scr->ShowString(0, "меню :" );
+    scr->ShowString(0, "настройка" );
+}
+// ===================================================
+// select fist menu exit
+void SelectExit_i()
+{
+    SetMenuTimeOut(60000);
+    mode = md_SelectArchiv;
+    scr->Clear();
+    scr->ShowString(0, "меню :" );
+    scr->ShowString(0, "выход" );
+}
+// ===================================================
     void PassWrd_i(void)
     {
+        SetMenuTimeOut(60000);
         scr->Clear();
         scr->ShowString(0, "введите пароль :" );
         // clear massive
@@ -373,7 +458,7 @@ namespace ns_menu
         mode = md_PassWrd;
     }
     // mode input password, view
-    void PassWrd_0()
+    void PassWrd_v()
     {
         unsigned char i;
         for (i=0;i<vvPaswordCount;i++)
@@ -382,29 +467,29 @@ namespace ns_menu
         scr->ShowChar(c_stolbcov + 1 +i, '_');
     }
     // mode input password, select digital
-    void PassWrd_2(void)
+    void PassWrd_m(void)
     {
         if (vvPasword.pin[vvPaswordCount]>0)
         {
             vvPasword.pin[vvPaswordCount]--;
-            PassWrd_0();
+            PassWrd_v();
         }
     }
     // mode input password, select digital
-    void PassWrd_3(void)
+    void PassWrd_p(void)
     {
         if (vvPasword.pin[vvPaswordCount]<9)
         {
             vvPasword.pin[vvPaswordCount]++;
-            PassWrd_0();
+            PassWrd_v();
         }
     }
     // mode input password, next digital passwrd or end input
-    void PassWrd_4(void)
+    void PassWrd_e(void)
     {
         vvPaswordCount++;
         if (vvPaswordCount<5)
-            PassWrd_0();
+            PassWrd_v();
         else
             PassChkSet(); // end input, checked password
     }
@@ -481,7 +566,7 @@ namespace ns_menu
     vNastSel = 0;
     vNastSelx = 255;
         // path select menu
-        menu_nap = 0;
+        menuNap = 0;
     }
     // view
     void NastSel_0(void)
@@ -497,14 +582,14 @@ namespace ns_menu
         {
           if (vNastSel>1)
           {
-            if (menu_nap) vNastSel = 1;
+            if (menuNap) vNastSel = 1;
             else          vNastSel = 10;
           }
           else vNastSelx = vNastSel;
         }
 //        else
         {
-          if (menu_nap) vNastSel = 79;
+          if (menuNap) vNastSel = 79;
           else          vNastSel = 10;
         }
       }
@@ -567,14 +652,14 @@ namespace ns_menu
       // уровень доступа "4"
       // пустой
       if ( (vNastSel>=40 ) && (vNastSel<50) ) {
-        if (menu_nap) vNastSel = 39;
+        if (menuNap) vNastSel = 39;
         else          vNastSel = 50;
       }
 
       // уровень доступа "5"
       // пустой
       if ( (vNastSel>=50 ) && (vNastSel<60) ) {
-        if (menu_nap) vNastSel = 49;
+        if (menuNap) vNastSel = 49;
         else          vNastSel = 60;
       }
 
@@ -599,7 +684,7 @@ namespace ns_menu
       // уровень доступа "7"
       // уровень админ - установка пароля и уровней доступ
       if ( vNastSel>=70 ) {
-        if (menu_nap) vNastSel = 69;
+        if (menuNap) vNastSel = 69;
         else          vNastSel = 1;
       }
 
@@ -625,7 +710,7 @@ namespace ns_menu
   }
   void NastSel_2(void)
   {
-    menu_nap = 1;
+    menuNap = 1;
     if (vNastSel>1)
       vNastSel--;
     else
@@ -634,7 +719,7 @@ namespace ns_menu
   }
   void NastSel_3(void)
   {
-    menu_nap = 0;  
+    menuNap = 0;  
     vNastSel++;
       NastSel_0();
   }
@@ -1267,9 +1352,32 @@ namespace ns_menu
   //========================================================
   // установка уровея доступа
   //========================================================
-  void Dummy(void){}
-  void (* const __flash MassMenu[][6])(void) = {
-    { init,        init,        init,        init,        init,        init  },
+    void Dummy(void)
+    {}
+    void (* const __flash MassMenu[][6])(void)=
+    {
+        // 0 - work screen
+        { workscr_0,    SelectArchiv_i, Dummy,          Dummy,          Dummy,      Dummy },
+        // -------------------------------------------------------------------------------------
+        // 1 - select archive
+        { Dummy,        Dummy,          Dummy,          SelectConfig_i, Dummy,      workscr_i },
+        // 2 - select config
+        { Dummy,        Dummy,          SelectArchiv_i, SelectExit_i,   PassWrd_i,  workscr_i },
+        // 3 - select exit
+        { Dummy,        Dummy,          SelectConfig_i, Dummy,          workscr_i,  workscr_i },
+        // -------------------------------------------------------------------------------------
+        // 4 - password
+        { PassWrd_v,    Dummy,          PassWrd_m,      PassWrd_p,      PassWrd_e,  Dummy },
+        // -------------------------------------------------------------------------------------
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
+	/*
     { workscr_0,   PassWrd_i,   Dummy,       Dummy,       Dummy,       Dummy },
     { PassWrd_0,   workscr_i,   PassWrd_2,   PassWrd_3,   PassWrd_4,   workscr_i },
     { TimeOut_0,   Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
@@ -1290,14 +1398,15 @@ namespace ns_menu
     { Dummy,       Dummy,       KmetrSav_2,  KmetrSav_3,  Dummy,       workscr_i },
     { Kkg_0,       NastSel_i,   Kkg_2,       Kkg_3,       Kkg_4,       workscr_i },
     { Dummy,       Dummy,       KkgSav_2,    KkgSav_3,    Dummy,       workscr_i },
-    { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
-    { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
-    { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
-    { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
-    { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
-    { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
-    { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy }
-  };
+	*/
+        { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
+        { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
+        { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
+        { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
+        { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
+        { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
+        { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy }
+    };
 }
 #ifdef ShowPass
 #undef ShowPass
