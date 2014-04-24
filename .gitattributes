@@ -1,8 +1,10 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-*.cpp encoding=cp1251
-*.h   encoding=cp1251
+*.cpp encoding=windows-1251
+*.c*  encoding=windows-1251
+*.h   encoding=windows-1251
+/src/*.c encoding=windows-1251
 
 # Custom for Visual Studio
 *.cs     diff=csharp
