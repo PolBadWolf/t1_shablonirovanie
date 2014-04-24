@@ -20,7 +20,7 @@
         
         
       <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1395</ColumnWidth1><ColumnWidth2>372</ColumnWidth2><ColumnWidth3>93</ColumnWidth3></Build>
-    </Static>
+    <Find-in-Files><ColumnWidth0>664</ColumnWidth0><ColumnWidth1>94</ColumnWidth1><ColumnWidth2>1138</ColumnWidth2></Find-in-Files><Debug-Log><ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1861</ColumnWidth1></Debug-Log></Static>
     <Windows>
       
       
@@ -44,7 +44,7 @@
             <Factory>Build</Factory>
             <Session/>
           </Tab>
-        </Tabs>
+        <Tab><Identity>TabID-31360-27877</Identity><TabName>Find in Files</TabName><Factory>Find-in-Files</Factory><Session/></Tab><Tab><Identity>TabID-31425-5751</Identity><TabName>Debug Log</TabName><Factory>Debug-Log</Factory><Session/></Tab></Tabs>
         
       <SelectedTab>0</SelectedTab></Wnd1></Windows>
     <Editor>
@@ -52,7 +52,7 @@
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\main.cpp</Filename><XPos>0</XPos><YPos>6</YPos><SelStart>718</SelStart><SelEnd>718</SelEnd></Tab><ActiveTab>0</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\main.h</Filename><XPos>0</XPos><YPos>59</YPos><SelStart>1736</SelStart><SelEnd>1736</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\menu.cpp</Filename><XPos>0</XPos><YPos>180</YPos><SelStart>4693</SelStart><SelEnd>4703</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\UserTimer.cpp</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>42</SelStart><SelEnd>42</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\Variable.cpp</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>36</SelStart><SelEnd>36</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\Variable.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>453</SelStart><SelEnd>453</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\menu.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>136</SelStart><SelEnd>153</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\main.cpp</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>536</SelStart><SelEnd>536</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\main.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>289</SelStart><SelEnd>296</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\Configure.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>60</SelStart><SelEnd>65</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\system\clock.cpp</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>48</SelStart><SelEnd>48</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\system\clock.h</Filename><XPos>0</XPos><YPos>6</YPos><SelStart>14</SelStart><SelEnd>14</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\menu.cpp</Filename><XPos>0</XPos><YPos>371</YPos><SelStart>10155</SelStart><SelEnd>10155</SelEnd></Tab><ActiveTab>5</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\menu.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>228</SelStart><SelEnd>233</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       

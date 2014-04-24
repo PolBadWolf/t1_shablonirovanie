@@ -1,7 +1,7 @@
 
+#ifdef CLOCK
 #ifndef clock__h
 #define clock__h
-#ifdef CLOCK
 
 // Код даты времени в массиве clock_data[]
 #define CC_SECOND          0

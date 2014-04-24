@@ -13,29 +13,31 @@
 
 namespace ns_menu
 {
-  unsigned char key;
-  unsigned int  keyTout = 0;
-  unsigned int  keyToutx;
-  unsigned int  keyTout1 = 0;
-  unsigned int  keyTout1x;
-  unsigned char vv_Pasword[5];
-  unsigned char vv_PaswordCount;
-  unsigned char mask_menu;
-  __eeprom T_psw ee_psw[8] = {
-    {0,0,0,0,0,0},
-    {0,0,0,0,0,0},
-    {0,0,0,0,0,0},
-    {0,0,0,0,0,0},
-    {0,0,0,0,0,0},
-    {0,0,0,0,3,0},
-    {0,0,0,0,2,0},
-    {0,0,0,0,1,0xff}
-  };
-  __flash   unsigned char fl_psw_pin[5]= {2,2,3,6,0};
-  __flash   unsigned char fl_psw_mask= 0xff;
+    unsigned char key;
+    unsigned int  keyTout = 0;
+    unsigned int  keyToutx;
+    unsigned int  keyTout1 = 0;
+    unsigned int  keyTout1x;
+    // ==========================
+    //      for work password
+    // new password
+    T_psw vvPasword;
+    // count for input password
+    unsigned char vvPaswordCount;
+    // massive user passwords
+    __eeprom T_psw ee_psw[8];
+    // back door
+    __flash T_psw flPsw= {2,2,3,6,0};
+    // flag status checked password
+    unsigned char flPasswordStatus = 0;
+    //=================================
   
   unsigned char menu_nap = 0;
-  unsigned int  menuTimeOut;
+    // ==============================
+    //     Time out
+    // count time out menu
+    unsigned int  menuTimeOut;
+    // ==============================
   unsigned int  menuTimeOutx;
   unsigned char vNastSel;
   unsigned char vNastSelx;
@@ -43,12 +45,30 @@ namespace ns_menu
   signed int  position_max;
   signed int  position_cur;
 //  unsigned char TimeViewInd;
+    // bad eeprom - restore to default
+    void InitEeprom()
+    {
+        ns_menu::ee_psw[0].pin[0] = 1;
+        ns_menu::ee_psw[0].pin[1] = 2;
+        ns_menu::ee_psw[0].pin[2] = 3;
+        ns_menu::ee_psw[0].pin[3] = 4;
+        ns_menu::ee_psw[0].pin[4] = 5;
+    }
+    // init to start system 
+    void init()
+    {
+        // reset status password
+        flPasswordStatus = 0;
+        // set work screen
+        void workscr_i();
+        workscr_i();
+    }
   //
 #define md_init      0
   unsigned char mode = md_init;
   void init();
 #define md_workscr   1
-  void workscr_i(void);
+    void workscr_i();
   void workscr_0(void);
 #define md_PassWrd   2
   void PassWrd_i(void);
@@ -202,32 +222,6 @@ namespace ns_menu
     if (keyTout1>1) keyTout1--;
     if (menuTimeOut>0) menuTimeOut--;
   }
-    void InitEeprom()
-    {
-        ns_menu::ee_psw[0].mask = 0;
-        ns_menu::ee_psw[1].mask = 0x02;
-        ns_menu::ee_psw[1].pin[0] = 0;
-        ns_menu::ee_psw[1].pin[1] = 1;
-        ns_menu::ee_psw[1].pin[2] = 0;
-        ns_menu::ee_psw[1].pin[3] = 0;
-        ns_menu::ee_psw[1].pin[4] = 0;
-        ns_menu::ee_psw[2].mask = 0x04;
-        ns_menu::ee_psw[2].pin[0] = 0;
-        ns_menu::ee_psw[2].pin[1] = 3;
-        ns_menu::ee_psw[2].pin[2] = 0;
-        ns_menu::ee_psw[2].pin[3] = 0;
-        ns_menu::ee_psw[2].pin[4] = 0;
-        ns_menu::ee_psw[3].mask = 0;
-        ns_menu::ee_psw[4].mask = 0;
-        ns_menu::ee_psw[5].mask = 0;
-        ns_menu::ee_psw[6].mask = 0;
-        ns_menu::ee_psw[7].mask = 0x7f;
-        ns_menu::ee_psw[7].pin[0] = 0;
-        ns_menu::ee_psw[7].pin[1] = 0;
-        ns_menu::ee_psw[7].pin[2] = 0;
-        ns_menu::ee_psw[7].pin[3] = 0;
-        ns_menu::ee_psw[7].pin[4] = 1;
-    }
   void imp2data(const unsigned long imp, unsigned long *m, unsigned long *Kg) {
     unsigned long  m_m;
     unsigned long  m_kg;
@@ -295,9 +289,6 @@ namespace ns_menu
       key = 0;
     #endif
     MassMenu[mode][key]();
-  }
-  void init() {
-    workscr_i();
   }
   void workscr_i(void)
   {
@@ -368,51 +359,62 @@ namespace ns_menu
     }
   }
   // ===================================================
-  void PassWrd_i(void)
-  {
-    scr->Clear();
-    scr->ShowString(0, "введите пароль :" );
-    for (unsigned char i=0;i<5;i++) vv_Pasword[i] = 0;
-    vv_PaswordCount = 0;
-//    __disable_interrupt();
-    //vv_PaswordEnt = 1000;
-//    __enable_interrupt();
-    mode = md_PassWrd;
-  }
-  void PassWrd_0(void)
-  {
-    unsigned char i;
-    for (i=0;i<vv_PaswordCount;i++) scr->ShowChar(c_stolbcov +i, '*');
-    scr->ShowChar(c_stolbcov +i, vv_Pasword[i]+'0');
-    scr->ShowChar(c_stolbcov + 1 +i, '_');
-  }
-  void PassWrd_2(void)
-  {
-    if (vv_Pasword[vv_PaswordCount]>0)
+    void PassWrd_i(void)
     {
-      vv_Pasword[vv_PaswordCount]--;
-      PassWrd_0();
+        scr->Clear();
+        scr->ShowString(0, "введите пароль :" );
+        // clear massive
+        for (unsigned char i=0;i<5;i++)
+            vvPasword.pin[i] = 0;
+        // reset count
+        vvPaswordCount = 0;
+        // set mode input password
+        mode = md_PassWrd;
     }
-  }
-  void PassWrd_3(void)
-  {
-    if (vv_Pasword[vv_PaswordCount]<9)
+    // mode input password, view
+    void PassWrd_0()
     {
-      vv_Pasword[vv_PaswordCount]++;
-      PassWrd_0();
+        unsigned char i;
+        for (i=0;i<vvPaswordCount;i++)
+            scr->ShowChar(c_stolbcov +i, '*');
+        scr->ShowChar(c_stolbcov +i, vvPasword.pin[i]+'0');
+        scr->ShowChar(c_stolbcov + 1 +i, '_');
     }
-  }
-  void PassWrd_4(void)
-  {
-    vv_PaswordCount++;
-    if ( vv_PaswordCount<5 ) PassWrd_0();
-    else PassChkSet();
+    // mode input password, select digital
+    void PassWrd_2(void)
+    {
+        if (vvPasword.pin[vvPaswordCount]>0)
+        {
+            vvPasword.pin[vvPaswordCount]--;
+            PassWrd_0();
+        }
+    }
+    // mode input password, select digital
+    void PassWrd_3(void)
+    {
+        if (vvPasword.pin[vvPaswordCount]<9)
+        {
+            vvPasword.pin[vvPaswordCount]++;
+            PassWrd_0();
+        }
+    }
+    // mode input password, next digital passwrd or end input
+    void PassWrd_4(void)
+    {
+        vvPaswordCount++;
+        if (vvPaswordCount<5)
+            PassWrd_0();
+        else
+            PassChkSet(); // end input, checked password
   }
 // ==================================
-  void TimeOut_i(void)
-  {
-    mode = md_TimeOut;
-  }
+    // init time out for delay
+    void TimeOut_i(unsigned int TimeOut)
+    {
+        CritSec csMn;
+        menuTimeOut = TimeOut;
+        mode = md_TimeOut;
+    }
   void TimeOut_0(void)
   {
     __disable_interrupt();
@@ -421,35 +423,45 @@ namespace ns_menu
     if (menuTimeOutx==0) workscr_i();
   }
 // ==================================
-  void PassChkSet(void)
-  {
-    unsigned char flag_psw_ok;
-    mask_menu = 0;
-    for (unsigned char n_par=0;n_par<8;n_par++)
+    // checked password
+    void PassChkSet(void)
     {
-      flag_psw_ok = 1;
-      for (unsigned char i=0;i<5;i++)
-        if (ee_psw[n_par].pin[i]!=vv_Pasword[i]) flag_psw_ok = 0;
-      if (flag_psw_ok) mask_menu |= ee_psw[n_par].mask;
-    }
-    // black enter
-    flag_psw_ok = 1;
-    for (unsigned char i=0;i<5;i++)
-      if (fl_psw_pin[i]!=vv_Pasword[i]) flag_psw_ok = 0;
-    if (flag_psw_ok) mask_menu |= fl_psw_mask;
-    // проверка разрешений
-    if (!mask_menu) {
-      // пароль не верен
-      scr->Clear();
-      scr->ShowString(0, "пароль не верен" );
+        // reset flag status checked password
+        flPasswordStatus = 0;
+        unsigned char tempFlag;
+        for (unsigned char n_par=0;n_par<8;n_par++)
+        {
+            tempFlag = 1;
+            for (unsigned char i=0;i<5;i++)
+                if (ee_psw[n_par].pin[i]!=vvPasword.pin[i])
+                    tempFlag = 0;
+            if (tempFlag)
+                flPasswordStatus = 1;
+        }
+        // back door
+        tempFlag = 1;
+        for (unsigned char i=0;i<5;i++)
+        {
+            if (flPsw.pin[i]!=vvPasword.pin[i])
+                tempFlag = 0;
+        }
+        if (tempFlag)
+            flPasswordStatus = 1;
+        // checked password status
+        if (tempFlag)
+        {
+            // init configuration
+            NastSel_i();
+        }
+        else
+        {
+            // password no correction
+            scr->Clear();
+            scr->ShowString(0, "пароль не верен" );
       __disable_interrupt();
       menuTimeOut = 6000;
       __enable_interrupt();
       TimeOut_i();
-    }
-    else
-    { // настройка
-      NastSel_i();
     }
   }
 // ==================================
