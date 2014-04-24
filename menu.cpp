@@ -46,7 +46,7 @@ namespace ns_menu
   //
 #define md_init      0
   unsigned char mode = md_init;
-  void init(void);
+  void init();
 #define md_workscr   1
   void workscr_i(void);
   void workscr_0(void);
@@ -202,6 +202,32 @@ namespace ns_menu
     if (keyTout1>1) keyTout1--;
     if (menuTimeOut>0) menuTimeOut--;
   }
+    void InitEeprom()
+    {
+        ns_menu::ee_psw[0].mask = 0;
+        ns_menu::ee_psw[1].mask = 0x02;
+        ns_menu::ee_psw[1].pin[0] = 0;
+        ns_menu::ee_psw[1].pin[1] = 1;
+        ns_menu::ee_psw[1].pin[2] = 0;
+        ns_menu::ee_psw[1].pin[3] = 0;
+        ns_menu::ee_psw[1].pin[4] = 0;
+        ns_menu::ee_psw[2].mask = 0x04;
+        ns_menu::ee_psw[2].pin[0] = 0;
+        ns_menu::ee_psw[2].pin[1] = 3;
+        ns_menu::ee_psw[2].pin[2] = 0;
+        ns_menu::ee_psw[2].pin[3] = 0;
+        ns_menu::ee_psw[2].pin[4] = 0;
+        ns_menu::ee_psw[3].mask = 0;
+        ns_menu::ee_psw[4].mask = 0;
+        ns_menu::ee_psw[5].mask = 0;
+        ns_menu::ee_psw[6].mask = 0;
+        ns_menu::ee_psw[7].mask = 0x7f;
+        ns_menu::ee_psw[7].pin[0] = 0;
+        ns_menu::ee_psw[7].pin[1] = 0;
+        ns_menu::ee_psw[7].pin[2] = 0;
+        ns_menu::ee_psw[7].pin[3] = 0;
+        ns_menu::ee_psw[7].pin[4] = 1;
+    }
   void imp2data(const unsigned long imp, unsigned long *m, unsigned long *Kg) {
     unsigned long  m_m;
     unsigned long  m_kg;
@@ -270,7 +296,7 @@ namespace ns_menu
     #endif
     MassMenu[mode][key]();
   }
-  void init(void) {
+  void init() {
     workscr_i();
   }
   void workscr_i(void)
@@ -303,13 +329,13 @@ namespace ns_menu
     if (clockrt::tik)
     {
       clockrt::tik = 0;
-      vg::THourSmena sm;
-      sm.Year   = clockrt::time[CT_YEAR];
-      sm.Mounth = clockrt::time[CT_MONTH];
-      sm.Date   = clockrt::time[CT_DATE];
-      sm.Hour   = clockrt::time[CT_HOUR];
+//      vg::THourSmena sm;
+//    sm.Year   = clockrt::time[CT_YEAR];
+//    sm.Mounth = clockrt::time[CT_MONTH];
+//    sm.Date   = clockrt::time[CT_DATE];
+//    sm.Hour   = clockrt::time[CT_HOUR];
       //PowerDown::smena(&sm);
-      scr->ShowChar(15, '1' + sm.Smena);
+//    scr->ShowChar(15, '1' + sm.Smena);
       scr->dig_uz(0, 2, clockrt::time[CT_DATE] );
       scr->dig_uz(3, 2, clockrt::time[CT_MONTH] );
       scr->dig_uz(6, 2, clockrt::time[CT_YEAR] );
@@ -967,17 +993,17 @@ namespace ns_menu
   void ZaSmenu_i() {
     mode = md_ZaSmenu;
     ZaSmenu_Old = ~0;
-    K_Metr = vg::ee_K_Metr;
-    K_Kg = vg::ee_K_Kg;
-    vg::THourSmena sm;
-    sm.Year   = clockrt::time[CT_YEAR];
-    sm.Mounth = clockrt::time[CT_MONTH];
-    sm.Date   = clockrt::time[CT_DATE];
-    sm.Hour   = clockrt::time[CT_HOUR];
+//    K_Metr = vg::ee_K_Metr;
+//    K_Kg = vg::ee_K_Kg;
+//    vg::THourSmena sm;
+//  sm.Year   = clockrt::time[CT_YEAR];
+//  sm.Mounth = clockrt::time[CT_MONTH];
+//  sm.Date   = clockrt::time[CT_DATE];
+//  sm.Hour   = clockrt::time[CT_HOUR];
     //PowerDown::smena(&sm);
     scr->Clear();
     scr->ShowString( 0, "тек.смена");
-    scr->ShowChar(  9, '1' + sm.Smena);
+//  scr->ShowChar(  9, '1' + sm.Smena);
     scr->ShowChar( c_stolbcov + 3, '.');
     scr->ShowString( c_stolbcov + 7, "м");
     scr->ShowChar(c_stolbcov + 12, '.');
@@ -988,8 +1014,8 @@ namespace ns_menu
     static unsigned long m;
     static unsigned long kg;
     static unsigned long temp;
-    if (ZaSmenu_Old==vg::DataSmena.Impuls) return;
-    ZaSmenu_Old = vg::DataSmena.Impuls;
+//    if (ZaSmenu_Old==vg::DataSmena.Impuls) return;
+//    ZaSmenu_Old = vg::DataSmena.Impuls;
     temp = ZaSmenu_Old;
 //    temp = 2087;
     imp2data(temp, &m, &kg);
@@ -1003,16 +1029,16 @@ namespace ns_menu
     if (mask_menu & (1<<7) ) scr->dig_uz(11, 5, temp);
   }
   void ZaSmenu_3() {
-    if (mask_menu & (1<<7) ) vg::DataSmena.Impuls = 0;
+//  if (mask_menu & (1<<7) ) vg::DataSmena.Impuls = 0;
   }
   //========================================================
   // архив
   //unsigned int  ZaSmenu_Old;
   void Archiv_i() {
     mode = md_Archiv;
-    K_Metr = vg::ee_K_Metr;
-    K_Kg = vg::ee_K_Kg;
-    vArchivIndx = vg::ee_ArchivIndx;
+//  K_Metr = vg::ee_K_Metr;
+//  K_Kg = vg::ee_K_Kg;
+//  vArchivIndx = vg::ee_ArchivIndx;
     scr->Clear();
     scr->ShowChar(             2, '.');
     scr->ShowChar(             5, '.');
@@ -1027,22 +1053,22 @@ namespace ns_menu
   void Archiv_s() {
     static unsigned long m;
     static unsigned long kg;
-    unsigned long temp;
-    temp = vg::ee_Archiv[vArchivIndx].Impuls;
+//  unsigned long temp;
+//    temp = vg::ee_Archiv[vArchivIndx].Impuls;
     if (mask_menu & (1<<7) ) {
-      scr->dig_uz(0, 2, vg::ee_Archiv[vArchivIndx].Date);
-      scr->ShowChar(2, 'A' + vg::ee_Archiv[vArchivIndx].Smena);
-      scr->dig_uz(3, 2, vg::ee_Archiv[vArchivIndx].Mounth);
-      scr->dig_uz(9, 6, temp);
+//      scr->dig_uz(0, 2, vg::ee_Archiv[vArchivIndx].Date);
+//      scr->ShowChar(2, 'A' + vg::ee_Archiv[vArchivIndx].Smena);
+//      scr->dig_uz(3, 2, vg::ee_Archiv[vArchivIndx].Mounth);
+//    scr->dig_uz(9, 6, temp);
     }
     else {
-      scr->dig_uz(0, 2, vg::ee_Archiv[vArchivIndx].Date);
-      scr->dig_uz(3, 2, vg::ee_Archiv[vArchivIndx].Mounth);
-      scr->dig_uz(6, 2, vg::ee_Archiv[vArchivIndx].Year);
-      scr->ShowChar(15, '1' + vg::ee_Archiv[vArchivIndx].Smena);
+//      scr->dig_uz(0, 2, vg::ee_Archiv[vArchivIndx].Date);
+//      scr->dig_uz(3, 2, vg::ee_Archiv[vArchivIndx].Mounth);
+//    scr->dig_uz(6, 2, vg::ee_Archiv[vArchivIndx].Year);
+//    scr->ShowChar(15, '1' + vg::ee_Archiv[vArchivIndx].Smena);
     }
     //scr->dig_u (10, 5, vg::ee_Archiv[vArchivIndx].Impuls);
-    imp2data(temp, &m, &kg);
+//  imp2data(temp, &m, &kg);
 //    scr->digit_uz(c_stolbcov + 0, 7, 3, m);
     scr->dig_u (c_stolbcov + 0, 3, m/((unsigned long)1000) );
     scr->dig_uz(c_stolbcov + 4, 3, m%((unsigned long)1000) );
@@ -1065,7 +1091,7 @@ namespace ns_menu
   void Kmetr_i() {
     mode = md_Kmetr;
     unsigned long x;
-    x = vg::ee_K_Metr;
+//  x = vg::ee_K_Metr;
     for(unsigned char i=0;i<20;i++) Kedit[i] = 0;
     for(unsigned char i=0;i<6;i++) {
       unsigned char j = 5 - i;
@@ -1126,7 +1152,7 @@ namespace ns_menu
       x = x * ((unsigned long)10);
       x = x + (unsigned long)(Kedit[i] - '0');
     }
-    vg::ee_K_Metr = x;
+//  vg::ee_K_Metr = x;
     NastSel_i();
   }
   //========================================================
@@ -1134,7 +1160,7 @@ namespace ns_menu
   void Kkg_i() {
     mode = md_Kkg;
     unsigned long x;
-    x = vg::ee_K_Kg;
+//  x = vg::ee_K_Kg;
     for(unsigned char i=0;i<20;i++) Kedit[i] = 0;
     for(unsigned char i=0;i<6;i++) {
       unsigned char j = 5 - i;
@@ -1197,7 +1223,7 @@ namespace ns_menu
       x = x * ((unsigned long)10);
       x = x + (unsigned long)(Kedit[i] - '0');
     }
-    vg::ee_K_Kg = x;
+//  vg::ee_K_Kg = x;
     NastSel_i();
   }
   //========================================================

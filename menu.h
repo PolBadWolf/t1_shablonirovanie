@@ -7,7 +7,8 @@ namespace ns_menu
   void timer(void);
   void main(void);
   void zero();
-  void init(void);
+  void init();
+  void InitEeprom();
   struct T_psw {
     unsigned char pin[5];
     unsigned char mask;

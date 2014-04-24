@@ -7,48 +7,10 @@ __eeprom unsigned char ee_FlagRes = 0x34;
 
 void main(void)
 {
-  DDRA = 255;
-  PORTA = 255;
-  if (ee_FlagRes!=0x33) {
+    // время успокоения
     _delay_ms(1000);
-    for(unsigned int i=0;i<ee_ArchivLen;i++) {
-      vg::ee_Archiv[i].Year = 0;
-      vg::ee_Archiv[i].Mounth = 0;
-      vg::ee_Archiv[i].Date = 0;
-      vg::ee_Archiv[i].Smena = 0;
-      vg::ee_Archiv[i].Impuls = 0;
-    }
-    vg::ee_DateSmenaCur.Year = 0;
-    vg::ee_DateSmenaCur.Mounth = 0;
-    vg::ee_DateSmenaCur.Date = 0;
-    vg::ee_DateSmenaCur.Smena = 0;
-    vg::ee_DateSmenaCur.Impuls = 0;
-    vg::ee_ArchivIndx = ee_ArchivLen - 1;
-    vg::ee_K_Metr = 30027;
-    vg::ee_K_Kg   = 4504;
-    ns_menu::ee_psw[0].mask = 0;
-    ns_menu::ee_psw[1].mask = 0x02;
-    ns_menu::ee_psw[1].pin[0] = 0;
-    ns_menu::ee_psw[1].pin[1] = 1;
-    ns_menu::ee_psw[1].pin[2] = 0;
-    ns_menu::ee_psw[1].pin[3] = 0;
-    ns_menu::ee_psw[1].pin[4] = 0;
-    ns_menu::ee_psw[2].mask = 0x04;
-    ns_menu::ee_psw[2].pin[0] = 0;
-    ns_menu::ee_psw[2].pin[1] = 3;
-    ns_menu::ee_psw[2].pin[2] = 0;
-    ns_menu::ee_psw[2].pin[3] = 0;
-    ns_menu::ee_psw[2].pin[4] = 0;
-    ns_menu::ee_psw[3].mask = 0;
-    ns_menu::ee_psw[4].mask = 0;
-    ns_menu::ee_psw[5].mask = 0;
-    ns_menu::ee_psw[6].mask = 0;
-    ns_menu::ee_psw[7].mask = 0x7f;
-    ns_menu::ee_psw[7].pin[0] = 0;
-    ns_menu::ee_psw[7].pin[1] = 0;
-    ns_menu::ee_psw[7].pin[2] = 0;
-    ns_menu::ee_psw[7].pin[3] = 0;
-    ns_menu::ee_psw[7].pin[4] = 1;
+  if (ee_FlagRes!=0x33) {
+    ns_menu::InitEeprom();
     ee_FlagRes = 0x33;
   }
   {
@@ -67,8 +29,8 @@ void main(void)
     // разрешение работы по часам
     #ifdef CLOCK
     if ( (clockrt::time[CT_YEAR]==0) || (clockrt::time[CT_YEAR]>99) )
-         vg::WorkTime = false;
-    else vg::WorkTime = true;
+//       vg::WorkTime = false;
+//  else vg::WorkTime = true;
     #else
     vg::WorkTime = true;
     #endif
