@@ -96,6 +96,7 @@ namespace ns_menu
     void PassWrd_m();
     void PassWrd_p();
     void PassWrd_e();
+// ------------------------------------
 
 
 
@@ -337,25 +338,25 @@ namespace ns_menu
         menuTimeOut = t;
     }
 // ============================================
-// work screen
-void workscr_i()
-{
-    SetMenuTimeOut(0);
-#ifdef CLOCK
-    if (clockrt::time[CT_YEAR]==0)
+    // work screen
+    void workscr_i()
     {
-        zero();
-        return;
-    }
+        SetMenuTimeOut(0);
+#ifdef CLOCK
+        if (clockrt::time[CT_YEAR]==0)
+        {
+            zero();
+            return;
+        }
 #endif
-    scr->Clear();
-    mode = md_workscr;
-    scr->ShowChar(2, '.');
-    scr->ShowChar(5, '.');
-    scr->ShowString(9, "Смена");
-    // scr->ShowChar(c_stolbcov +  9, 'Т');
-    // scr->ShowChar(c_stolbcov + 12, 'И');
-}
+        scr->Clear();
+        mode = md_workscr;
+        scr->ShowChar(2, '.');
+        scr->ShowChar(5, '.');
+        scr->ShowString(9, "Смена");
+        // scr->ShowChar(c_stolbcov +  9, 'Т');
+        // scr->ShowChar(c_stolbcov + 12, 'И');
+    }
 void workscr_0()
 {
 #ifdef CLOCK
@@ -1103,12 +1104,13 @@ void SelectExit_i()
     */
   }
   //========================================================
-  void zero() {
-    mode = md_Zero;
-    scr->Clear();
-    scr->ShowString( 0, "БАТАРЕЯ !!!");
-    scr->ShowString( c_stolbcov + 0, "уст. новое время");
-  }
+    void zero()
+    {
+        mode = md_Zero;
+        scr->Clear();
+        scr->ShowString( 0, "БАТАРЕЯ !!!");
+        scr->ShowString( c_stolbcov + 0, "уст. новое время");
+    }
   //========================================================
   // за смену
   void ZaSmenu_i() {
