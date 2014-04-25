@@ -29,8 +29,9 @@ namespace ns_menu
     T_psw vvPasword;
     // count for input password
     unsigned char vvPaswordCount;
+#define PSWN 1
     // massive user passwords
-    __eeprom T_psw ee_psw[8];
+    __eeprom T_psw ee_psw[PSWN];
     // back door
     __flash T_psw flPsw= {2,2,3,6,0};
     // flag status checked password
@@ -46,6 +47,10 @@ namespace ns_menu
     // count menu time delay
     unsigned int  menuTimeDelay = 0;
     unsigned char afterMode = 0;
+    // flash
+#define menuFlashSet 300
+    unsigned int  menuFlash = menuFlashSet/2;
+    unsigned char menuFlashSt = 0;
     // ==============================
   unsigned int  menuTimeOutx;
   unsigned char vNastSel;
@@ -61,11 +66,11 @@ namespace ns_menu
     // bad eeprom - restore to default
     void InitEeprom()
     {
-        ns_menu::ee_psw[0].pin[0] = 1;
-        ns_menu::ee_psw[0].pin[1] = 2;
-        ns_menu::ee_psw[0].pin[2] = 3;
-        ns_menu::ee_psw[0].pin[3] = 4;
-        ns_menu::ee_psw[0].pin[4] = 5;
+        ns_menu::ee_psw[0].pin[0] = 0;
+        ns_menu::ee_psw[0].pin[1] = 0;
+        ns_menu::ee_psw[0].pin[2] = 0;
+        ns_menu::ee_psw[0].pin[3] = 0;
+        ns_menu::ee_psw[0].pin[4] = 0;
     }
     // ====================================
     // init to start system 
@@ -102,6 +107,46 @@ namespace ns_menu
     void PassWrd_e();
     void PassWrd_Chk();
 // ------------------------------------
+#define md_M2SelPass        5
+    void M2SelPass_i();
+    void M2SelPass_v();
+#define md_M2SelLen         6
+    void M2SelLen_i();
+#define md_M2SelTOut        7
+    void M2SelTOut_i();
+#define md_M2SelClock       8
+    void M2SelClock_i();
+#define md_M2SelExit        9
+    void M2SelExit_i();
+// ------------------------------------
+#define md_SetClockYear     10
+    void SetClockYear_i();
+    void SetClockYear_v();
+    void SetClockYear_km();
+    void SetClockYear_kp();
+    void SetClockYear_ke();
+    unsigned char tmpClockYear;
+#define md_SetClockMount    11
+    void SetClockMount_i();
+    void SetClockMount_v();
+    void SetClockMount_km();
+    void SetClockMount_kp();
+    void SetClockMount_ke();
+    unsigned char tmpClockMount;
+#define md_SetClockDate     12
+    void SetClockDate_i();
+    unsigned char tmpClockDate;
+    unsigned char ClockDateMax;
+    void SetClockDate_v();
+    void SetClockDate_km();
+    void SetClockDate_kp();
+    void SetClockDate_ke();
+#define md_SetClockHour     13
+    void SetClockHour_i();
+#define md_SetClockMinute   14
+    void SetClockMinute_i();
+    unsigned char tmpClockMinute;
+    unsigned char ClockTemp;
 
 
 
@@ -116,13 +161,6 @@ namespace ns_menu
 
 
 
-#define md_NastSel  4
-  void NastSel_i(void);
-  void NastSel_0(void);
-  void NastSel_1(void);
-  void NastSel_2(void);
-  void NastSel_3(void);
-  void NastSel_4(void);
 #define md_PaswSel  5
   // выбор пароля
   unsigned PaswSel_OldPsw;
@@ -257,6 +295,11 @@ namespace ns_menu
         if (menuTimeOut>1)      menuTimeOut--;
         if (menuTimeDelayKey>0) menuTimeDelayKey--;
         if (menuTimeDelay>1)    menuTimeDelay--;
+        if (--menuFlash==0)
+        {
+            menuFlash = menuFlashSet;
+            if (++menuFlashSt>1) menuFlashSt = 0;
+        }
         /* timer2 debug
         static unsigned char debugT = 0;
         static unsigned int  debugTp = 0;
@@ -541,7 +584,7 @@ void SelectExit_i()
         flPasswordStatus = 0;
         unsigned char tempFlag;
         // main passwords
-        for (unsigned char n_par=0;n_par<8;n_par++)
+        for (unsigned char n_par=0;n_par<PSWN;n_par++)
         {
             tempFlag = 1;
             for (unsigned char i=0;i<5;i++)
@@ -563,7 +606,7 @@ void SelectExit_i()
         if (flPasswordStatus)
         {
             // init configuration
-            NastSel_i();
+            M2SelPass_i();
         }
         else
         {
@@ -575,12 +618,310 @@ void SelectExit_i()
         }
     }
 // ==================================
+    void M2SelPass_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_M2SelPass;
+        scr->Clear();
+        scr->ShowString(            0, "меню :" );
+        scr->ShowString(c_stolbcov+ 0, "уст. пароль" );
+    }
+// ----------------------------------
+    void M2SelLen_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_M2SelLen;
+        scr->Clear();
+        scr->ShowString(            0, "меню :" );
+        scr->ShowString(c_stolbcov+ 0, "длина Д1-Д2" );
+    }
+// ----------------------------------
+    void M2SelTOut_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_M2SelTOut;
+        scr->Clear();
+        scr->ShowString(            0, "меню :" );
+        scr->ShowString(c_stolbcov+ 0, "ТаймАут Д1-Д2" );
+    }
+// ----------------------------------
+    void M2SelClock_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_M2SelClock;
+        scr->Clear();
+        scr->ShowString(            0, "меню :" );
+        scr->ShowString(c_stolbcov+ 0, "уст. времени" );
+    }
+// ----------------------------------
+    void M2SelExit_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_M2SelExit;
+        scr->Clear();
+        scr->ShowString(            0, "меню :" );
+        scr->ShowString(c_stolbcov+ 0, "выход" );
+    }
+// ==================================
+    void SetClockYear_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_SetClockYear;
+        scr->Clear();
+        scr->ShowString(            0, "уст.времени" );
+        tmpClockYear = clockrt::time[CT_YEAR];
+        if (tmpClockYear>99) tmpClockYear = 15;
+        ClockTemp = tmpClockYear;
+        scr->ShowChar(c_stolbcov + 4, '-');
+        scr->ShowChar(c_stolbcov + 7, '-');
+        SetClockYear_v();
+    }
+    void SetClockYear_v()
+    {
+        // Year
+        if(menuFlashSt)
+        {
+            scr->ShowString(c_stolbcov+ 0, "20" );
+            scr->dig_uz    (c_stolbcov+ 2, 2, ClockTemp );
+        }
+        else
+            scr->ShowString(c_stolbcov+ 0, "    " );
+        // Mount
+        scr->dig_uz    (c_stolbcov+ 5, 2, clockrt::time[CT_MONTH] );
+        // Date
+        scr->dig_uz    (c_stolbcov+ 8, 2, clockrt::time[CT_DATE] );
+        // Hour
+        scr->dig_uz    (c_stolbcov+11, 2, clockrt::time[CT_HOUR] );
+        // Minute
+        scr->dig_uz    (c_stolbcov+14, 2, clockrt::time[CT_MINUTE] );
+        if (clockrt::tik_cn)
+            scr->ShowChar(c_stolbcov +13, ':');
+        else
+            scr->ShowChar(c_stolbcov +13, ' ');
+    }
+    void SetClockYear_km()
+    {
+        if (ClockTemp>14)
+        {
+            ClockTemp--;
+            SetClockYear_v();
+        }
+    }
+    void SetClockYear_kp()
+    {
+        if (ClockTemp<99)
+        {
+            ClockTemp++;
+            SetClockYear_v();
+        }
+    }
+    void SetClockYear_ke()
+    {
+        tmpClockYear = ClockTemp;
+        SetClockMount_i();
+    }
+    // ---------------------------------
+    void SetClockMount_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_SetClockMount;
+        scr->Clear();
+        scr->ShowString(            0, "уст.времени" );
+        tmpClockMount = clockrt::time[CT_MONTH];
+        if ( (tmpClockMount==0) || (tmpClockMount>12) ) tmpClockMount = 1;
+        ClockTemp = tmpClockMount;
+        scr->ShowChar(c_stolbcov + 4, '-');
+        scr->ShowChar(c_stolbcov + 7, '-');
+        SetClockMount_v();
+    }
+    void SetClockMount_v()
+    {
+        // Year
+        scr->ShowString(c_stolbcov+ 0, "20" );
+        scr->dig_uz    (c_stolbcov+ 2, 2, tmpClockYear );
+        // Mount
+        if(menuFlashSt)
+        {
+            scr->dig_uz    (c_stolbcov+ 5, 2, ClockTemp );
+        }
+        else
+            scr->ShowString(c_stolbcov+ 5, "  " );
+        // Date
+        scr->dig_uz    (c_stolbcov+ 8, 2, clockrt::time[CT_DATE] );
+        // Hour
+        scr->dig_uz    (c_stolbcov+11, 2, clockrt::time[CT_HOUR] );
+        // Minute
+        scr->dig_uz    (c_stolbcov+14, 2, clockrt::time[CT_MINUTE] );
+        if (clockrt::tik_cn)
+            scr->ShowChar(c_stolbcov +13, ':');
+        else
+            scr->ShowChar(c_stolbcov +13, ' ');
+    }
+    void SetClockMount_km()
+    {
+        if (ClockTemp>1)
+        {
+            ClockTemp--;
+            SetClockMount_v();
+        }
+    }
+    void SetClockMount_kp()
+    {
+        if (ClockTemp<12)
+        {
+            ClockTemp++;
+            SetClockMount_v();
+        }
+    }
+    void SetClockMount_ke()
+    {
+        tmpClockMount = ClockTemp;
+        SetClockDate_i();
+    }
+    void SetClockDate_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_SetClockDate;
+        if (tmpClockMount== 1) ClockDateMax=31;
+        if (tmpClockMount== 2)
+        {
+            if ( (tmpClockYear%4)==0 )
+                ClockDateMax=29;
+            else
+                ClockDateMax=28;
+        }
+        if (tmpClockMount== 3) ClockDateMax=31;
+        if (tmpClockMount== 4) ClockDateMax=30;
+        if (tmpClockMount== 5) ClockDateMax=31;
+        if (tmpClockMount== 6) ClockDateMax=30;
+        if (tmpClockMount== 7) ClockDateMax=31;
+        if (tmpClockMount== 8) ClockDateMax=31;
+        if (tmpClockMount== 9) ClockDateMax=30;
+        if (tmpClockMount==10) ClockDateMax=31;
+        if (tmpClockMount==11) ClockDateMax=30;
+        if (tmpClockMount==12) ClockDateMax=31;
+        tmpClockDate = clockrt::time[CT_DATE];
+        if ( (tmpClockDate==0) || (tmpClockDate>ClockDateMax) )
+            tmpClockDate = 1;
+        ClockTemp = tmpClockDate;
+        scr->Clear();
+        scr->ShowString(            0, "уст.времени" );
+        scr->ShowChar(c_stolbcov + 4, '-');
+        scr->ShowChar(c_stolbcov + 7, '-');
+        SetClockDate_v();
+    }
+    void SetClockDate_v()
+    {
+        // Year
+        scr->ShowString(c_stolbcov+ 0, "20" );
+        scr->dig_uz    (c_stolbcov+ 2, 2, tmpClockYear );
+        // Mount
+        scr->dig_uz    (c_stolbcov+ 5, 2, tmpClockMount );
+        // Date
+        if(menuFlashSt)
+        {
+            scr->dig_uz    (c_stolbcov+ 8, 2, ClockTemp );
+        }
+        else
+            scr->ShowString(c_stolbcov+ 8, "  " );
+        // Hour
+        scr->dig_uz    (c_stolbcov+11, 2, clockrt::time[CT_HOUR] );
+        // Minute
+        scr->dig_uz    (c_stolbcov+14, 2, clockrt::time[CT_MINUTE] );
+        if (clockrt::tik_cn)
+            scr->ShowChar(c_stolbcov +13, ':');
+        else
+            scr->ShowChar(c_stolbcov +13, ' ');
+    }
+    void SetClockDate_km()
+    {
+        if (ClockTemp>1)
+        {
+            ClockTemp--;
+            SetClockDate_v();
+        }
+    }
+    void SetClockDate_kp()
+    {
+        if (ClockTemp<ClockDateMax)
+        {
+            ClockTemp++;
+            SetClockDate_v();
+        }
+    }
+    void SetClockDate_ke()
+    {
+        tmpClockDate = ClockTemp;
+        SetClockHour_i();
+    }
+    void SetClockHour_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_SetClockHour;
+        scr->Clear();
+        scr->ShowString(            0, "уст.времени :" );
+    }
+    void SetClockMinute_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_SetClockMinute;
+        scr->Clear();
+        scr->ShowString(            0, "уст.времени :" );
+        scr->ShowString(c_stolbcov+ 0, "минуты:" );
+    }
+
+// ==================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+/*
     //            mode configure
     // init configure
     void NastSel_i()
     {
         // set mode
-        mode = md_NastSel;
+//        mode = md_NastSel;
         // show scr
         scr->Clear();
         scr->ShowString(0, "  Меню :        " );
@@ -614,10 +955,10 @@ void SelectExit_i()
           else          vNastSel = 10;
         }
       }
-
+*/
       // уровень доступа "1"
       // просмотр за текущую смену
-      if ( (vNastSel>=10 ) && (vNastSel<20) ) {
+//      if ( (vNastSel>=10 ) && (vNastSel<20) ) {
           /*
 //        if (mask_menu & (1<<1)) {
           if (vNastSel>10) {
@@ -631,11 +972,11 @@ void SelectExit_i()
           else          vNastSel = 20;
         }
         */
-      }
+//      }
 
       // уровень доступа "2"
       // просмотр архива
-      if ( (vNastSel>=20 ) && (vNastSel<30) ) {
+//      if ( (vNastSel>=20 ) && (vNastSel<30) ) {
           /*
         if (mask_menu & (1<<2)) {
           if (vNastSel>20) {
@@ -649,12 +990,12 @@ void SelectExit_i()
           else          vNastSel = 30;
         }
           */
-      }
+//      }
 
       // уровень доступа "3"
       // установка кофицентов
-      if ( (vNastSel>=30 ) && (vNastSel<40) )
-      {
+//      if ( (vNastSel>=30 ) && (vNastSel<40) )
+//      {
           /*
         if (mask_menu & (1<<3)) {
           if (vNastSel>31) {
@@ -668,8 +1009,8 @@ void SelectExit_i()
           else          vNastSel = 40;
         }
           */
-      }
-
+//      }
+/*
       // уровень доступа "4"
       // пустой
       if ( (vNastSel>=40 ) && (vNastSel<50) ) {
@@ -683,10 +1024,10 @@ void SelectExit_i()
         if (menuNap) vNastSel = 49;
         else          vNastSel = 60;
       }
-
+*/
       // уровень доступа "6"
       // пустой
-      if ( (vNastSel>=60 ) && (vNastSel<70) ) {
+//      if ( (vNastSel>=60 ) && (vNastSel<70) ) {
           /*
         if (mask_menu & (1<<6)) {
           if (vNastSel>60) {
@@ -700,8 +1041,8 @@ void SelectExit_i()
           else          vNastSel = 70;
         }
         */
-      }
-
+//      }
+/*
       // уровень доступа "7"
       // уровень админ - установка пароля и уровней доступ
       if ( vNastSel>=70 ) {
@@ -718,15 +1059,12 @@ void SelectExit_i()
       // vNastSelx = vNastSel;
     }
   }
-  void NastSel_1(void)
+*/
+/*
+    void NastSel_1(void)
   {
     scr->Clear();
     scr->ShowString(0, "выход");
-    /*
-    __disable_interrupt();
-    menuTimeOut = 200;
-    __enable_interrupt();
-    */
     SetMenuTimeDelay(2000, md_workscr);
   }
   void NastSel_2(void)
@@ -777,7 +1115,9 @@ void SelectExit_i()
     scr->ShowString(0, "ошибка в меню");
             SetMenuTimeDelay(12000, md_workscr);
   }
-  //========================================================
+    */
+/*
+    //========================================================
   // выбор пароля
   void PaswSel_i()
   {
@@ -797,13 +1137,13 @@ void SelectExit_i()
     }
     if (PaswSel_OldPsw!=PaswSel_CntPsw) {
       PaswSel_OldPsw=PaswSel_CntPsw;
-      /*
-      accs = ee_psw[PaswSel_CntPsw].mask;
-      scr->ShowChar(        7,'0'+PaswSel_CntPsw);
-      scr->Hex(c_stolbcov + 12,accs);
-      */
+//      accs = ee_psw[PaswSel_CntPsw].mask;
+//      scr->ShowChar(        7,'0'+PaswSel_CntPsw);
+//      scr->Hex(c_stolbcov + 12,accs);
     }
   }
+  */
+    /*
   void PaswSel_1() {
     NastSel_i();
   }
@@ -816,6 +1156,7 @@ void SelectExit_i()
   void PaswSel_4() {
     PaswSetPsw_i();
   }
+  */
   //========================================================
   // установка пароля
   void PaswSetPsw_i() {
@@ -938,7 +1279,7 @@ void SelectExit_i()
     scr->dig_uz(             9, 2, Date_Year);
   }
   void DateYear_1() {
-    NastSel_i();
+//    NastSel_i();
   }
   void DateYear_2() {
     Date_Year -= Date_Year%10;
@@ -966,7 +1307,7 @@ void SelectExit_i()
     scr->dig_uz(             11, 2, Date_Month);
   }
   void DateMonth_1() {
-    NastSel_i();
+//    NastSel_i();
   }
   void DateMonth_2() {
     Date_Month -= Date_Month%10;
@@ -1009,7 +1350,7 @@ void SelectExit_i()
     scr->dig_uz(             9, 2, Date_Date);
   }
   void DateDate_1() {
-    NastSel_i();
+//    NastSel_i();
   }
   void DateDate_2() {
     Date_Date -= Date_Date%10;
@@ -1043,7 +1384,7 @@ void SelectExit_i()
     scr->dig_uz(             10, 2, Date_Hour);
   }
   void DateHour_1() {
-    NastSel_i();
+//    NastSel_i();
   }
   void DateHour_2() {
     Date_Hour -= Date_Hour%10;
@@ -1077,7 +1418,7 @@ void SelectExit_i()
     scr->dig_uz(             10, 2, Date_Minute);
   }
   void DateMinute_1() {
-    NastSel_i();
+//    NastSel_i();
   }
   void DateMinute_2() {
     Date_Minute -= Date_Minute%10;
@@ -1101,7 +1442,7 @@ void SelectExit_i()
     scr->ShowString(c_stolbcov + 0, "     Нет Да     ");
   }
   void DateSet_2() {
-    NastSel_i();
+//    NastSel_i();
   }
   void DateSet_3() {
     scr->Clear();
@@ -1114,7 +1455,7 @@ void SelectExit_i()
     clockrt::SetMinute(Date_Minute);
     clockrt::SetZeroSecond();
     clockrt::Update();
-    NastSel_i();
+//    NastSel_i();
     /*
     {
       CritSec cs;
@@ -1288,7 +1629,7 @@ void SelectExit_i()
     scr->ShowString(c_stolbcov + 0, "     Нет Да     ");
   }
   void KmetrSav_2() {
-    NastSel_i();
+//    NastSel_i();
   }
   void KmetrSav_3() {
     unsigned long x = 0;
@@ -1298,7 +1639,7 @@ void SelectExit_i()
       x = x + (unsigned long)(Kedit[i] - '0');
     }
 //  vg::ee_K_Metr = x;
-    NastSel_i();
+//    NastSel_i();
   }
   //========================================================
   // метровый кофицент
@@ -1359,7 +1700,7 @@ void SelectExit_i()
     scr->ShowString(c_stolbcov + 0, "     Нет Да     ");
   }
   void KkgSav_2() {
-    NastSel_i();
+//    NastSel_i();
   }
   void KkgSav_3() {
     unsigned long x = 0;
@@ -1369,7 +1710,7 @@ void SelectExit_i()
       x = x + (unsigned long)(Kedit[i] - '0');
     }
 //  vg::ee_K_Kg = x;
-    NastSel_i();
+//    NastSel_i();
   }
   //========================================================
   // установка уровея доступа
@@ -1380,28 +1721,68 @@ void SelectExit_i()
     void (* const __flash MassMenu[][7])(void)=
     {
         // 0 - work screen
-        { workscr_0,    SelectArchiv_i, Dummy,          Dummy,          Dummy,      Dummy,      workscr_i },
+        { workscr_0,    SelectArchiv_i, Dummy,          Dummy,              Dummy,      Dummy,      workscr_i },
         // -------------------------------------------------------------------------------------
         // 1 - select archive
-        { Dummy,        Dummy,          Dummy,          SelectConfig_i, Dummy,      workscr_i,  SelectArchiv_i },
+        { Dummy,        Dummy,          Dummy,          SelectConfig_i,     Dummy,      workscr_i,  SelectArchiv_i },
         // 2 - select config
-        { Dummy,        Dummy,          SelectArchiv_i, SelectExit_i,   PassWrd_i,  workscr_i,  SelectConfig_i },
+        { Dummy,        Dummy,          SelectArchiv_i, SelectExit_i,       PassWrd_i,  workscr_i,  SelectConfig_i },
         // 3 - select exit
-        { Dummy,        Dummy,          SelectConfig_i, Dummy,          workscr_i,  workscr_i,  SelectExit_i },
+        { Dummy,        Dummy,          SelectConfig_i, Dummy,              workscr_i,  workscr_i,  SelectExit_i },
         // -------------------------------------------------------------------------------------
         // 4 - password
-        { PassWrd_v,    workscr_i,      PassWrd_m,      PassWrd_p,      PassWrd_e,  Dummy,      PassWrd_i },
+        { PassWrd_v,    workscr_i,      PassWrd_m,      PassWrd_p,          PassWrd_e,  workscr_i,  PassWrd_i },
         // -------------------------------------------------------------------------------------
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
+        // 5 - select menu set new password
+        { Dummy,       Dummy,           Dummy,          M2SelLen_i,         Dummy,          workscr_i,  M2SelPass_i },
+        // 6 - select menu set len sensors
+        { Dummy,       Dummy,           M2SelPass_i,    M2SelTOut_i,        Dummy,          workscr_i,  M2SelLen_i },
+        // 7 - select menu set timeout sensors
+        { Dummy,       Dummy,           M2SelLen_i,     M2SelClock_i,       Dummy,          workscr_i,  M2SelTOut_i },
+        // 8 - select menu set clock
+        { Dummy,       Dummy,           M2SelTOut_i,    M2SelExit_i,        SetClockYear_i, workscr_i,  M2SelClock_i },
+        // 9 - select menu exit
+        { Dummy,       Dummy,           M2SelClock_i,   Dummy,              workscr_i,      workscr_i,  M2SelExit_i },
+        // -------------------------------------------------------------------------------------
+        // 10 - set clock : Year
+        { SetClockYear_v,   SetClockMount_i, SetClockYear_km,   SetClockYear_kp,    SetClockYear_ke,    Dummy,       SetClockYear_i   },
+        // 11 - set clock : Mount
+        { SetClockMount_v,  SetClockDate_i,  SetClockMount_km,  SetClockMount_kp,   SetClockMount_ke,   Dummy,       SetClockMount_i  },
+        // 12 - set clock : Date
+        { SetClockDate_v,   SetClockHour_i,  SetClockDate_km,   SetClockDate_kp,    SetClockDate_ke,    Dummy,       SetClockDate_i   },
+        // 13 - set clock : Hour
+        { Dummy,            SetClockMinute_i,Dummy,             Dummy,              Dummy,              Dummy,       SetClockHour_i   },
+        // 14 - set clock : Minute***
+        { Dummy,            M2SelClock_i,    Dummy,             Dummy,              Dummy,              Dummy,       SetClockMinute_i },
+
+        { Dummy,       Dummy,           Dummy,          Dummy,             Dummy,           Dummy,       Dummy },
+        { Dummy,       Dummy,           Dummy,          Dummy,             Dummy,           Dummy,       Dummy },
+        { Dummy,       Dummy,           Dummy,          Dummy,             Dummy,           Dummy,       Dummy },
+        { Dummy,       Dummy,           Dummy,          Dummy,             Dummy,           Dummy,       Dummy },
+        { Dummy,       Dummy,           Dummy,          Dummy,             Dummy,           Dummy,       Dummy },
+        { Dummy,       Dummy,           Dummy,          Dummy,             Dummy,           Dummy,       Dummy },
+        { Dummy,       Dummy,           Dummy,          Dummy,             Dummy,           Dummy,       Dummy },
 	/*
-    { workscr_0,   PassWrd_i,   Dummy,       Dummy,       Dummy,       Dummy },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{ workscr_0,   PassWrd_i,   Dummy,       Dummy,       Dummy,       Dummy },
     { PassWrd_0,   workscr_i,   PassWrd_2,   PassWrd_3,   PassWrd_4,   workscr_i },
     { TimeOut_0,   Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
     { NastSel_0,   NastSel_1,   NastSel_2,   NastSel_3,   NastSel_4,   workscr_i },
