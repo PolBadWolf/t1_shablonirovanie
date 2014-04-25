@@ -12,7 +12,7 @@
           
           
           
-        <Column0>195</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+        <Column0>285</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
       </Workspace>
       <Build>
         
@@ -24,7 +24,7 @@
     <Windows>
       
       
-    <Wnd2>
+    <Wnd0>
         <Tabs>
           <Tab>
             <Identity>TabID-11906-15978</Identity>
@@ -32,11 +32,11 @@
             <Factory>Workspace</Factory>
             <Session>
               
-            <NodeDict><ExpandedNode>SpeedShablonirovanie</ExpandedNode></NodeDict></Session>
+            <NodeDict><ExpandedNode>SpeedShablonirovanie</ExpandedNode><ExpandedNode>SpeedShablonirovanie/system</ExpandedNode></NodeDict></Session>
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
+      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
         <Tabs>
           <Tab>
             <Identity>TabID-15943-23476</Identity>
@@ -46,20 +46,20 @@
           </Tab>
         <Tab><Identity>TabID-31360-27877</Identity><TabName>Find in Files</TabName><Factory>Find-in-Files</Factory><Session/></Tab><Tab><Identity>TabID-31425-5751</Identity><TabName>Debug Log</TabName><Factory>Debug-Log</Factory><Session/></Tab></Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd3></Windows>
+      <SelectedTab>1</SelectedTab></Wnd1></Windows>
     <Editor>
       
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\main.cpp</Filename><XPos>0</XPos><YPos>3</YPos><SelStart>232</SelStart><SelEnd>282</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\main.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>289</SelStart><SelEnd>296</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\Configure.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>339</SelStart><SelEnd>343</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\system\clock.cpp</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>48</SelStart><SelEnd>48</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\system\clock.h</Filename><XPos>0</XPos><YPos>6</YPos><SelStart>14</SelStart><SelEnd>14</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\menu.cpp</Filename><XPos>0</XPos><YPos>72</YPos><SelStart>2857</SelStart><SelEnd>2857</SelEnd></Tab><ActiveTab>5</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\menu.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>134</SelStart><SelEnd>138</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\system\InitSystem.cpp</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>192</SelStart><SelEnd>192</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\main.cpp</Filename><XPos>0</XPos><YPos>35</YPos><SelStart>1097</SelStart><SelEnd>1097</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\main.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>289</SelStart><SelEnd>296</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\Configure.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>339</SelStart><SelEnd>343</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\system\clock.cpp</Filename><XPos>0</XPos><YPos>190</YPos><SelStart>7423</SelStart><SelEnd>7423</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\system\clock.h</Filename><XPos>0</XPos><YPos>6</YPos><SelStart>14</SelStart><SelEnd>14</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\menu.cpp</Filename><XPos>0</XPos><YPos>388</YPos><SelStart>9757</SelStart><SelEnd>9757</SelEnd></Tab><ActiveTab>5</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\menu.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>134</SelStart><SelEnd>138</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\system\InitSystem.cpp</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>192</SelStart><SelEnd>192</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\Variable.cpp</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\GitHub\t1_shablonirovanie\system\DisplayTimer.cpp</Filename><XPos>0</XPos><YPos>15</YPos><SelStart>960</SelStart><SelEnd>960</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-01dff730><key>iaridepm.enu1</key></Toolbar-01dff730></Sizes></Row0></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>495</Bottom><Right>269</Right><x>-2</x><y>-2</y><xscreen>111</xscreen><yscreen>101</yscreen><sizeHorzCX>77083</sizeHorzCX><sizeHorzCY>123623</sizeHorzCY><sizeVertCX>188194</sizeVertCX><sizeVertCY>608323</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>277</Bottom><Right>1442</Right><x>-2</x><y>-2</y><xscreen>1444</xscreen><yscreen>279</yscreen><sizeHorzCX>1002778</sizeHorzCX><sizeHorzCY>341493</sizeHorzCY><sizeVertCX>77083</sizeVertCX><sizeVertCY>123623</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-0132db30><key>iaridepm.enu1</key></Toolbar-0132db30></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>693</Bottom><Right>359</Right><x>-2</x><y>-2</y><xscreen>148</xscreen><yscreen>138</yscreen><sizeHorzCX>77083</sizeHorzCX><sizeHorzCY>123435</sizeHorzCY><sizeVertCX>188021</sizeVertCX><sizeVertCY>621646</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>380</Bottom><Right>1922</Right><x>-2</x><y>-2</y><xscreen>1924</xscreen><yscreen>382</yscreen><sizeHorzCX>1002083</sizeHorzCX><sizeHorzCY>341682</sizeHorzCY><sizeVertCX>77083</sizeVertCX><sizeVertCY>123435</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 

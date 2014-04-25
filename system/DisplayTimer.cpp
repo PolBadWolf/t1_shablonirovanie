@@ -6,12 +6,12 @@ namespace ns_DisplayTimer
 {
   // частота таймера ( таймер2 )
   #define Ft 1000
-  // предделители 1, 8, 32, 64, 128, 256, 1024
+  // предделители 1, 8, 64, 256, 1024
   #define PrDel 64
   void TimerOn(void);
   void TimerInit(void)
   {
-    // предделители 1, 8, 32, 256, 1024
+  // предделители 1, 8, 64, 256, 1024
     TCCR2 = 0;
     // CTC mode
     TCCR2_WGM21 = 1;
@@ -19,39 +19,31 @@ namespace ns_DisplayTimer
     TCCR2_COM21 = 0;
     TCCR2_COM20 = 0;
     #if (PrDel==1)
-    #define PrCs02 0
-    #define PrCs01 0
-    #define PrCs00 1
+    #define PrCs20 1
+    #define PrCs21 0
+    #define PrCs22 0
     #elif (PrDel==8)
-    #define PrCs02 0
-    #define PrCs01 1
-    #define PrCs00 0
-    #elif (PrDel==32)
-    #define PrCs02 0
-    #define PrCs01 1
-    #define PrCs00 1
+    #define PrCs20 0
+    #define PrCs21 1
+    #define PrCs22 0
     #elif (PrDel==64)
-    #define PrCs02 1
-    #define PrCs01 0
-    #define PrCs00 0
-    #elif (PrDel==128)
-    #define PrCs02 1
-    #define PrCs01 0
-    #define PrCs00 1
+    #define PrCs20 1
+    #define PrCs21 1
+    #define PrCs22 0
     #elif (PrDel==256)
-    #define PrCs02 1
-    #define PrCs01 0
-    #define PrCs00 1
+    #define PrCs20 0
+    #define PrCs21 0
+    #define PrCs22 1
     #elif (PrDel==1024)
-    #define PrCs02 1
-    #define PrCs01 0
-    #define PrCs00 1
+    #define PrCs20 1
+    #define PrCs21 0
+    #define PrCs22 1
     #else
     #error Error Timer LCD pred div
     #endif
-    TCCR2_CS22 = PrCs02;
-    TCCR2_CS21 = PrCs01;
-    TCCR2_CS20 = PrCs00;
+    TCCR2_CS22 = PrCs22;
+    TCCR2_CS21 = PrCs21;
+    TCCR2_CS20 = PrCs20;
     TimerOn();
   }
   void TimerOn(void)

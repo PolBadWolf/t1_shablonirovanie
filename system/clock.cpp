@@ -209,7 +209,7 @@ namespace clockrt
   void timer()
   {
       if (--tik_count>0) return;
-      tik_count = 200;
+      tik_count = 500;
       RefreshTime();
       if (++tik_cn>1) tik_cn = 0;
       if (old_sec==time[CT_SECOND]) return;

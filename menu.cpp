@@ -43,6 +43,9 @@ namespace ns_menu
     // count time delay key
     unsigned int  menuTimeDelayKey = 0;
     void SetMenuTimeOut(unsigned int t);
+    // count menu time delay
+    unsigned int  menuTimeDelay = 0;
+    unsigned char afterMode = 0;
     // ==============================
   unsigned int  menuTimeOutx;
   unsigned char vNastSel;
@@ -79,6 +82,7 @@ namespace ns_menu
 #define md_workscr          0
     void workscr_i();
     void workscr_0(void);
+    unsigned char workscrFlCl = 0;
 // ------------------------------------
 // select fist menu archive
 #define md_SelectArchiv     1
@@ -96,6 +100,7 @@ namespace ns_menu
     void PassWrd_m();
     void PassWrd_p();
     void PassWrd_e();
+    void PassWrd_Chk();
 // ------------------------------------
 
 
@@ -111,10 +116,6 @@ namespace ns_menu
 
 
 
-#define md_TimeOut   3
-  void TimeOut_i(unsigned int TimeOut);
-  void TimeOut_0(void);
-  void PassChkSet(void);
 #define md_NastSel  4
   void NastSel_i(void);
   void NastSel_0(void);
@@ -249,12 +250,23 @@ namespace ns_menu
   void KkgSav_2();
   void KkgSav_3();
 
-    //
-    extern void (* const __flash MassMenu[][6])(void);
+    // [view][km][k-][k+][ke][TimeOut][init]
+    extern void (* const __flash MassMenu[][7])(void);
     void timer(void)
     {
         if (menuTimeOut>1)      menuTimeOut--;
         if (menuTimeDelayKey>0) menuTimeDelayKey--;
+        if (menuTimeDelay>1)    menuTimeDelay--;
+        /* timer2 debug
+        static unsigned char debugT = 0;
+        static unsigned int  debugTp = 0;
+        if (++debugTp>=1000)
+        {
+            debugTp = 0;
+            scr->dig_uz(14, 2, debugT++ );
+            if (debugT==100) debugT = 0;
+        }
+        */
     }
     // =====================================================================
   void imp2data(const unsigned long imp, unsigned long *m, unsigned long *Kg) {
@@ -275,6 +287,7 @@ namespace ns_menu
 // ===================================================
     void main(void)
     {
+        unsigned int temp;
 #ifdef KEY4
         if ( !key_read(&key) )
         {
@@ -284,7 +297,6 @@ namespace ns_menu
         {
             if ( (key==1) || (key==4) )
             {
-                unsigned int temp;
                 {
                     CritSec csMenuMain;
                     temp = menuTimeDelayKey;
@@ -304,7 +316,6 @@ namespace ns_menu
         }
         if ( key==0 )
         {
-            unsigned int temp;
             {
                 CritSec csMenuMain;
                 temp = menuTimeOut;
@@ -324,11 +335,26 @@ namespace ns_menu
 #else
         key = 0;
 #endif
-        MassMenu[mode][key]();
-        if (key==5)
         {
             CritSec csMenuMain;
-            menuTimeOut = menuTimeOutSet;
+            temp = menuTimeDelay;
+        }
+        if (temp==0) // if no delay
+        {
+            MassMenu[mode][key]();
+            if (key==5)
+            {
+                CritSec csMenuMain;
+                menuTimeOut = menuTimeOutSet;
+            }
+        }
+        if (temp==1)
+        {
+            {
+                CritSec csMenuMain;
+                menuTimeDelay = 0;
+            }
+            MassMenu[afterMode][6]();
         }
     }
     void SetMenuTimeOut(unsigned int t)
@@ -337,17 +363,26 @@ namespace ns_menu
         menuTimeOutSet = t;
         menuTimeOut = t;
     }
+    void SetMenuTimeDelay(unsigned int t, unsigned char m)
+    {
+        CritSec csMenuMain;
+        menuTimeDelay = t;
+        afterMode = m;
+    }
 // ============================================
     // work screen
     void workscr_i()
     {
         SetMenuTimeOut(0);
 #ifdef CLOCK
+        /*
         if (clockrt::time[CT_YEAR]==0)
         {
             zero();
             return;
         }
+        */
+        workscrFlCl = 1;
 #endif
         scr->Clear();
         mode = md_workscr;
@@ -365,7 +400,7 @@ void workscr_0()
         scr->ShowChar(c_stolbcov + 2, ':');
         scr->ShowChar(c_stolbcov + 5, ':');
     }
-    if (clockrt::tik_cn==1)
+    else
     {
         scr->ShowChar(c_stolbcov + 2, ' ');
         scr->ShowChar(c_stolbcov + 5, ' ');
@@ -373,6 +408,11 @@ void workscr_0()
     if (clockrt::tik)
     {
         clockrt::tik = 0;
+        workscrFlCl = 1;
+    }
+    if (workscrFlCl)
+    {
+        workscrFlCl = 0;
 //      vg::THourSmena sm;
 //    sm.Year   = clockrt::time[CT_YEAR];
 //    sm.Mounth = clockrt::time[CT_MONTH];
@@ -421,28 +461,28 @@ void SelectArchiv_i()
     SetMenuTimeOut(60000);
     mode = md_SelectArchiv;
     scr->Clear();
-    scr->ShowString(0, "меню :" );
-    scr->ShowString(0, "архив" );
+    scr->ShowString(            0, "меню :" );
+    scr->ShowString(c_stolbcov+ 0, "архив" );
 }
 // ===================================================
 // select fist menu configure
 void SelectConfig_i()
 {
     SetMenuTimeOut(60000);
-    mode = md_SelectArchiv;
+    mode = md_SelectConfig;
     scr->Clear();
-    scr->ShowString(0, "меню :" );
-    scr->ShowString(0, "настройка" );
+    scr->ShowString(            0, "меню :" );
+    scr->ShowString(c_stolbcov+ 0, "настройка" );
 }
 // ===================================================
 // select fist menu exit
 void SelectExit_i()
 {
     SetMenuTimeOut(60000);
-    mode = md_SelectArchiv;
+    mode = md_SelectExit;
     scr->Clear();
-    scr->ShowString(0, "меню :" );
-    scr->ShowString(0, "выход" );
+    scr->ShowString(            0, "меню :" );
+    scr->ShowString(c_stolbcov+ 0, "выход" );
 }
 // ===================================================
     void PassWrd_i(void)
@@ -468,7 +508,7 @@ void SelectExit_i()
         scr->ShowChar(c_stolbcov + 1 +i, '_');
     }
     // mode input password, select digital
-    void PassWrd_m(void)
+    void PassWrd_m()
     {
         if (vvPasword.pin[vvPaswordCount]>0)
         {
@@ -477,7 +517,7 @@ void SelectExit_i()
         }
     }
     // mode input password, select digital
-    void PassWrd_p(void)
+    void PassWrd_p()
     {
         if (vvPasword.pin[vvPaswordCount]<9)
         {
@@ -486,36 +526,21 @@ void SelectExit_i()
         }
     }
     // mode input password, next digital passwrd or end input
-    void PassWrd_e(void)
+    void PassWrd_e()
     {
         vvPaswordCount++;
         if (vvPaswordCount<5)
             PassWrd_v();
         else
-            PassChkSet(); // end input, checked password
+            PassWrd_Chk(); // end input, checked password
     }
-// ==================================
-    // init time out for delay
-    void TimeOut_i(unsigned int TimeOut)
-    {
-        CritSec csMn;
-        menuTimeOut = TimeOut;
-        mode = md_TimeOut;
-    }
-  void TimeOut_0(void)
-  {
-    __disable_interrupt();
-    menuTimeOutx = menuTimeOut;
-    __enable_interrupt();
-    if (menuTimeOutx==0) workscr_i();
-  }
-// ==================================
     // checked password
-    void PassChkSet(void)
+    void PassWrd_Chk()
     {
         // reset flag status checked password
         flPasswordStatus = 0;
         unsigned char tempFlag;
+        // main passwords
         for (unsigned char n_par=0;n_par<8;n_par++)
         {
             tempFlag = 1;
@@ -535,7 +560,7 @@ void SelectExit_i()
         if (tempFlag)
             flPasswordStatus = 1;
         // checked password status
-        if (tempFlag)
+        if (flPasswordStatus)
         {
             // init configuration
             NastSel_i();
@@ -545,15 +570,10 @@ void SelectExit_i()
             // password no correction
             scr->Clear();
             scr->ShowString(0, "пароль не верен" );
-            /*
-      __disable_interrupt();
-      menuTimeOut = 6000;
-      __enable_interrupt();
-      TimeOut_i();
-            */
-            TimeOut_i(6000);
+            // delay 6 second
+            SetMenuTimeDelay(3000, md_workscr);
         }
-  }
+    }
 // ==================================
     //            mode configure
     // init configure
@@ -707,7 +727,7 @@ void SelectExit_i()
     menuTimeOut = 200;
     __enable_interrupt();
     */
-    TimeOut_i(200);
+    SetMenuTimeDelay(2000, md_workscr);
   }
   void NastSel_2(void)
   {
@@ -755,7 +775,7 @@ void SelectExit_i()
     }
     scr->Clear();
     scr->ShowString(0, "ошибка в меню");
-    TimeOut_i(6000);
+            SetMenuTimeDelay(12000, md_workscr);
   }
   //========================================================
   // выбор пароля
@@ -1356,29 +1376,30 @@ void SelectExit_i()
   //========================================================
     void Dummy(void)
     {}
-    void (* const __flash MassMenu[][6])(void)=
+    // [view][km][k-][k+][ke][TimeOut][init]
+    void (* const __flash MassMenu[][7])(void)=
     {
         // 0 - work screen
-        { workscr_0,    SelectArchiv_i, Dummy,          Dummy,          Dummy,      Dummy },
+        { workscr_0,    SelectArchiv_i, Dummy,          Dummy,          Dummy,      Dummy,      workscr_i },
         // -------------------------------------------------------------------------------------
         // 1 - select archive
-        { Dummy,        Dummy,          Dummy,          SelectConfig_i, Dummy,      workscr_i },
+        { Dummy,        Dummy,          Dummy,          SelectConfig_i, Dummy,      workscr_i,  SelectArchiv_i },
         // 2 - select config
-        { Dummy,        Dummy,          SelectArchiv_i, SelectExit_i,   PassWrd_i,  workscr_i },
+        { Dummy,        Dummy,          SelectArchiv_i, SelectExit_i,   PassWrd_i,  workscr_i,  SelectConfig_i },
         // 3 - select exit
-        { Dummy,        Dummy,          SelectConfig_i, Dummy,          workscr_i,  workscr_i },
+        { Dummy,        Dummy,          SelectConfig_i, Dummy,          workscr_i,  workscr_i,  SelectExit_i },
         // -------------------------------------------------------------------------------------
         // 4 - password
-        { PassWrd_v,    Dummy,          PassWrd_m,      PassWrd_p,      PassWrd_e,  Dummy },
+        { PassWrd_v,    workscr_i,      PassWrd_m,      PassWrd_p,      PassWrd_e,  Dummy,      PassWrd_i },
         // -------------------------------------------------------------------------------------
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
-        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
 	/*
     { workscr_0,   PassWrd_i,   Dummy,       Dummy,       Dummy,       Dummy },
     { PassWrd_0,   workscr_i,   PassWrd_2,   PassWrd_3,   PassWrd_4,   workscr_i },
@@ -1401,13 +1422,12 @@ void SelectExit_i()
     { Kkg_0,       NastSel_i,   Kkg_2,       Kkg_3,       Kkg_4,       workscr_i },
     { Dummy,       Dummy,       KkgSav_2,    KkgSav_3,    Dummy,       workscr_i },
 	*/
-        { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
-        { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
-        { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
-        { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
-        { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
-        { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy },
-        { Dummy,       Dummy,       Dummy,       Dummy,       Dummy,       Dummy }
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy },
+        { Dummy,       Dummy,           Dummy,       Dummy,             Dummy,       Dummy,     Dummy }
     };
 }
 #ifdef ShowPass
