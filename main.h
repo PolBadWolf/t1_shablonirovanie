@@ -26,7 +26,6 @@ public:
 //-------------------------------
 // часы
 #ifdef CLOCK
-//#include "system/clock.h"
 #include "system/clock_rt.h"
 #define DISPLAY_TIMER
 #endif
@@ -38,11 +37,6 @@ public:
 #ifdef LCD
 #include "system/lcd.h"
 extern tc_lcd *scr;
-#define DISPLAY_TIMER
-#endif
-//-------------------------------
-#ifdef I7S
-//#include "lcd.h"
 #define DISPLAY_TIMER
 #endif
 //-------------------------------

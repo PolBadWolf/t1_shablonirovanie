@@ -59,7 +59,8 @@ namespace clockrt
     unsigned int tikCount = tikCountMax;
     unsigned char oldSec = 254;
     unsigned char tik_cn = 0;
-    unsigned char tik = 1;
+    unsigned char tik = 0;
+    unsigned char workTime = 0;
     // --------------------------
     unsigned char levelSda;
     // ==========================
@@ -84,56 +85,44 @@ namespace clockrt
         oldSec=time[CT_SECOND];
         tik = 1;
     }
-    // обновление массива времени
-    void RefreshTime()
+    // -------------------------------------------------------------------------
+    // импульс тактирования
+    void Clc()
     {
-        CritSec cs;
-        // Чтение регистров даты/времени в буфер
-        if ( ClockBuffRead() )
-            return;
-        time[CT_SECOND]=(clockData[CC_SECOND]&0x0F)+(clockData[CC_SECOND]>>4)*10;         // Секунды
-        time[CT_MINUTE]=(clockData[CC_MINUTE]&0x0F)+(clockData[CC_MINUTE]>>4)*10;         // Минуты
-        time[CT_HOUR]  =(clockData[CC_HOUR]  &0x0F)+((clockData[CC_HOUR]>>4)&0x03)*10;    // Часы
-        time[CT_DAY]   =(clockData[CC_DAY]   &0x07);                                       // День недели
-        time[CT_DATE]  =(clockData[CC_DATE]  &0x0F)+((clockData[CC_DATE]>>4)&0x03)*10;    // Дата
-        time[CT_MONTH] =(clockData[CC_MONTH] &0x0F)+((clockData[CC_MONTH]>>4)&0x01)*10;   // Месяц
-        time[CT_YEAR]  =(clockData[CC_YEAR]  &0x0F)+(clockData[CC_YEAR]>>4)*10;           // Год
-    }
-    // Чтение регистров даты/времени в буфер
-    unsigned char ClockBuffRead()
-    {
-        unsigned char st = 0;
-        Start();
-        if (WrPoll() )
-        {
-            st = 1;
-        }
+        SCLK_WR_HI;             // Выдать линию тактирования "1"
+        _delay_us(clockrt_delay);
+        if (SDA_RD)
+            levelSda = 1;
         else
-        {
-            OutByte(0);
-            RecAck();
-            Start();
-            OutByte(0xD1);
-            RecAck();
-            for (unsigned char i=0; i<8; i++)
-            {
-                clockData[i] = InByte();
-                if (i!=7)
-                    Ack();
-                else
-                    Nack();
-            }
-        }
-        Stop();
-        return st;
+            levelSda = 0;
+        SCLK_WR_LO;             // Выдать линию тактирования "0"
+        _delay_us(clockrt_delay);
+    }
+    // -------------------------------------------------------------------------
+    void RecAck()
+    {
+        SDA_IO_LO;              // линия данных на прием
+        Clc();                  // импульс тактирования
+        SDA_IO_HI;              // линия данных на передачу
+    }
+    void Ack()
+    {
+        SDA_WR_LO;              // Выдать на линию данных "0"
+        Clc();
+        SDA_WR_HI;              // Выдать на линию данных "1"
+    }
+    void Nack()
+    {
+        SDA_WR_HI;              // Выдать на линию данных "1"
+        Clc();
     }
     unsigned char WrPoll()
     {
-        //Start();
         OutByte(0xD0);
         RecAck();
         return levelSda;
     }
+    // -------------------------------------------------------------------------
     // прием байта данных
     unsigned char InByte()
     {
@@ -167,18 +156,7 @@ namespace clockrt
             dByte = dByte<<1;
         }
     }
-    // импульс тактирования
-    void Clc()
-    {
-        SCLK_WR_HI;             // Выдать линию тактирования "1"
-        _delay_us(clockrt_delay);
-        if (SDA_RD)
-            levelSda = 1;
-        else
-            levelSda = 0;
-        SCLK_WR_LO;             // Выдать линию тактирования "0"
-        _delay_us(clockrt_delay);
-    }
+    // -------------------------------------------------------------------------
     void Start()
     {
         SCLK_WR_HI;             // Выдать линию тактирования "1"
@@ -188,11 +166,88 @@ namespace clockrt
         _delay_us(clockrt_delay);
         SCLK_WR_LO;             // Выдать линию тактирования "0"
     }
-    void RecAck()
+    void Stop()
     {
-        SDA_IO_LO;              // линия данных на прием
-        Clc();                  // импульс тактирования
-        SDA_IO_HI;              // линия данных на передачу
+        SDA_WR_LO;              // Выдать на линию данных "0"
+        _delay_us(clockrt_delay);
+        SCLK_WR_HI;             // Выдать линию тактирования "1"
+        _delay_us(clockrt_delay);
+        SDA_WR_HI;              // Выдать на линию данных "1"
+    }
+    // -------------------------------------------------------------------------
+    // Чтение регистров даты/времени в буфер
+    unsigned char ClockBuffRead()
+    {
+        unsigned char st = 0;
+        Start();
+        if (WrPoll() )
+        {
+            workTime = 0;
+            st = 1;
+        }
+        else
+        {
+            OutByte(0);
+            RecAck();
+            Start();
+            OutByte(0xD1);
+            RecAck();
+            for (unsigned char i=0; i<8; i++)
+            {
+                clockData[i] = InByte();
+                if (i!=7)
+                    Ack();
+                else
+                    Nack();
+            }
+        }
+        Stop();
+        return st;
+    }
+    // Передача регистров даты/времени из буфера
+    void ClockBuffSend()
+    {
+        Start();
+        if ( WrPoll() )
+        {
+            Stop();
+        }
+        else
+        {
+            OutByte(0);
+            RecAck();
+            for (unsigned char i=0; i<8; i++)
+            {
+                OutByte(clockDatas[i]);
+                RecAck();
+            }
+            Stop();
+        }
+    }
+    // -------------------------------------------------------------------------
+    // обновление массива времени
+    void RefreshTime()
+    {
+        CritSec cs;
+        // Чтение регистров даты/времени в буфер
+        if ( ClockBuffRead() )
+            return;
+        time[CT_SECOND]=(clockData[CC_SECOND]&0x0F)+(clockData[CC_SECOND]>>4)*10;         // Секунды
+        time[CT_MINUTE]=(clockData[CC_MINUTE]&0x0F)+(clockData[CC_MINUTE]>>4)*10;         // Минуты
+        time[CT_HOUR]  =(clockData[CC_HOUR]  &0x0F)+((clockData[CC_HOUR]>>4)&0x03)*10;    // Часы
+        time[CT_DAY]   =(clockData[CC_DAY]   &0x07);                                       // День недели
+        time[CT_DATE]  =(clockData[CC_DATE]  &0x0F)+((clockData[CC_DATE]>>4)&0x03)*10;    // Дата
+        time[CT_MONTH] =(clockData[CC_MONTH] &0x0F)+((clockData[CC_MONTH]>>4)&0x01)*10;   // Месяц
+        time[CT_YEAR]  =(clockData[CC_YEAR]  &0x0F)+(clockData[CC_YEAR]>>4)*10;           // Год
+        if ( (time[CT_YEAR]==0) || (time[CT_YEAR]>99) )
+            workTime = 0;
+        else
+            workTime = 1;
+    }
+    void SetUpdate()
+    {
+        clockDatas[CT_SECOND] = 0;
+        ClockBuffSend();
     }
     // ==========================
     void RefSav()
@@ -220,50 +275,6 @@ namespace clockrt
     void SetMinute(unsigned char minute)
     {
         clockDatas[CC_MINUTE] = ((minute/10)<<4)+(minute%10);
-    }
-    void SetUpdate()
-    {
-        clockDatas[CT_SECOND] = 0;
-        ClockBuffSend();
-    }
-    // Передача регистров даты/времени из буфера
-    void ClockBuffSend()
-    {
-        Start();
-        if ( WrPoll() )
-        {
-            Stop();
-        }
-        else
-        {
-            OutByte(0);
-            RecAck();
-            for (unsigned char i=0; i<8; i++)
-            {
-                OutByte(clockDatas[i]);
-                RecAck();
-            }
-            Stop();
-        }
-    }
-    void Stop()
-    {
-        SDA_WR_LO;              // Выдать на линию данных "0"
-        _delay_us(clockrt_delay);
-        SCLK_WR_HI;             // Выдать линию тактирования "1"
-        _delay_us(clockrt_delay);
-        SDA_WR_HI;              // Выдать на линию данных "1"
-    }
-    void Ack()
-    {
-        SDA_WR_LO;              // Выдать на линию данных "0"
-        Clc();
-        SDA_WR_HI;              // Выдать на линию данных "1"
-    }
-    void Nack()
-    {
-        SDA_WR_HI;              // Выдать на линию данных "1"
-        Clc();
     }
 }
 #endif

@@ -32,24 +32,13 @@ void main(void)
     // main cicle
     while(true)
     {
-        // enable job clock
-        #ifdef CLOCK
-        if ( (clockrt::time[CT_YEAR]==0) || (clockrt::time[CT_YEAR]>99) )
-        {
-//      vg::WorkTime = false;
-//  else vg::WorkTime = true;
-        }
-        #else
-            vg::WorkTime = true;
-        #endif
-    
         // job uni block
         // provolka::main();
     
         // enable job menu
-        #ifdef MENU
+#ifdef MENU
             ns_menu::main();
-        #endif
+#endif
         //=============
     }
 }

@@ -6,8 +6,12 @@
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 //            показ старого пароля при установки нового пароля
 // #define ShowPass
+
+
 //              закрывать звездочками новый вводимый пароль
 #define ShowStar
+
+
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
@@ -163,10 +167,21 @@ namespace ns_menu
     void SetClockSet_v();
     void SetClockSet_km();
     void SetClockSet_kp();
+// ------------------------------------
+#define md_SetPassword      16
+    void SetPassword_i();
+    void SetPassword_v();
+    unsigned char newPassw[5];
+    unsigned char newPasswN;
+// ------------------------------------
 
 
 
 
+    
+    
+    
+    
 
 
 
@@ -1028,12 +1043,59 @@ void SelectExit_i()
         clockrt::SetDate(tmpClockDate);
         clockrt::SetHour(tmpClockHour);
         clockrt::SetMinute(tmpClockMinute);
-//        clockrt::SetZeroSecond();
         clockrt::SetUpdate();
         scr->Clear();
         scr->ShowString(            0, "дата/время    ");
         scr->ShowString(c_stolbcov+ 0, "установлены");
         SetMenuTimeDelay(5, md_workscr);
+    }
+// ==================================
+    void SetPassword_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_SetPassword;
+        scr->Clear();
+        scr->ShowString(            0, "уст.пароля :" );
+        for (unsigned char i=0; i<5; i++)
+            newPassw[i] = 0;
+        newPasswN = 0;
+    }
+    void SetPassword_v()
+    {
+        for (unsigned char i=0; i<newPasswN; i++)
+        {
+#ifdef ShowStar
+            scr->ShowChar(c_stolbcov+i, '*');
+#else
+            scr->ShowChar(c_stolbcov+i, '0'+newPassw[i]);
+#endif
+        }
+        if (menuFlashSt)
+            scr->ShowChar(c_stolbcov+newPasswN, '0'+newPassw[newPasswN]);
+        else
+            scr->ShowChar(c_stolbcov+newPasswN, '_');
+    }
+    void SetPassword_km()
+    {
+        if (newPassw[newPasswN]>0)
+            newPassw[newPasswN]--;
+        SetPassword_v();
+    }
+    void SetPassword_kp()
+    {
+        if (newPassw[newPasswN]<9)
+            newPassw[newPasswN]++;
+        SetPassword_v();
+    }
+    void SetPassword_e()
+    {
+        newPasswN++;
+        if (newPasswN<5)
+            SetPassword_v();
+        else
+        {
+            newPasswN--;
+        }
     }
 // ==================================
 
@@ -1912,7 +1974,7 @@ void SelectExit_i()
         { PassWrd_v,    workscr_i,      PassWrd_m,      PassWrd_p,          PassWrd_e,  workscr_i,  PassWrd_i },
         // -------------------------------------------------------------------------------------
         // 5 - select menu set new password
-        { Dummy,       Dummy,           Dummy,          M2SelLen_i,         Dummy,          workscr_i,  M2SelPass_i },
+        { Dummy,       Dummy,           Dummy,          M2SelLen_i,         SetPassword_i,  workscr_i,  M2SelPass_i },
         // 6 - select menu set len sensors
         { Dummy,       Dummy,           M2SelPass_i,    M2SelTOut_i,        Dummy,          workscr_i,  M2SelLen_i },
         // 7 - select menu set timeout sensors
@@ -1934,7 +1996,9 @@ void SelectExit_i()
         { SetClockMinute_v, M2SelClock_i,    SetClockMinute_km, SetClockMinute_kp,  SetClockMinute_ke,  Dummy,       SetClockMinute_i },
         // 15 - set clock : ask to set 
         { SetClockSet_v,    M2SelClock_i,    SetClockSet_km,    SetClockSet_kp,     Dummy,              Dummy,       SetClockSet_i },
-        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
+        // -------------------------------------------------------------------------------------
+        // 16 - set password
+        { SetPassword_v,    Dummy,           SetPassword_km,    SetPassword_kp,     SetPassword_e,      Dummy,       SetPassword_i },
         { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
         { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
         { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },

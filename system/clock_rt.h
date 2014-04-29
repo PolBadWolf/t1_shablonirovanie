@@ -27,6 +27,7 @@ namespace clockrt
     extern unsigned char time[7];       // Массив даты времени
     extern unsigned char tik_cn;
     extern unsigned char tik;
+    extern unsigned char workTime;
     void init();
     void timer();
     void RefSav();
