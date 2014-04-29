@@ -51,26 +51,5 @@ void main(void)
             ns_menu::main();
         #endif
         //=============
-        /*
-        #ifdef CLOCK
-            if (clockrt::tik_cn==0)
-            {
-                scr->ShowChar(c_stolbcov+2, ':');
-                scr->ShowChar(c_stolbcov+5, ':');
-            }
-            if (clockrt::tik_cn==1)
-            {
-                scr->ShowChar(c_stolbcov+2, ' ');
-                scr->ShowChar(c_stolbcov+5, ' ');
-            }
-            if (clockrt::tik)
-            {
-                clockrt::tik = 0;
-                scr->dig_uz(c_stolbcov+0, 2, clockrt::time[CT_HOUR] );
-                scr->dig_uz(c_stolbcov+3, 2, clockrt::time[CT_MINUTE] );
-                scr->dig_uz(c_stolbcov+6, 2, clockrt::time[CT_SECOND] );
-            }
-        #endif
-        */
     }
 }

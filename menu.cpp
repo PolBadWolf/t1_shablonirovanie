@@ -81,6 +81,8 @@ namespace ns_menu
         // set work screen
         void workscr_i();
         workscr_i();
+        void SetMenuTimeDelay(unsigned int t, unsigned char m);
+        SetMenuTimeDelay(0, 0);
     }
 // ====================================
 // work scr
@@ -143,10 +145,24 @@ namespace ns_menu
     void SetClockDate_ke();
 #define md_SetClockHour     13
     void SetClockHour_i();
+    unsigned char tmpClockHour;
+    void SetClockHour_v();
+    void SetClockHour_km();
+    void SetClockHour_kp();
+    void SetClockHour_ke();
 #define md_SetClockMinute   14
     void SetClockMinute_i();
     unsigned char tmpClockMinute;
     unsigned char ClockTemp;
+    void SetClockMinute_v();
+    void SetClockMinute_km();
+    void SetClockMinute_kp();
+    void SetClockMinute_ke();
+#define md_SetClockSet      15
+    void SetClockSet_i();
+    void SetClockSet_v();
+    void SetClockSet_km();
+    void SetClockSet_kp();
 
 
 
@@ -154,6 +170,14 @@ namespace ns_menu
 
 
 
+    
+    
+    
+    
+    
+    
+    
+    
 
 
 
@@ -333,11 +357,12 @@ namespace ns_menu
         unsigned int temp;
 #ifdef KEY4
         if ( !key_read(&key) )
-        {
+        {   // no button
             key = 0;
         }
         else
         {
+            // anti jijer
             if ( (key==1) || (key==4) )
             {
                 {
@@ -358,41 +383,39 @@ namespace ns_menu
             }
         }
         if ( key==0 )
-        {
+        {   // no button
             {
                 CritSec csMenuMain;
                 temp = menuTimeOut;
             }
             if (temp==1)
-            {
+            {   // event time out
                 CritSec csMenuMain;
                 menuTimeOut = 0;
+                // set code time out
                 key = 5;
             }
         }
         else
-        {
+        {   // nornal button
             CritSec csMenuMain;
             menuTimeOut = menuTimeOutSet;
         }
 #else
         key = 0;
 #endif
+        // ===================================
+        //       mode delay do menu
         {
             CritSec csMenuMain;
             temp = menuTimeDelay;
         }
-        if (temp==0) // if no delay
-        {
+        if (temp==0)
+        {   // normal mode
             MassMenu[mode][key]();
-            if (key==5)
-            {
-                CritSec csMenuMain;
-                menuTimeOut = menuTimeOutSet;
-            }
         }
         if (temp==1)
-        {
+        {   // end delay do menu
             {
                 CritSec csMenuMain;
                 menuTimeDelay = 0;
@@ -416,7 +439,7 @@ namespace ns_menu
     // work screen
     void workscr_i()
     {
-        SetMenuTimeOut(0);
+        //SetMenuTimeOut(0);
 #ifdef CLOCK
         /*
         if (clockrt::time[CT_YEAR]==0)
@@ -860,6 +883,54 @@ void SelectExit_i()
         mode = md_SetClockHour;
         scr->Clear();
         scr->ShowString(            0, "уст.времени :" );
+        tmpClockHour = clockrt::time[CT_HOUR];
+        if (tmpClockHour>23)
+            tmpClockHour = 7;
+        ClockTemp = tmpClockHour;
+    }
+    void SetClockHour_v()
+    {
+        // Year
+        scr->ShowString(c_stolbcov+ 0, "20" );
+        scr->dig_uz    (c_stolbcov+ 2, 2, tmpClockYear );
+        // Mount
+        scr->dig_uz    (c_stolbcov+ 5, 2, tmpClockMount );
+        // Date
+        scr->dig_uz    (c_stolbcov+ 8, 2, tmpClockDate );
+        // Hour
+        if(menuFlashSt)
+        {
+            scr->dig_uz    (c_stolbcov+11, 2, ClockTemp );
+        }
+        else
+            scr->ShowString(c_stolbcov+11, "  " );
+        // Minute
+        scr->dig_uz    (c_stolbcov+14, 2, clockrt::time[CT_MINUTE] );
+        if (clockrt::tik_cn)
+            scr->ShowChar(c_stolbcov +13, ':');
+        else
+            scr->ShowChar(c_stolbcov +13, ' ');
+    }
+    void SetClockHour_km()
+    {
+        if (ClockTemp>0)
+        {
+            ClockTemp--;
+            SetClockHour_v();
+        }
+    }
+    void SetClockHour_kp()
+    {
+        if (ClockTemp<23)
+        {
+            ClockTemp++;
+            SetClockHour_v();
+        }
+    }
+    void SetClockHour_ke()
+    {
+        tmpClockHour = ClockTemp;
+        SetClockMinute_i();
     }
     void SetClockMinute_i()
     {
@@ -867,9 +938,103 @@ void SelectExit_i()
         mode = md_SetClockMinute;
         scr->Clear();
         scr->ShowString(            0, "уст.времени :" );
-        scr->ShowString(c_stolbcov+ 0, "минуты:" );
+        tmpClockMinute = clockrt::time[CT_MINUTE];
+        if (tmpClockMinute>59)
+            tmpClockMinute = 45;
+        ClockTemp = tmpClockMinute;
     }
-
+    void SetClockMinute_v()
+    {
+        // Year
+        scr->ShowString(c_stolbcov+ 0, "20" );
+        scr->dig_uz    (c_stolbcov+ 2, 2, tmpClockYear );
+        // Mount
+        scr->dig_uz    (c_stolbcov+ 5, 2, tmpClockMount );
+        // Date
+        scr->dig_uz    (c_stolbcov+ 8, 2, tmpClockDate );
+        // Hour
+        scr->dig_uz    (c_stolbcov+11, 2, tmpClockHour );
+        // Minute
+        if(menuFlashSt)
+        {
+            scr->dig_uz    (c_stolbcov+14, 2, ClockTemp );
+        }
+        else
+            scr->ShowString(c_stolbcov+14, "  " );
+        if (clockrt::tik_cn)
+            scr->ShowChar(c_stolbcov +13, ':');
+        else
+            scr->ShowChar(c_stolbcov +13, ' ');
+    }
+    void SetClockMinute_km()
+    {
+        if (ClockTemp>0)
+        {
+            ClockTemp--;
+            SetClockMinute_v();
+        }
+    }
+    void SetClockMinute_kp()
+    {
+        if (ClockTemp<59)
+        {
+            ClockTemp++;
+            SetClockMinute_v();
+        }
+    }
+    void SetClockMinute_ke()
+    {
+        tmpClockMinute = ClockTemp;
+        SetClockSet_i();
+    }
+    void SetClockSet_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_SetClockSet;
+        scr->Clear();
+        scr->ShowString(c_stolbcov+ 0, "  отм.  уст. " );
+        SetClockSet_v();
+    }
+    void SetClockSet_v()
+    {
+        // Year
+        scr->ShowString( 0, "20" );
+        scr->dig_uz    ( 2, 2, tmpClockYear );
+        // Mount
+        scr->dig_uz    ( 5, 2, tmpClockMount );
+        // Date
+        scr->dig_uz    ( 8, 2, tmpClockDate );
+        // Hour
+        scr->dig_uz    (11, 2, tmpClockHour );
+        // Minute
+        scr->dig_uz    (14, 2, tmpClockMinute );
+        if (clockrt::tik_cn)
+            scr->ShowChar(13, ':');
+        else
+            scr->ShowChar(13, ' ');
+    }
+    void SetClockSet_km()
+    {
+        scr->Clear();
+        scr->ShowString(            0, "отмена установки");
+        scr->ShowString(c_stolbcov+ 0, "даты/времени    ");
+        SetMenuTimeDelay(5000, md_workscr);
+    }
+    void SetClockSet_kp()
+    {
+        clockrt::RefSav();
+        clockrt::SetYear(tmpClockYear);
+        clockrt::SetMonth(tmpClockMount);
+        clockrt::SetDate(tmpClockDate);
+        clockrt::SetHour(tmpClockHour);
+        clockrt::SetMinute(tmpClockMinute);
+//        clockrt::SetZeroSecond();
+        clockrt::SetUpdate();
+        scr->Clear();
+        scr->ShowString(            0, "дата/время    ");
+        scr->ShowString(c_stolbcov+ 0, "установлены");
+        SetMenuTimeDelay(5, md_workscr);
+    }
 // ==================================
 
 
@@ -885,6 +1050,17 @@ void SelectExit_i()
 
 
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -1447,6 +1623,7 @@ void SelectExit_i()
   void DateSet_3() {
     scr->Clear();
     scr->ShowString( 0, "time set");
+    /*
     clockrt::RefSav();
     clockrt::SetYear(Date_Year);
     clockrt::SetMonth(Date_Month);
@@ -1455,6 +1632,7 @@ void SelectExit_i()
     clockrt::SetMinute(Date_Minute);
     clockrt::SetZeroSecond();
     clockrt::Update();
+    */
 //    NastSel_i();
     /*
     {
@@ -1724,7 +1902,7 @@ void SelectExit_i()
         { workscr_0,    SelectArchiv_i, Dummy,          Dummy,              Dummy,      Dummy,      workscr_i },
         // -------------------------------------------------------------------------------------
         // 1 - select archive
-        { Dummy,        Dummy,          Dummy,          SelectConfig_i,     Dummy,      workscr_i,  SelectArchiv_i },
+        { Dummy,        workscr_i,      Dummy,          SelectConfig_i,     Dummy,      workscr_i,  SelectArchiv_i },
         // 2 - select config
         { Dummy,        Dummy,          SelectArchiv_i, SelectExit_i,       PassWrd_i,  workscr_i,  SelectConfig_i },
         // 3 - select exit
@@ -1751,17 +1929,22 @@ void SelectExit_i()
         // 12 - set clock : Date
         { SetClockDate_v,   SetClockHour_i,  SetClockDate_km,   SetClockDate_kp,    SetClockDate_ke,    Dummy,       SetClockDate_i   },
         // 13 - set clock : Hour
-        { Dummy,            SetClockMinute_i,Dummy,             Dummy,              Dummy,              Dummy,       SetClockHour_i   },
+        { SetClockHour_v,   SetClockMinute_i,SetClockHour_km,   SetClockHour_kp,    SetClockHour_ke,    Dummy,       SetClockHour_i   },
         // 14 - set clock : Minute***
-        { Dummy,            M2SelClock_i,    Dummy,             Dummy,              Dummy,              Dummy,       SetClockMinute_i },
-
-        { Dummy,       Dummy,           Dummy,          Dummy,             Dummy,           Dummy,       Dummy },
-        { Dummy,       Dummy,           Dummy,          Dummy,             Dummy,           Dummy,       Dummy },
-        { Dummy,       Dummy,           Dummy,          Dummy,             Dummy,           Dummy,       Dummy },
-        { Dummy,       Dummy,           Dummy,          Dummy,             Dummy,           Dummy,       Dummy },
-        { Dummy,       Dummy,           Dummy,          Dummy,             Dummy,           Dummy,       Dummy },
-        { Dummy,       Dummy,           Dummy,          Dummy,             Dummy,           Dummy,       Dummy },
-        { Dummy,       Dummy,           Dummy,          Dummy,             Dummy,           Dummy,       Dummy },
+        { SetClockMinute_v, M2SelClock_i,    SetClockMinute_km, SetClockMinute_kp,  SetClockMinute_ke,  Dummy,       SetClockMinute_i },
+        // 15 - set clock : ask to set 
+        { SetClockSet_v,    M2SelClock_i,    SetClockSet_km,    SetClockSet_kp,     Dummy,              Dummy,       SetClockSet_i },
+        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
+        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
+        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
+        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
+        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
+        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
+        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
+        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
+        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
+        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
+        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
 	/*
 
 

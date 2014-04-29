@@ -1967,7 +1967,7 @@
   <group>
     <name>system</name>
     <file>
-      <name>$PROJ_DIR$\system\clock.cpp</name>
+      <name>$PROJ_DIR$\system\clock_rt.cpp</name>
     </file>
     <file>
       <name>$PROJ_DIR$\system\crc.cpp</name>

@@ -26,7 +26,8 @@ public:
 //-------------------------------
 // часы
 #ifdef CLOCK
-#include "system/clock.h"
+//#include "system/clock.h"
+#include "system/clock_rt.h"
 #define DISPLAY_TIMER
 #endif
 //-------------------------------

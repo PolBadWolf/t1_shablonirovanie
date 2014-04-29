@@ -12,6 +12,9 @@ void InitSystem(void)
 #ifdef MENU
     ns_menu::init();
 #endif
+#ifdef CLOCK
+    clockrt::init();
+#endif
 //---------------------
 #ifdef RS485
     ns_rs485::init();
