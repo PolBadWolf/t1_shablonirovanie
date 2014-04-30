@@ -178,6 +178,9 @@ namespace ns_menu
     void SetPasswordOk_n();
     void SetPasswordOk_y();
 // ------------------------------------
+#define md_SetLenD      18
+    void SetLenD_i();
+// ------------------------------------
 
 
 
@@ -1993,56 +1996,56 @@ void SelectExit_i()
     void (* const __flash MassMenu[][7])(void)=
     {
         // 0 - work screen
-        { workscr_0,    SelectArchiv_i, Dummy,          Dummy,              Dummy,      Dummy,      workscr_i },
+        { workscr_0,            SelectArchiv_i,     Dummy,              Dummy,              Dummy,              Dummy,              workscr_i },
         // -------------------------------------------------------------------------------------
         // 1 - select archive
-        { Dummy,        workscr_i,      Dummy,          SelectConfig_i,     Dummy,      workscr_i,  SelectArchiv_i },
+        { Dummy,                workscr_i,          Dummy,              SelectConfig_i,     Dummy,              workscr_i,          SelectArchiv_i },
         // 2 - select config
-        { Dummy,        Dummy,          SelectArchiv_i, SelectExit_i,       PassWrd_i,  workscr_i,  SelectConfig_i },
+        { Dummy,                Dummy,              SelectArchiv_i,     SelectExit_i,       PassWrd_i,          workscr_i,          SelectConfig_i },
         // 3 - select exit
-        { Dummy,        Dummy,          SelectConfig_i, Dummy,              workscr_i,  workscr_i,  SelectExit_i },
+        { Dummy,                Dummy,              SelectConfig_i,     Dummy,              workscr_i,          workscr_i,          SelectExit_i },
         // -------------------------------------------------------------------------------------
         // 4 - password
-        { PassWrd_v,    workscr_i,      PassWrd_m,      PassWrd_p,          PassWrd_e,  workscr_i,  PassWrd_i },
+        { PassWrd_v,            workscr_i,          PassWrd_m,          PassWrd_p,          PassWrd_e,          workscr_i,          PassWrd_i },
         // -------------------------------------------------------------------------------------
         // 5 - select menu set new password
-        { Dummy,       Dummy,           Dummy,          M2SelLen_i,         SetPassword_i,  workscr_i,  M2SelPass_i },
+        { Dummy,                Dummy,              Dummy,              M2SelLen_i,         SetPassword_i,      workscr_i,          M2SelPass_i },
         // 6 - select menu set len sensors
-        { Dummy,       Dummy,           M2SelPass_i,    M2SelTOut_i,        Dummy,          workscr_i,  M2SelLen_i },
+        { Dummy,                Dummy,              M2SelPass_i,        M2SelTOut_i,        Dummy,              workscr_i,          M2SelLen_i },
         // 7 - select menu set timeout sensors
-        { Dummy,       Dummy,           M2SelLen_i,     M2SelClock_i,       Dummy,          workscr_i,  M2SelTOut_i },
+        { Dummy,                Dummy,              M2SelLen_i,         M2SelClock_i,       Dummy,              workscr_i,          M2SelTOut_i },
         // 8 - select menu set clock
-        { Dummy,       Dummy,           M2SelTOut_i,    M2SelExit_i,        SetClockYear_i, workscr_i,  M2SelClock_i },
+        { Dummy,                Dummy,              M2SelTOut_i,        M2SelExit_i,        SetClockYear_i,     workscr_i,          M2SelClock_i },
         // 9 - select menu exit
-        { Dummy,       Dummy,           M2SelClock_i,   Dummy,              workscr_i,      workscr_i,  M2SelExit_i },
+        { Dummy,                Dummy,              M2SelClock_i,       Dummy,              workscr_i,          workscr_i,          M2SelExit_i },
         // -------------------------------------------------------------------------------------
         // 10 - set clock : Year
-        { SetClockYear_v,   SetClockMount_i, SetClockYear_km,   SetClockYear_kp,    SetClockYear_ke,    Dummy,       SetClockYear_i   },
+        { SetClockYear_v,       SetClockMount_i,    SetClockYear_km,    SetClockYear_kp,    SetClockYear_ke,    Dummy,              SetClockYear_i   },
         // 11 - set clock : Mount
-        { SetClockMount_v,  SetClockDate_i,  SetClockMount_km,  SetClockMount_kp,   SetClockMount_ke,   Dummy,       SetClockMount_i  },
+        { SetClockMount_v,      SetClockDate_i,     SetClockMount_km,   SetClockMount_kp,   SetClockMount_ke,   Dummy,              SetClockMount_i  },
         // 12 - set clock : Date
-        { SetClockDate_v,   SetClockHour_i,  SetClockDate_km,   SetClockDate_kp,    SetClockDate_ke,    Dummy,       SetClockDate_i   },
+        { SetClockDate_v,       SetClockHour_i,     SetClockDate_km,    SetClockDate_kp,    SetClockDate_ke,    Dummy,              SetClockDate_i   },
         // 13 - set clock : Hour
-        { SetClockHour_v,   SetClockMinute_i,SetClockHour_km,   SetClockHour_kp,    SetClockHour_ke,    Dummy,       SetClockHour_i   },
+        { SetClockHour_v,       SetClockMinute_i,   SetClockHour_km,    SetClockHour_kp,    SetClockHour_ke,    Dummy,              SetClockHour_i   },
         // 14 - set clock : Minute***
-        { SetClockMinute_v, M2SelClock_i,    SetClockMinute_km, SetClockMinute_kp,  SetClockMinute_ke,  Dummy,       SetClockMinute_i },
+        { SetClockMinute_v,     M2SelClock_i,       SetClockMinute_km,  SetClockMinute_kp,  SetClockMinute_ke,  Dummy,              SetClockMinute_i },
         // 15 - set clock : ask to set 
-        { SetClockSet_v,    M2SelClock_i,    SetClockSet_km,    SetClockSet_kp,     Dummy,              Dummy,          SetClockSet_i },
+        { SetClockSet_v,        M2SelClock_i,       SetClockSet_km,     SetClockSet_kp,     Dummy,              Dummy,              SetClockSet_i },
         // -------------------------------------------------------------------------------------
         // 16 - set password
-        { SetPassword_v,    Dummy,           SetPassword_km,    SetPassword_kp,     SetPassword_e,      workscr_i,      SetPassword_i },
+        { SetPassword_v,        Dummy,              SetPassword_km,     SetPassword_kp,     SetPassword_e,      workscr_i,          SetPassword_i },
         // 17 - set password ok ?
-        { Dummy,            SetPasswordOk_n, SetPasswordOk_n,   SetPasswordOk_y,    Dummy,              workscr_i,      SetPasswordOk_i },
+        { Dummy,                SetPasswordOk_n,    SetPasswordOk_n,    SetPasswordOk_y,    Dummy,              workscr_i,          SetPasswordOk_i },
         // -------------------------------------------------------------------------------------
-        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
-        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
-        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
-        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
-        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
-        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
-        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
-        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
-        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
+        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              SetLenD_i },
+        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
+        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
+        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
+        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
+        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
+        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
+        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
+        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
 	/*
 
 
