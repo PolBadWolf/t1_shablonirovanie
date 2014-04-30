@@ -1,6 +1,7 @@
 [Breakpoints]
 Bp0=_ "STD_DATA" "PassWrd_Chk" 1 0 0 3 0 "" 0 ""
-Count=1
+Bp1=_ "STD_CODE" "{$PROJ_DIR$\menu.cpp}.1200.1@1" 1 0 0 0 "" 0 ""
+Count=2
 [TraceHelper]
 Enabled=0
 ShowSource=1

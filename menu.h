@@ -4,8 +4,8 @@
 #ifdef MENU
 namespace ns_menu
 {
-    void timer(void);
-    void main(void);
+    void timer();
+    void main();
     void zero();
     void init();
     void InitEeprom();

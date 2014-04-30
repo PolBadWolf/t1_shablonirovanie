@@ -19,10 +19,13 @@ namespace ns_menu
 {
     //=================================
     unsigned char key;
-    unsigned int  keyTout = 0;
-    unsigned int  keyToutx;
-    unsigned int  keyTout1 = 0;
-    unsigned int  keyTout1x;
+    unsigned char keyFlOn  = 0;
+    unsigned char keyFlOn1 = 0;
+#define keyFastOnMax  2500
+#define keyFastOffMax 200
+    unsigned int  keyFastOnCount  = keyFastOnMax;
+    unsigned int  keyFastOffCount = keyFastOffMax;
+    unsigned char keyFastFl    = 0;
     //=================================
     //     select configure
     // path select menu
@@ -55,14 +58,7 @@ namespace ns_menu
 #define menuFlashSet 300
     unsigned int  menuFlash = menuFlashSet/2;
     unsigned char menuFlashSt = 0;
-    // ==============================
-  unsigned int  menuTimeOutx;
-  unsigned char vNastSel;
-  unsigned char vNastSelx;
-  signed int  position_min;
-  signed int  position_max;
-  signed int  position_cur;
-//  unsigned char TimeViewInd;
+    // ================================================
     // ================================================
     // N mode/step menu
     unsigned char mode;
@@ -180,6 +176,11 @@ namespace ns_menu
 // ------------------------------------
 #define md_SetLenD      18
     void SetLenD_i();
+    unsigned int tempLenD;
+    void SetLenD_v();
+#define md_SetLenOk      19
+    void SetLenOk_i();
+    void SetLenOk_v();
 // ------------------------------------
 
 
@@ -346,6 +347,28 @@ namespace ns_menu
             menuFlash = menuFlashSet;
             if (++menuFlashSt>1) menuFlashSt = 0;
         }
+        // --------------------------------------
+        if (keyFastOffCount>0)
+            keyFastOffCount--;
+        if (keyFastOffCount==0)
+        {
+            keyFlOn1 = 0;
+            keyFastFl = 0;
+            keyFastOnCount = keyFastOnMax;
+        }
+        if (keyFlOn)
+        {
+            keyFlOn  = 0;
+            keyFlOn1 = 1;
+        }
+            
+        if (keyFlOn1)
+        {
+            if (keyFastOnCount>0)
+                keyFastOnCount--;
+            if (keyFastOnCount==0)
+                keyFastFl = 1;
+        }
         /* timer2 debug
         static unsigned char debugT = 0;
         static unsigned int  debugTp = 0;
@@ -380,10 +403,17 @@ namespace ns_menu
 #ifdef KEY4
         if ( !key_read(&key) )
         {   // no button
+            CritSec menuCs;
             key = 0;
+            //keyFlOn  = 0;
         }
         else
         {
+            {
+                CritSec menuCs;
+                keyFlOn  = 1;
+                keyFastOffCount = keyFastOffMax;
+            }
             // anti jijer
             if ( (key==1) || (key==4) )
             {
@@ -404,6 +434,7 @@ namespace ns_menu
                 }
             }
         }
+        // timeout
         if ( key==0 )
         {   // no button
             {
@@ -1133,7 +1164,60 @@ void SelectExit_i()
         SetMenuTimeDelay(5000, md_workscr);
     }
 // ==================================
-
+    void SetLenD_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_SetLenD;
+        scr->Clear();
+        scr->ShowString(            0, "длина d1-d2" );
+        tempLenD = speedmetr::lenD_EE;
+        scr->ShowChar(c_stolbcov+ 1, '.');
+        SetLenD_v();
+    }
+    void SetLenD_v()
+    {
+        scr->dig_uz(c_stolbcov+ 0, 1, tempLenD/1000);
+        scr->dig_uz(c_stolbcov+ 2, 3, tempLenD%1000);
+    }
+    void SetLenD_km()
+    {
+        if (keyFastFl)
+        {
+            if (tempLenD>(750+10))
+            {
+                tempLenD = tempLenD-10;
+                SetLenD_v();
+                return;
+            }
+        }
+        if (tempLenD>750)
+            tempLenD--;
+        SetLenD_v();
+    }
+    void SetLenD_kp()
+    {
+        if (keyFastFl)
+        {
+            if (tempLenD<(6500-10))
+            {
+                tempLenD = tempLenD+10;
+                SetLenD_v();
+                return;
+            }
+        }
+        if (tempLenD<6500)
+            tempLenD++;
+        SetLenD_v();
+    }
+    void SetLenOk_i()
+    {
+    }
+    void SetLenOk_v()
+    {
+    }
+// ==================================
+// ==================================
+    
 
 
 
@@ -2011,7 +2095,7 @@ void SelectExit_i()
         // 5 - select menu set new password
         { Dummy,                Dummy,              Dummy,              M2SelLen_i,         SetPassword_i,      workscr_i,          M2SelPass_i },
         // 6 - select menu set len sensors
-        { Dummy,                Dummy,              M2SelPass_i,        M2SelTOut_i,        Dummy,              workscr_i,          M2SelLen_i },
+        { Dummy,                Dummy,              M2SelPass_i,        M2SelTOut_i,        SetLenD_i,          workscr_i,          M2SelLen_i },
         // 7 - select menu set timeout sensors
         { Dummy,                Dummy,              M2SelLen_i,         M2SelClock_i,       Dummy,              workscr_i,          M2SelTOut_i },
         // 8 - select menu set clock
@@ -2037,8 +2121,9 @@ void SelectExit_i()
         // 17 - set password ok ?
         { Dummy,                SetPasswordOk_n,    SetPasswordOk_n,    SetPasswordOk_y,    Dummy,              workscr_i,          SetPasswordOk_i },
         // -------------------------------------------------------------------------------------
-        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              SetLenD_i },
-        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
+        // 18 - len D1D2
+        { SetLenD_v,            Dummy,              SetLenD_km,         SetLenD_kp,         Dummy,              workscr_i,          SetLenD_i },
+        { SetLenOk_v,           Dummy,              Dummy,              Dummy,              Dummy,              workscr_i,          SetLenOk_i },
         { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
         { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
         { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },

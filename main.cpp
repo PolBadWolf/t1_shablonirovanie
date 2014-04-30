@@ -12,10 +12,12 @@ void main(void)
     // set default for bad eeprom
     if (ee_FlagRes!=0x33)
     {
+        ee_FlagRes = 0x33;
 #ifdef MENU
         ns_menu::InitEeprom();
 #endif
-        ee_FlagRes = 0x33;
+        // module speedmetr
+        speedmetr::EepromInit();
     }
     // init system
     {
@@ -27,8 +29,10 @@ void main(void)
     scr->LoadSymbol();
     // time for stabl
     _delay_ms(1000);
-    // init uni block
-    //
+    // ------------------------------
+    // module speedmetr
+    speedmetr::Init();
+    // ------------------------------
     // main cicle
     while(true)
     {

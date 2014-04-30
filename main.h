@@ -77,6 +77,8 @@ extern tc_lcd *scr;
 #include "object.h"
 #include "menu.h"
 //-------------------------------
+#include "Speedmetr.h"
+//-------------------------------
 #define PorogDatch 20
 
 #endif
