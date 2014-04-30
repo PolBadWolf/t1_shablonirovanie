@@ -24,14 +24,14 @@
       <file>$PROJ_DIR$\UserTimer.cpp</file>
       <file>$PROJ_DIR$\Variable.cpp</file>
       <file>$PROJ_DIR$\system\clock.cpp</file>
-      <file>$PROJ_DIR$\system\moduls.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\rs232.pbi</file>
-      <file>$PROJ_DIR$\Debug\Exe\eeprom.hex</file>
-      <file>$PROJ_DIR$\Debug\Obj\moduls.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\rs485.pbi</file>
       <file>$TOOLKIT_DIR$\lib\dlib\dlAVR-3s-ec_mul-n.r90</file>
-      <file>$PROJ_DIR$\Debug\Obj\DisplayTimer.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\rs485.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\moduls.pbi</file>
+      <file>$PROJ_DIR$\Debug\Exe\eeprom.hex</file>
+      <file>$PROJ_DIR$\Debug\Obj\rs232.pbi</file>
+      <file>$PROJ_DIR$\system\moduls.h</file>
       <file>$PROJ_DIR$\Debug\Obj\key4.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\DisplayTimer.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\crc.r90</file>
       <file>$PROJ_DIR$\Debug\Obj\menu.r90</file>
       <file>$PROJ_DIR$\Debug\Obj\rs485.r90</file>
@@ -40,26 +40,26 @@
       <file>$PROJ_DIR$\system\ports.h</file>
       <file>$PROJ_DIR$\Debug\Obj\key4.r90</file>
       <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
+      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
       <file>$TOOLKIT_DIR$\inc\inavr.h</file>
       <file>$TOOLKIT_DIR$\inc\ina90.h</file>
       <file>$PROJ_DIR$\Debug\Obj\lcd.r90</file>
-      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\InitSystem.r90</file>
       <file>$PROJ_DIR$\Debug\Obj\clock.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\InitSystem.r90</file>
       <file>$PROJ_DIR$\Debug\Obj\ports.r90</file>
       <file>$TOOLKIT_DIR$\inc\comp_a90.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\UserTimer.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\DisplayTimer.r90</file>
+      <file>$PROJ_DIR$\Debug\Obj\UserTimer.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\menu.pbi</file>
       <file>$PROJ_DIR$\system\lcd.h</file>
       <file>$PROJ_DIR$\Debug\Obj\moduls.r90</file>
       <file>$PROJ_DIR$\Debug\Obj\Variable.r90</file>
       <file>$PROJ_DIR$\Debug\Obj\Variable.pbi</file>
       <file>$TOOLKIT_DIR$\inc\ioavr.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\clock.r90</file>
-      <file>$PROJ_DIR$\Debug\Obj\SystemTimerUser.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\Object.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\clock.r90</file>
       <file>$PROJ_DIR$\Debug\Obj\rs232.r90</file>
+      <file>$PROJ_DIR$\Debug\Obj\SystemTimerUser.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\Object.r90</file>
       <file>$PROJ_DIR$\Debug\Obj\UserTimer.r90</file>
       <file>$PROJ_DIR$\system\key4.h</file>
@@ -75,13 +75,13 @@
       <file>$PROJ_DIR$\Debug\Obj\lcd.pbi</file>
       <file>$PROJ_DIR$\Debug\Exe\prog.hex</file>
       <file>$PROJ_DIR$\Debug\Obj\ports.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\SystemTimerUser.r90</file>
       <file>$PROJ_DIR$\Debug\Obj\InitSystem.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\SystemTimerUser.r90</file>
       <file>$PROJ_DIR$\Debug\Obj\main.r90</file>
       <file>$TOOLKIT_DIR$\inc\iom128.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\SpeedShablonirovanie.pbd</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
       <file>$TOOLKIT_DIR$\src\template\cfg3soim.xcl</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\SpeedShablonirovanie.pbd</file>
       <file>$PROJ_DIR$\Debug\Obj\clock_rt.r90</file>
       <file>$PROJ_DIR$\Debug\Obj\clock_rt.pbi</file>
       <file>$PROJ_DIR$\system\clock_rt.h</file>
@@ -102,11 +102,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -115,21 +115,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 24</file>
+          <file> 25</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 43</file>
+          <file> 42</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -148,11 +148,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -161,21 +161,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 70</file>
+          <file> 69</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 38</file>
+          <file> 39</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -184,7 +184,7 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 25</file>
+          <file> 24</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
@@ -194,11 +194,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -211,17 +211,17 @@
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 36</file>
+          <file> 37</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -230,7 +230,7 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 21</file>
+          <file> 20</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
@@ -240,11 +240,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64 18</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64 23</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64 18</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64 23</file>
         </tool>
       </inputs>
     </file>
@@ -263,11 +263,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -276,21 +276,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 19</file>
+          <file> 22</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 53</file>
+          <file> 52</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -299,7 +299,7 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 22</file>
+          <file> 19</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
@@ -309,11 +309,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 1 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 1 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 1 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 1 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -322,21 +322,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 51</file>
+          <file> 53</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 69</file>
+          <file> 70</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -355,11 +355,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -378,11 +378,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -391,7 +391,7 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 52</file>
+          <file> 50</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
@@ -401,11 +401,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -414,7 +414,7 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 42</file>
+          <file> 43</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
@@ -424,11 +424,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -447,11 +447,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 78 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 78 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -460,21 +460,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 39</file>
+          <file> 38</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 50</file>
+          <file> 51</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 61 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 61 45 56 59 62 58 57 63 64</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 49 72 33 35 34 37 41 60 31 61 45 56 59 62 58 57 63 64</file>
+          <file> 30 49 72 33 36 35 34 41 60 31 61 45 56 59 62 58 57 63 64</file>
         </tool>
       </inputs>
     </file>
@@ -483,7 +483,7 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 79 67 20</file>
+          <file> 79 67 21</file>
         </tool>
       </outputs>
     </file>
@@ -492,7 +492,7 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 24 70 52 51 42 48 77 29 25 66 74 44 21 68 19 22</file>
+          <file> 25 69 50 53 43 48 77 29 24 66 74 44 20 68 22 19</file>
         </tool>
       </inputs>
     </file>
@@ -501,13 +501,13 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 67 20</file>
+          <file> 67 21</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 65 75 43 38 54 69 55 47 76 26 32 36 71 27 46 40 53 28 23</file>
+          <file> 65 73 42 39 54 70 55 47 76 26 32 37 71 27 46 40 52 28 18</file>
         </tool>
       </inputs>
     </file>

@@ -173,6 +173,10 @@ namespace ns_menu
     void SetPassword_v();
     unsigned char newPassw[5];
     unsigned char newPasswN;
+#define md_SetPasswordOk    17
+    void SetPasswordOk_i();
+    void SetPasswordOk_n();
+    void SetPasswordOk_y();
 // ------------------------------------
 
 
@@ -611,7 +615,10 @@ void SelectExit_i()
     {
         vvPaswordCount++;
         if (vvPaswordCount<5)
+        {
+            vvPasword.pin[vvPaswordCount] = vvPasword.pin[vvPaswordCount-1];
             PassWrd_v();
+        }
         else
             PassWrd_Chk(); // end input, checked password
     }
@@ -1047,7 +1054,7 @@ void SelectExit_i()
         scr->Clear();
         scr->ShowString(            0, "дата/время    ");
         scr->ShowString(c_stolbcov+ 0, "установлены");
-        SetMenuTimeDelay(5, md_workscr);
+        SetMenuTimeDelay(5000, md_workscr);
     }
 // ==================================
     void SetPassword_i()
@@ -1091,11 +1098,36 @@ void SelectExit_i()
     {
         newPasswN++;
         if (newPasswN<5)
-            SetPassword_v();
-        else
         {
-            newPasswN--;
+            newPassw[newPasswN] = newPassw[newPasswN-1];
+            SetPassword_v();
         }
+        else
+            SetPasswordOk_i();
+    }
+    void SetPasswordOk_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_SetPasswordOk;
+        scr->Clear();
+        scr->ShowString(            0, "уст.пароля :" );
+        scr->ShowString(c_stolbcov+ 0, "  отм.  уст. " );
+    }
+    void SetPasswordOk_n()
+    {
+        scr->Clear();
+        scr->ShowString(            0, "отмена установки");
+        scr->ShowString(c_stolbcov+ 0, "пароля          ");
+        SetMenuTimeDelay(5000, md_workscr);
+    }
+    void SetPasswordOk_y()
+    {
+        for (unsigned char i=0; i<5; i++)
+            ee_psw[0].pin[i] = newPassw[i];
+        scr->Clear();
+        scr->ShowString(            0, "новый пароль  ");
+        scr->ShowString(c_stolbcov+ 0, "установлен ");
+        SetMenuTimeDelay(5000, md_workscr);
     }
 // ==================================
 
@@ -1995,11 +2027,13 @@ void SelectExit_i()
         // 14 - set clock : Minute***
         { SetClockMinute_v, M2SelClock_i,    SetClockMinute_km, SetClockMinute_kp,  SetClockMinute_ke,  Dummy,       SetClockMinute_i },
         // 15 - set clock : ask to set 
-        { SetClockSet_v,    M2SelClock_i,    SetClockSet_km,    SetClockSet_kp,     Dummy,              Dummy,       SetClockSet_i },
+        { SetClockSet_v,    M2SelClock_i,    SetClockSet_km,    SetClockSet_kp,     Dummy,              Dummy,          SetClockSet_i },
         // -------------------------------------------------------------------------------------
         // 16 - set password
-        { SetPassword_v,    Dummy,           SetPassword_km,    SetPassword_kp,     SetPassword_e,      Dummy,       SetPassword_i },
-        { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
+        { SetPassword_v,    Dummy,           SetPassword_km,    SetPassword_kp,     SetPassword_e,      workscr_i,      SetPassword_i },
+        // 17 - set password ok ?
+        { Dummy,            SetPasswordOk_n, SetPasswordOk_n,   SetPasswordOk_y,    Dummy,              workscr_i,      SetPasswordOk_i },
+        // -------------------------------------------------------------------------------------
         { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
         { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
         { Dummy,            Dummy,           Dummy,             Dummy,              Dummy,              Dummy,       Dummy },
