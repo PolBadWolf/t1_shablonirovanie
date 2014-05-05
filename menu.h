@@ -6,7 +6,7 @@ namespace ns_menu
 {
     void timer();
     void main();
-    void zero();
+//    void zero();
     void init();
     void InitEeprom();
     //     variable

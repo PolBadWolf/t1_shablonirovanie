@@ -52,7 +52,7 @@ namespace ns_menu
     unsigned int  menuTimeDelayKey = 0;
     void SetMenuTimeOut(unsigned int t);
     // count menu time delay
-    unsigned int  menuTimeDelay = 0;
+    unsigned int  menuTimeDelay = 1;
     unsigned char afterMode = 0;
     // flash
 #define menuFlashSet 300
@@ -61,7 +61,7 @@ namespace ns_menu
     // ================================================
     // ================================================
     // N mode/step menu
-    unsigned char mode;
+    unsigned char mode = 0;
     // ================================================
     // bad eeprom - restore to default
     void InitEeprom()
@@ -207,7 +207,7 @@ namespace ns_menu
 
 
 
-
+/*
 #define md_PaswSel  5
   // выбор парол€
   unsigned PaswSel_OldPsw;
@@ -334,8 +334,10 @@ namespace ns_menu
   void KkgSav_i();
   void KkgSav_2();
   void KkgSav_3();
-
-    // [view][km][k-][k+][ke][TimeOut][init]
+*/
+  
+  
+  // [view][km][k-][k+][ke][TimeOut][init]
     extern void (* const __flash MassMenu[][7])(void);
     void timer(void)
     {
@@ -381,7 +383,8 @@ namespace ns_menu
         */
     }
     // =====================================================================
-  void imp2data(const unsigned long imp, unsigned long *m, unsigned long *Kg) {
+/*
+    void imp2data(const unsigned long imp, unsigned long *m, unsigned long *Kg) {
     unsigned long  m_m;
     unsigned long  m_kg;
     m_m = imp;
@@ -396,6 +399,7 @@ namespace ns_menu
     m_kg = m_kg / ((unsigned long)10);
     *Kg = (unsigned long)m_kg;
   }
+  */
 // ===================================================
     void main(void)
     {
@@ -494,13 +498,6 @@ namespace ns_menu
     {
         //SetMenuTimeOut(0);
 #ifdef CLOCK
-        /*
-        if (clockrt::time[CT_YEAR]==0)
-        {
-            zero();
-            return;
-        }
-        */
         workscrFlCl = 1;
 #endif
         scr->Clear();
@@ -1211,9 +1208,30 @@ void SelectExit_i()
     }
     void SetLenOk_i()
     {
+        SetMenuTimeOut(60000);
+        mode = md_SetLenOk;
+        scr->Clear();
+        scr->ShowString(            0, "длина d1-d2" );
+        scr->ShowString(c_stolbcov+ 0, "  отм.  уст. " );
     }
-    void SetLenOk_v()
+    void SetLenOk_km()
     {
+        scr->Clear();
+        scr->ShowString(            0, "отмена" );
+        scr->ShowString(c_stolbcov+ 0, "выход");
+        SetMenuTimeDelay(5000, md_workscr);
+    }
+    void SetLenOk_kp()
+    {
+        {
+            CritSec setLenCs;
+            speedmetr::lenD = tempLenD;
+            speedmetr::lenD_EE = tempLenD;
+        }
+        scr->Clear();
+        scr->ShowString(            0, "длина d1-d2" );
+        scr->ShowString(c_stolbcov+ 0, "установлена");
+        SetMenuTimeDelay(5000, md_M2SelTOut);
     }
 // ==================================
 // ==================================
@@ -1514,6 +1532,7 @@ void SelectExit_i()
     PaswSetPsw_i();
   }
   */
+    /*
   //========================================================
   // установка парол€
   void PaswSetPsw_i() {
@@ -1587,8 +1606,10 @@ void SelectExit_i()
       if ( (PaswSetAcs_mask & 0x0f)>0x00 ) PaswSetAcs_mask -= 0x01;
     }
   }
+  */
+    /*
   void PaswSetAcs_3() {
-      /*
+      
     if (mask_menu & (1<<7) ) {
       if (PaswSetAcs_count==0) {
         if ( (PaswSetAcs_mask & 0xf0)<0xf0 ) PaswSetAcs_mask += 0x10;
@@ -1606,8 +1627,10 @@ void SelectExit_i()
         if ( (PaswSetAcs_mask & 0x0f)<0x0f ) PaswSetAcs_mask += 0x01;
       }
     }
-      */
+      
   }
+*/
+    /*
   void PaswSetAcs_4() {
     if (PaswSetAcs_count==0) {
       PaswSetAcs_count++;
@@ -1622,6 +1645,8 @@ void SelectExit_i()
       PaswSel_i();
     }
   }
+    */
+    /*
   //========================================================
   // установка года
   void DateYear_i() {
@@ -1721,6 +1746,8 @@ void SelectExit_i()
   void DateDate_4() {
     DateHour_i();
   }
+    */
+    /*
   //========================================================
   // установка часов
   void DateHour_i() {
@@ -1732,17 +1759,21 @@ void SelectExit_i()
     scr->ShowString(             0, "уст.часов:");
     scr->ShowString(c_stolbcov + 0, "отм. +1X +1 ввод");
   }
-  void DateHour_0() {
+    */
     /*
+  void DateHour_0() {
+    
     scr->dig_uz(6, 2, clockrt::time[CT_HOUR]);
     scr->dig_uz(9, 2, clockrt::time[CT_MINUTE]);
     scr->dig_uz(12, 2, clockrt::time[CT_SECOND]);
-    */
+    
     scr->dig_uz(             10, 2, Date_Hour);
   }
+*/
   void DateHour_1() {
 //    NastSel_i();
   }
+  /*
   void DateHour_2() {
     Date_Hour -= Date_Hour%10;
     Date_Hour += 10;;
@@ -1766,17 +1797,21 @@ void SelectExit_i()
     scr->ShowString(             0, "уст.минут:");
     scr->ShowString(c_stolbcov + 0, "отм. +1X +1 ввод");
   }
+  */
+  /*
   void DateMinute_0() {
-    /*
+    
     scr->dig_uz(6, 2, clockrt::time[CT_HOUR]);
     scr->dig_uz(9, 2, clockrt::time[CT_MINUTE]);
     scr->dig_uz(12, 2, clockrt::time[CT_SECOND]);
-    */
+    
     scr->dig_uz(             10, 2, Date_Minute);
   }
+  */
   void DateMinute_1() {
 //    NastSel_i();
   }
+  /*
   void DateMinute_2() {
     Date_Minute -= Date_Minute%10;
     Date_Minute += 10;
@@ -1801,6 +1836,7 @@ void SelectExit_i()
   void DateSet_2() {
 //    NastSel_i();
   }
+  */
   void DateSet_3() {
     scr->Clear();
     scr->ShowString( 0, "time set");
@@ -1823,6 +1859,7 @@ void SelectExit_i()
     }
     */
   }
+  /*
   //========================================================
     void zero()
     {
@@ -1831,6 +1868,8 @@ void SelectExit_i()
         scr->ShowString( 0, "Ѕј“ј–≈я !!!");
         scr->ShowString( c_stolbcov + 0, "уст. новое врем€");
     }
+  */
+  /*
   //========================================================
   // за смену
   void ZaSmenu_i() {
@@ -1893,6 +1932,7 @@ void SelectExit_i()
     scr->ShowString( 9, "смена:");
     Archiv_s();
   }
+  */
   void Archiv_s() {
     static unsigned long m;
     static unsigned long kg;
@@ -1921,6 +1961,7 @@ void SelectExit_i()
     scr->dig_u (c_stolbcov +  9, 3, kg/((unsigned long)10) );
     scr->dig_uz(c_stolbcov + 13, 1, kg%((unsigned long)10) );
   }
+  /*
   void Archiv_2() {
     if (vArchivIndx==0) vArchivIndx = ee_ArchivLen;
     vArchivIndx--;
@@ -2071,6 +2112,7 @@ void SelectExit_i()
 //  vg::ee_K_Kg = x;
 //    NastSel_i();
   }
+  */
   //========================================================
   // установка урове€ доступа
   //========================================================
@@ -2122,8 +2164,8 @@ void SelectExit_i()
         { Dummy,                SetPasswordOk_n,    SetPasswordOk_n,    SetPasswordOk_y,    Dummy,              workscr_i,          SetPasswordOk_i },
         // -------------------------------------------------------------------------------------
         // 18 - len D1D2
-        { SetLenD_v,            Dummy,              SetLenD_km,         SetLenD_kp,         Dummy,              workscr_i,          SetLenD_i },
-        { SetLenOk_v,           Dummy,              Dummy,              Dummy,              Dummy,              workscr_i,          SetLenOk_i },
+        { SetLenD_v,            Dummy,              SetLenD_km,         SetLenD_kp,         SetLenOk_i,         workscr_i,          SetLenD_i },
+        { Dummy,                Dummy,              SetLenOk_km,        SetLenOk_kp,        Dummy,              workscr_i,          SetLenOk_i },
         { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
         { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
         { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
