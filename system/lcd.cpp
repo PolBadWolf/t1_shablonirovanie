@@ -915,8 +915,12 @@ unsigned char tc_lcd::f_dec(unsigned char dec)
   return dec + '0';
 }
 //
-  __flash unsigned char symbol_work[8] =
-  { 0x06, 0x09, 0x09, 0x06, 0x00, 0x00, 0x00, 0x00 };
+__flash unsigned char symbol_work[] = {
+    0x00, 0x0e, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00,
+    0x00, 0x0e, 0x1f, 0x1f, 0x1f, 0x0e, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x15, 0x11, 0x0e, 0x00, 0x00
+};
+
 void tc_lcd::LoadSymbol(void)
 {
   unsigned char cs_ls;
@@ -924,7 +928,7 @@ void tc_lcd::LoadSymbol(void)
   __disable_interrupt();
   f_SendCommand(0x40);
   _delay_ms(1);
-  for (unsigned char i=0;i<8;i++)
+  for (unsigned char i=0;i<(8*3);i++)
   {
     f_SendData(symbol_work[i]);
     _delay_us(15);
