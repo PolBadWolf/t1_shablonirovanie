@@ -11,11 +11,28 @@ namespace speedmetr
 #define timeOutKF   10
     extern tc_ports *ObjD1;
     extern tc_ports *ObjD2;
+    // ==================================================
+    extern unsigned char countSt;
+    extern unsigned int count;
+    extern unsigned int countM;
+    // количество замеров за последний час
+    extern unsigned int  n;
+    // текущий час
+    extern signed char hour;
+    // last speed
+    extern unsigned int  lastSpeed;
+    extern unsigned int  minSpeed;
+    extern unsigned int  maxSpeed;
+    extern unsigned long allSpeed;
+    extern unsigned char newDataSpeed;
+    extern bool tcInv;
+    // ==================================================
     // fist init
     void EepromInit();
     // init
     void Init();
     void Timer();
+    void Main();
 }
 
 #endif

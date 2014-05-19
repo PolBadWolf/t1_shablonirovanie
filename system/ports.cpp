@@ -74,6 +74,10 @@ void tc_ports::pout(unsigned char d)
   if (d) *p_out |= maska_in;
   else *p_out &= ~maska_in;
 }
+bool tc_ports::FlI(bool inv)
+{
+    return tr ^ inv;
+}
 void tc_ports::for_timer(void)
 {
   if (*p_in & maska_in)

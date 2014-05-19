@@ -18,7 +18,8 @@ public:
   tc_ports(unsigned char p, unsigned char InBit, unsigned char OutOn); // порог 100, выходной бит 0
   tc_ports(unsigned char p, unsigned char InBit, unsigned char OutOn, unsigned char porog); // выходной бит 0
   tc_ports(unsigned char p, unsigned char InBit, unsigned char OutOn, unsigned char porog, unsigned char OutBit);
-  unsigned fl;  // чтение с фильтром
+  unsigned char fl;  // чтение с фильтром
+  bool FlI(bool inv);
   unsigned char *u_porog;
   unsigned char ddr(void);
   void ddr(unsigned char d);

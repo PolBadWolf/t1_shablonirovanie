@@ -14,6 +14,7 @@
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
+#define TIME_EXIT 2500
 
 namespace ns_menu
 {
@@ -61,8 +62,9 @@ namespace ns_menu
     // ================================================
     unsigned int  vSecPreCount;
     unsigned char vSecCount;
-#define vSecCountMax 15
+#define vSecCountMax 8
       signed char vSecStat;
+    unsigned char tik_cn = 5;
     // ================================================
     // N mode/step menu
     unsigned char mode = 0;
@@ -122,24 +124,26 @@ namespace ns_menu
 #define md_M2SelPass        8
     void M2SelPass_i();
     void M2SelPass_v();
-#define md_M2SelExit        9
+#define md_M2SelInv         9
+    void M2SelInv_i();
+#define md_M2SelExit        10
     void M2SelExit_i();
 // ------------------------------------
-#define md_SetClockYear     10
+#define md_SetClockYear     11
     void SetClockYear_i();
     void SetClockYear_v();
     void SetClockYear_km();
     void SetClockYear_kp();
     void SetClockYear_ke();
     unsigned char tmpClockYear;
-#define md_SetClockMount    11
+#define md_SetClockMount    12
     void SetClockMount_i();
     void SetClockMount_v();
     void SetClockMount_km();
     void SetClockMount_kp();
     void SetClockMount_ke();
     unsigned char tmpClockMount;
-#define md_SetClockDate     12
+#define md_SetClockDate     13
     void SetClockDate_i();
     unsigned char tmpClockDate;
     unsigned char ClockDateMax;
@@ -147,14 +151,14 @@ namespace ns_menu
     void SetClockDate_km();
     void SetClockDate_kp();
     void SetClockDate_ke();
-#define md_SetClockHour     13
+#define md_SetClockHour     14
     void SetClockHour_i();
     unsigned char tmpClockHour;
     void SetClockHour_v();
     void SetClockHour_km();
     void SetClockHour_kp();
     void SetClockHour_ke();
-#define md_SetClockMinute   14
+#define md_SetClockMinute   15
     void SetClockMinute_i();
     unsigned char tmpClockMinute;
     unsigned char ClockTemp;
@@ -162,190 +166,60 @@ namespace ns_menu
     void SetClockMinute_km();
     void SetClockMinute_kp();
     void SetClockMinute_ke();
-#define md_SetClockSet      15
+#define md_SetClockSet      16
     void SetClockSet_i();
     void SetClockSet_v();
     void SetClockSet_km();
     void SetClockSet_kp();
 // ------------------------------------
-#define md_SetPassword      16
+#define md_SetPassword      17
     void SetPassword_i();
     void SetPassword_v();
     unsigned char newPassw[5];
     unsigned char newPasswN;
-#define md_SetPasswordOk    17
+#define md_SetPasswordOk    18
     void SetPasswordOk_i();
     void SetPasswordOk_n();
     void SetPasswordOk_y();
 // ------------------------------------
-#define md_SetLenD          18
+#define md_SetLenD          19
     void SetLenD_i();
     unsigned int tempLenD;
     void SetLenD_v();
-#define md_SetLenOk         19
+#define md_SetLenOk         20
     void SetLenOk_i();
     void SetLenOk_v();
 // ------------------------------------
-#define md_SetTimeOut       20
+#define md_SetTimeOut       21
     void SetTimeOut_i();
     unsigned int tempTimeOut;
     void SetTimeOut_v();
-#define md_TimeOutOk        21
+#define md_TimeOutOk        22
     void TimeOutOk_i();
 // ------------------------------------
-
-
-
-
-    
-    
-    
-    
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-
-
-
-
-/*
-#define md_PaswSel  5
-  // выбор пароля
-  unsigned PaswSel_OldPsw;
-  unsigned PaswSel_CntPsw;
-  void PaswSel_i();
-  void PaswSel_0();
-  void PaswSel_1();
-  void PaswSel_2();
-  void PaswSel_3();
-  void PaswSel_4();
-#define md_PaswSetPsw 6
-  // установка пароля
-  unsigned char PaswSetPsw_Pasw[5];
-  unsigned char PaswSetPsw_Count;
-  void PaswSetPsw_i();
-  void PaswSetPsw_0();
-  void PaswSetPsw_1();
-  void PaswSetPsw_2();
-  void PaswSetPsw_3();
-  void PaswSetPsw_4();
-#define md_PaswSetAcs 7
-  // установка пароля
-  unsigned char PaswSetAcs_mask;
-  unsigned char PaswSetAcs_count;
-  void PaswSetAcs_i();
-  void PaswSetAcs_0();
-  void PaswSetAcs_1();
-  void PaswSetAcs_2();
-  void PaswSetAcs_3();
-  void PaswSetAcs_4();
-#define md_DateYear 8
-  // ввод года
-  unsigned char Date_Year;
-  void DateYear_i();
-  void DateYear_0();
-  void DateYear_1();
-  void DateYear_2();
-  void DateYear_3();
-  void DateYear_4();
-#define md_DateMonth 9
-  // ввод месяца
-  unsigned char Date_Month;
-  void DateMonth_i();
-  void DateMonth_0();
-  void DateMonth_1();
-  void DateMonth_2();
-  void DateMonth_3();
-  void DateMonth_4();
-#define md_DateDate 10
-  // ввод числа
-  unsigned char Date_Date;
-  unsigned char DateDate_Max;
-  void DateDate_i();
-  void DateDate_0();
-  void DateDate_1();
-  void DateDate_2();
-  void DateDate_3();
-  void DateDate_4();
-#define md_DateHour 11
-  // ввод часов
-  unsigned char Date_Hour;
-  void DateHour_i();
-  void DateHour_0();
-  void DateHour_1();
-  void DateHour_2();
-  void DateHour_3();
-  void DateHour_4();
-#define md_DateMinute 12
-  // ввод минут
-  unsigned char Date_Minute;
-  void DateMinute_i();
-  void DateMinute_0();
-  void DateMinute_1();
-  void DateMinute_2();
-  void DateMinute_3();
-  void DateMinute_4();
-#define md_DateSet 13
-  // потверждение или отказ от установки даты
-  void DateSet_i();
-  void DateSet_2();
-  void DateSet_3();
-#define md_Zero 14
-  // требование ввести пароль
-#define md_ZaSmenu 15
-  // за смену
-  unsigned long ZaSmenu_Old;
-  unsigned long K_Metr;
-  void ZaSmenu_i();
-  void ZaSmenu_0();
-#define md_Archiv 16
-  // архив
-  //unsigned int  ZaSmenu_Old;
-  unsigned long K_Kg;
-  unsigned int vArchivIndx;
-  void Archiv_i();
-  void Archiv_s();
-  void Archiv_2();
-  void Archiv_3();
-#define md_Kmetr 17
-  // метровый кофицент
-  char Kedit[20];
-  unsigned char Kediti;
-  void Kmetr_i();
-  void Kmetr_s();
-  void Kmetr_0();
-  void Kmetr_2();
-  void Kmetr_3();
-  void Kmetr_4();
-#define md_KmetrSav 18
-  // метровый кофицент сохранение
-  void KmetrSav_i();
-  void KmetrSav_2();
-  void KmetrSav_3();
-#define md_Kkg 19
-  // метровый кофицент
-  void Kkg_i();
-  void Kkg_s();
-  void Kkg_0();
-  void Kkg_2();
-  void Kkg_3();
-  void Kkg_4();
-#define md_KkgSav 20
-  // метровый кофицент сохранение
-  void KkgSav_i();
-  void KkgSav_2();
-  void KkgSav_3();
-*/
+#define md_DebugView        23
+    void DebugView_i();
+    void DebugView_v();
+// ------------------------------------
+#define md_ArchivView       24
+    void ArchivView_i();
+    void ArchivView_v();
+#if(ee_ArchivLen>127)
+    signed int  archivViewIdx;
+#else
+    signed char archivViewIdx;
+#endif
+#define md_ArchivViewV      25
+// ------------------------------------
+#define md_SelectInv        26
+    void SelectInv_i();
+    void SelectInv_v();
+    bool tempInv;
+#define md_SelectInvOk      27
+    void SelectInvOk_i();
+    void SelectInvOk_km();
+    void SelectInvOk_kp();
+// ------------------------------------
   
   
   // [view][km][k-][k+][ke][TimeOut][init]
@@ -382,16 +256,6 @@ namespace ns_menu
             if (keyFastOnCount==0)
                 keyFastFl = 1;
         }
-        /* timer2 debug
-        static unsigned char debugT = 0;
-        static unsigned int  debugTp = 0;
-        if (++debugTp>=1000)
-        {
-            debugTp = 0;
-            scr->dig_uz(14, 2, debugT++ );
-            if (debugT==100) debugT = 0;
-        }
-        */
         if (vSecCount<vSecCountMax)
         {
             if (++vSecPreCount>999)
@@ -402,24 +266,7 @@ namespace ns_menu
         }
     }
     // =====================================================================
-/*
-    void imp2data(const unsigned long imp, unsigned long *m, unsigned long *Kg) {
-    unsigned long  m_m;
-    unsigned long  m_kg;
-    m_m = imp;
-    m_m = m_m * (unsigned long)K_Metr;
-    m_m = m_m + ((unsigned long)500);
-    m_m = m_m / ((unsigned long)1000);
-    *m = (unsigned long)m_m;
-    m_kg = imp;
-    m_kg = m_kg * (unsigned long)K_Kg;
-    m_kg = m_kg / ((unsigned long)10000);
-    m_kg = m_kg + ((unsigned long)5);
-    m_kg = m_kg / ((unsigned long)10);
-    *Kg = (unsigned long)m_kg;
-  }
-  */
-// ===================================================
+    // ===================================================
     void main(void)
     {
         unsigned int temp;
@@ -543,72 +390,113 @@ void workscr_0()
             CritSec wScrCs;
             vSecCount = 0;
         }
+        // ---------------------------------
         scr->Clear();
         workscrFlCl = 1;
         if (vSecStat==0)
         {
-            scr->ShowChar( 2, '.');
-            scr->ShowChar( 5, '.');
-            scr->ShowChar(12, 'n');
+            scr->ShowString(            9, "n=");
+            scr->ShowString(c_stolbcov+ 9, "V=");
         }
         if (vSecStat==1)
         {
-            scr->ShowString(            0, "т.скp" );
-            scr->ShowString(            6, "a.скp" );
-            scr->ShowString(            12, "n" );
-            scr->ShowString(c_stolbcov+ 0, "<.скp" );
-            scr->ShowString(c_stolbcov+ 6, ">.скp" );
+            scr->ShowString(            9, "n=");
+            scr->ShowChar  (c_stolbcov+ 0, 'm');
+            scr->ShowChar  (c_stolbcov+ 5, 'M');
+            scr->ShowChar  (c_stolbcov+10, 'A');
         }
     }
     // ------------------------------------
+    // main show
     if (vSecStat==0)
     {
 #ifdef CLOCK
         // flash
-        if (clockrt::tik_cn==0)
+        if (tik_cn!=clockrt::tik_cn)
         {
-            scr->ShowChar(c_stolbcov + 2, ':');
-            scr->ShowChar(c_stolbcov + 5, ':');
-        }
-        else
-        {
-            scr->ShowChar(c_stolbcov + 2, ' ');
-            scr->ShowChar(c_stolbcov + 5, ' ');
+            tik_cn = clockrt::tik_cn;
+            if (clockrt::tik_cn==0)
+            {
+                scr->ShowChar(            2, ':');
+                scr->ShowChar(            5, ':');
+            }
+            else
+            {
+                scr->ShowChar(            2, ' ');
+                scr->ShowChar(            5, ' ');
+            }
         }
         // =========================
-        if (clockrt::tik)
+        if (clockrt::tik || workscrFlCl)
         {
             clockrt::tik = 0;
-            workscrFlCl = 1;
-        }
-        if (workscrFlCl)
-        {
-            workscrFlCl = 0;
-            scr->dig_uz(0, 2, clockrt::time[CT_DATE] );
-            scr->dig_uz(3, 2, clockrt::time[CT_MONTH] );
-            scr->dig_uz(6, 2, clockrt::time[CT_YEAR] );
-            scr->dig_uz(c_stolbcov+ 0, 2, clockrt::time[CT_HOUR] );
-            scr->dig_uz(c_stolbcov+ 3, 2, clockrt::time[CT_MINUTE] );
-            scr->dig_uz(c_stolbcov+ 6, 2, clockrt::time[CT_SECOND] );
-            //
-            scr->dig_uz(           13, 2, clockrt::time[CT_SECOND] );
+            scr->dig_uz(            0, 2, clockrt::time[CT_HOUR] );
+            scr->dig_uz(            3, 2, clockrt::time[CT_MINUTE] );
+            scr->dig_uz(            6, 2, clockrt::time[CT_SECOND] );
+            scr->dig_uz(c_stolbcov+ 0, 2, clockrt::time[CT_DATE] );
+            scr->ShowChar(c_stolbcov+ 2, '.');
+            scr->dig_uz(c_stolbcov+ 3, 2, clockrt::time[CT_MONTH] );
+            scr->ShowChar(c_stolbcov+ 5, '.');
+            scr->dig_uz(c_stolbcov+ 6, 2, clockrt::time[CT_YEAR] );
         }
 #endif
+        if (speedmetr::newDataSpeed || workscrFlCl)
+        {
+            speedmetr::newDataSpeed = 0;
+            unsigned int tmp;
+            scr->dig_uz    (           11, 3, speedmetr::n);
+            tmp = (speedmetr::lastSpeed+50)/100;
+            scr->dig_uz    (c_stolbcov+11, 1, tmp/10 );
+            scr->ShowChar  (c_stolbcov+12, '.');
+            scr->dig_uz    (c_stolbcov+13, 1, tmp%10 );
+        }
     }
     // ------------------------------------
     if (vSecStat==1)
     {
 #ifdef CLOCK
-        if (clockrt::tik)
+        // flash
+        if (tik_cn!=clockrt::tik_cn)
+        {
+            tik_cn = clockrt::tik_cn;
+            if (clockrt::tik_cn==0)
+            {
+                scr->ShowChar(            2, ':');
+                scr->ShowChar(            5, ':');
+            }
+            else
+            {
+                scr->ShowChar(            2, ' ');
+                scr->ShowChar(            5, ' ');
+            }
+        }
+        // =========================
+        if (clockrt::tik || workscrFlCl)
         {
             clockrt::tik = 0;
-            workscrFlCl = 1;
-        }
-        if (workscrFlCl)
-        {
-            scr->dig_uz(           13, 2, clockrt::time[CT_SECOND] );
+            scr->dig_uz(            0, 2, clockrt::time[CT_HOUR]);
+            scr->dig_uz(            3, 2, clockrt::time[CT_MINUTE]);
+            scr->dig_uz(            6, 2, clockrt::time[CT_SECOND]);
         }
 #endif
+        if (speedmetr::newDataSpeed || workscrFlCl)
+        {
+            unsigned int tmp;
+            speedmetr::newDataSpeed = 0;
+            scr->dig_uz    (           11, 3, speedmetr::n);
+            tmp = (speedmetr::minSpeed+50)/100;
+            scr->dig_uz    (c_stolbcov+ 1, 1, tmp/10 );
+            scr->ShowChar  (c_stolbcov+ 2, '.');
+            scr->dig_uz    (c_stolbcov+ 3, 1, tmp%10 );
+            tmp = (speedmetr::maxSpeed+50)/100;
+            scr->dig_uz    (c_stolbcov+ 6, 1, tmp/10 );
+            scr->ShowChar  (c_stolbcov+ 7, '.');
+            scr->dig_uz    (c_stolbcov+ 8, 1, tmp%10 );
+            tmp = ( ( (speedmetr::allSpeed)/speedmetr::n)+50)/100;
+            scr->dig_uz    (c_stolbcov+11, 1, tmp/10 );
+            scr->ShowChar  (c_stolbcov+12, '.' );
+            scr->dig_uz    (c_stolbcov+13, 1, tmp%10 );
+        }
     }
     // ------------------------------------
     if (speedmetr::ObjD1->fl==0)
@@ -618,8 +506,9 @@ void workscr_0()
     if (speedmetr::ObjD2->fl==0)
         scr->ShowChar(c_stolbcov+15, 1);
     else
-        scr->ShowChar(c_stolbcov+15, 1);
+        scr->ShowChar(c_stolbcov+15, 0);
     // ------------------------------------
+    workscrFlCl = 0;
 }
 // ===================================================
 // select fist menu archive
@@ -781,6 +670,15 @@ void SelectExit_i()
         scr->ShowString(c_stolbcov+ 0, "уст. времени" );
     }
 // ----------------------------------
+    void M2SelInv_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_M2SelInv;
+        scr->Clear();
+        scr->ShowString(            0, "меню :" );
+        scr->ShowString(c_stolbcov+ 0, "уст. полярности" );
+    }
+// ----------------------------------
     void M2SelExit_i()
     {
         SetMenuTimeOut(60000);
@@ -797,7 +695,7 @@ void SelectExit_i()
         scr->ShowString(            0, "отмена" );
         scr->ShowString(c_stolbcov+ 0, "выход" );
         // delay 6 second
-        SetMenuTimeDelay(6000, md_workscr);
+        SetMenuTimeDelay(TIME_EXIT, md_workscr);
     }
 // ==================================
     void SetClockYear_i()
@@ -1106,7 +1004,7 @@ void SelectExit_i()
         SetMenuTimeOut(60000);
         mode = md_SetClockSet;
         scr->Clear();
-        scr->ShowString(c_stolbcov+ 0, "  отм.  уст. " );
+        scr->ShowString(c_stolbcov+ 0, "    нет- да+" );
         SetClockSet_v();
     }
     void SetClockSet_v()
@@ -1132,7 +1030,7 @@ void SelectExit_i()
         scr->Clear();
         scr->ShowString(            0, "отмена установки");
         scr->ShowString(c_stolbcov+ 0, "даты/времени    ");
-        SetMenuTimeDelay(5000, md_workscr);
+        SetMenuTimeDelay(TIME_EXIT, md_workscr);
     }
     void SetClockSet_kp()
     {
@@ -1146,7 +1044,7 @@ void SelectExit_i()
         scr->Clear();
         scr->ShowString(            0, "дата/время    ");
         scr->ShowString(c_stolbcov+ 0, "установлены");
-        SetMenuTimeDelay(5000, md_workscr);
+        SetMenuTimeDelay(TIME_EXIT, md_workscr);
     }
 // ==================================
     void SetPassword_i()
@@ -1203,14 +1101,14 @@ void SelectExit_i()
         mode = md_SetPasswordOk;
         scr->Clear();
         scr->ShowString(            0, "уст.пароля :" );
-        scr->ShowString(c_stolbcov+ 0, "  отм.  уст. " );
+        scr->ShowString(c_stolbcov+ 0, "    нет- да+" );
     }
     void SetPasswordOk_n()
     {
         scr->Clear();
         scr->ShowString(            0, "отмена установки");
         scr->ShowString(c_stolbcov+ 0, "пароля          ");
-        SetMenuTimeDelay(5000, md_workscr);
+        SetMenuTimeDelay(TIME_EXIT, md_workscr);
     }
     void SetPasswordOk_y()
     {
@@ -1219,7 +1117,7 @@ void SelectExit_i()
         scr->Clear();
         scr->ShowString(            0, "новый пароль  ");
         scr->ShowString(c_stolbcov+ 0, "установлен ");
-        SetMenuTimeDelay(5000, md_workscr);
+        SetMenuTimeDelay(TIME_EXIT, md_workscr);
     }
 // ==================================
     void SetLenD_i()
@@ -1229,13 +1127,14 @@ void SelectExit_i()
         scr->Clear();
         scr->ShowString(            0, "длина d1-d2" );
         tempLenD = speedmetr::lenD_EE;
-        scr->ShowChar(c_stolbcov+ 1, '.');
+        scr->ShowString(c_stolbcov+ 0, "L=6.000мм" );
+        //scr->ShowChar  (c_stolbcov+ 1, '.');
         SetLenD_v();
     }
     void SetLenD_v()
     {
-        scr->dig_uz(c_stolbcov+ 0, 1, tempLenD/1000);
-        scr->dig_uz(c_stolbcov+ 2, 3, tempLenD%1000);
+        scr->dig_uz(c_stolbcov+ 2, 1, tempLenD/1000);
+        scr->dig_uz(c_stolbcov+ 4, 3, tempLenD%1000);
     }
     void SetLenD_km()
     {
@@ -1273,14 +1172,14 @@ void SelectExit_i()
         mode = md_SetLenOk;
         scr->Clear();
         scr->ShowString(            0, "длина d1-d2" );
-        scr->ShowString(c_stolbcov+ 0, "  отм.  уст. " );
+        scr->ShowString(c_stolbcov+ 0, "    нет- да+" );
     }
     void SetLenOk_km()
     {
         scr->Clear();
         scr->ShowString(            0, "отмена" );
         scr->ShowString(c_stolbcov+ 0, "выход");
-        SetMenuTimeDelay(5000, md_workscr);
+        SetMenuTimeDelay(TIME_EXIT, md_workscr);
     }
     void SetLenOk_kp()
     {
@@ -1292,7 +1191,7 @@ void SelectExit_i()
         scr->Clear();
         scr->ShowString(            0, "длина d1-d2" );
         scr->ShowString(c_stolbcov+ 0, "установлена");
-        SetMenuTimeDelay(5000, md_M2SelClock);
+        SetMenuTimeDelay(TIME_EXIT, md_M2SelClock);
     }
 // ==================================
     void SetTimeOut_i()
@@ -1305,14 +1204,15 @@ void SelectExit_i()
             CritSec setTimeOut_cs;
             tempTimeOut = speedmetr::timeOut_EE;
         }
-        scr->ShowChar(c_stolbcov+ 2, '.');
+        scr->ShowString(c_stolbcov+ 0, "t=55.000мСек." );
+        //scr->ShowChar  (c_stolbcov+ 2, '.');
         SetTimeOut_v();
     }
     void SetTimeOut_v()
     {
         unsigned int temp = tempTimeOut*timeOutKF;
-        scr->dig_u (c_stolbcov+ 0, 2, temp/1000);
-        scr->dig_uz(c_stolbcov+ 3, 3, temp%1000);
+        scr->dig_u (c_stolbcov+ 2, 2, temp/1000);
+        scr->dig_uz(c_stolbcov+ 5, 3, temp%1000);
     }
     void SetTimeOut_km()
     {
@@ -1338,14 +1238,14 @@ void SelectExit_i()
         mode = md_TimeOutOk;
         scr->Clear();
         scr->ShowString(            0, "время ТаймАут" );
-        scr->ShowString(c_stolbcov+ 0, "  отм.  уст. " );
+        scr->ShowString(c_stolbcov+ 0, "    нет- да+" );
     }
     void TimeOutOk_km()
     {
         scr->Clear();
         scr->ShowString(            0, "отмена" );
         scr->ShowString(c_stolbcov+ 0, "выход");
-        SetMenuTimeDelay(5000, md_M2SelClock);
+        SetMenuTimeDelay(TIME_EXIT, md_M2SelClock);
     }
     void TimeOutOk_kp()
     {
@@ -1357,887 +1257,192 @@ void SelectExit_i()
         scr->Clear();
         scr->ShowString(            0, "время ТаймАут" );
         scr->ShowString(c_stolbcov+ 0, "установлено");
-        SetMenuTimeDelay(5000, md_M2SelClock);
+        SetMenuTimeDelay(TIME_EXIT, md_M2SelClock);
     }
 // ==================================
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-/*
-    //            mode configure
-    // init configure
-    void NastSel_i()
+    void DebugView_i()
     {
-        // set mode
-//        mode = md_NastSel;
-        // show scr
+        SetMenuTimeOut(0);
+        mode = md_DebugView;
         scr->Clear();
-        scr->ShowString(0, "  Меню :        " );
-    vNastSel = 0;
-    vNastSelx = 255;
-        // path select menu
-        menuNap = 0;
     }
-    // view
-    void NastSel_0(void)
+    void DebugView_v()
     {
-        if (vNastSelx!=vNastSel)
+        scr->dig_uz    (           15, 1, speedmetr::countSt);
+        scr->dig_uz    (c_stolbcov+ 0, 4, speedmetr::count);
+        scr->dig_uz    (            0, 4, speedmetr::countM);
+        //scr->dig_uz    (c_stolbcov+ 9, 5, ((unsigned int)((unsigned long)speedmetr::lenD*1000/(speedmetr::countM*timeOutKF)                 )  )  );
+        //vg::StrSpeed chk;
+        //chk.Send(2, 12, 19, 123, 324, 511);
+        //chk.Recive(&mount, &day, &hour, &min, &max, &avg);
+        //scr->dig_uz    (            8, 3, min);
+        //scr->dig_uz    (           12, 3, max);
+        //scr->dig_uz    (c_stolbcov+ 8, 3, avg);
+        //scr->dig_uz    (c_stolbcov+12, 2, hour);
+        unsigned int tmp;
+        tmp = ( ( (speedmetr::allSpeed)/speedmetr::n)+50)/100;
+        scr->dig_uz    (            5, 1, tmp/10 );
+        scr->ShowChar  (            6, '.' );
+        scr->dig_uz    (            7, 1, tmp%10 );
+        tmp = (speedmetr::minSpeed+50)/100;
+        scr->dig_uz    (c_stolbcov+ 5, 1, tmp/10 );
+        scr->ShowChar  (c_stolbcov+ 6, '.');
+        scr->dig_uz    (c_stolbcov+ 7, 1, tmp%10 );
+        tmp = (speedmetr::maxSpeed+50)/100;
+        scr->dig_uz    (c_stolbcov+ 9, 1, tmp/10 );
+        scr->ShowChar  (c_stolbcov+10, '.');
+        scr->dig_uz    (c_stolbcov+11, 1, tmp%10 );
+        tmp = (speedmetr::allSpeed+5)/10;
+        scr->dig_uz    (            9, 2, tmp/100 );
+        scr->ShowChar  (           11, '.' );
+        scr->dig_uz    (           12, 2, tmp%100 );
+        scr->dig_uz    (c_stolbcov+13, 3, speedmetr::n );
+    }
+// ==================================
+    void ArchivView_i()
     {
-      if (vNastSel==0 ) scr->ShowString(c_stolbcov, "выбор параметра " );
-
-      // уровень доступа "0"
-      // уст.даты/время
-      if ( vNastSel<10 ) {
-//        if (mask_menu & (1<<0))
-        {
-          if (vNastSel>1)
-          {
-            if (menuNap) vNastSel = 1;
-            else          vNastSel = 10;
-          }
-          else vNastSelx = vNastSel;
-        }
-//        else
-        {
-          if (menuNap) vNastSel = 79;
-          else          vNastSel = 10;
-        }
-      }
-*/
-      // уровень доступа "1"
-      // просмотр за текущую смену
-//      if ( (vNastSel>=10 ) && (vNastSel<20) ) {
-          /*
-//        if (mask_menu & (1<<1)) {
-          if (vNastSel>10) {
-            if (menu_nap) vNastSel = 10;
-            else          vNastSel = 20;
-          }
-          else vNastSelx = vNastSel;
-        }
-//        else {
-          if (menu_nap) vNastSel = 9;
-          else          vNastSel = 20;
-        }
-        */
-//      }
-
-      // уровень доступа "2"
-      // просмотр архива
-//      if ( (vNastSel>=20 ) && (vNastSel<30) ) {
-          /*
-        if (mask_menu & (1<<2)) {
-          if (vNastSel>20) {
-            if (menu_nap) vNastSel = 20;
-            else          vNastSel = 30;
-          }
-          else vNastSelx = vNastSel;
-        }
-        else {
-          if (menu_nap) vNastSel = 19;
-          else          vNastSel = 30;
-        }
-          */
-//      }
-
-      // уровень доступа "3"
-      // установка кофицентов
-//      if ( (vNastSel>=30 ) && (vNastSel<40) )
-//      {
-          /*
-        if (mask_menu & (1<<3)) {
-          if (vNastSel>31) {
-            if (menu_nap) vNastSel = 31;
-            else          vNastSel = 40;
-          }
-          else vNastSelx = vNastSel;
-        }
-        else {
-          if (menu_nap) vNastSel = 29;
-          else          vNastSel = 40;
-        }
-          */
-//      }
-/*
-      // уровень доступа "4"
-      // пустой
-      if ( (vNastSel>=40 ) && (vNastSel<50) ) {
-        if (menuNap) vNastSel = 39;
-        else          vNastSel = 50;
-      }
-
-      // уровень доступа "5"
-      // пустой
-      if ( (vNastSel>=50 ) && (vNastSel<60) ) {
-        if (menuNap) vNastSel = 49;
-        else          vNastSel = 60;
-      }
-*/
-      // уровень доступа "6"
-      // пустой
-//      if ( (vNastSel>=60 ) && (vNastSel<70) ) {
-          /*
-        if (mask_menu & (1<<6)) {
-          if (vNastSel>60) {
-            if (menu_nap) vNastSel = 60;
-            else          vNastSel = 70;
-          }
-          else vNastSelx = vNastSel;
-        }
-        else {
-          if (menu_nap) vNastSel = 59;
-          else          vNastSel = 70;
-        }
-        */
-//      }
-/*
-      // уровень доступа "7"
-      // уровень админ - установка пароля и уровней доступ
-      if ( vNastSel>=70 ) {
-        if (menuNap) vNastSel = 69;
-        else          vNastSel = 1;
-      }
-
-      if (vNastSel==1 ) scr->ShowString(c_stolbcov, "уст.даты/время  " );
-      if (vNastSel==10) scr->ShowString(c_stolbcov, "текущая смена   " );
-      if (vNastSel==20) scr->ShowString(c_stolbcov, "архив           " );
-      if (vNastSel==30) scr->ShowString(c_stolbcov, "ввод К длины    " );
-      if (vNastSel==31) scr->ShowString(c_stolbcov, "ввод К веса     " );
-      if (vNastSel==60) scr->ShowString(c_stolbcov, "уст. паролей    " );
-      // vNastSelx = vNastSel;
-    }
-  }
-*/
-/*
-    void NastSel_1(void)
-  {
-    scr->Clear();
-    scr->ShowString(0, "выход");
-    SetMenuTimeDelay(2000, md_workscr);
-  }
-  void NastSel_2(void)
-  {
-    menuNap = 1;
-    if (vNastSel>1)
-      vNastSel--;
-    else
-      vNastSel = 254;
-    NastSel_0();
-  }
-  void NastSel_3(void)
-  {
-    menuNap = 0;  
-    vNastSel++;
-      NastSel_0();
-  }
-  void NastSel_4()
-  {
-    if (vNastSel==0) {
-      return;
-    }
-    if (vNastSel==1) {
-      DateYear_i();
-      return;
-    }
-    if (vNastSel==10) {
-      ZaSmenu_i();
-      return;
-    }
-    if (vNastSel==20) {
-      Archiv_i();
-      return;
-    }
-    if (vNastSel==30) {
-      Kmetr_i();
-      return;
-    }
-    if (vNastSel==31) {
-      Kkg_i();
-      return;
-    }
-    if (vNastSel==60) {
-      PaswSel_i();
-      return;
-    }
-    scr->Clear();
-    scr->ShowString(0, "ошибка в меню");
-            SetMenuTimeDelay(12000, md_workscr);
-  }
-    */
-/*
-    //========================================================
-  // выбор пароля
-  void PaswSel_i()
-  {
-    mode = md_PaswSel;
-    PaswSel_CntPsw = 0;
-    PaswSel_OldPsw = 255;
-    scr->Clear();
-    scr->ShowString(             0, "user N   view");
-    scr->ShowString(c_stolbcov + 0, "код доступа:");
-  }
-  void PaswSel_0()
-  {
-//    unsigned char accs;
-    if (PaswSel_CntPsw>7) {
-      PaswSel_CntPsw = 0;
-      PaswSel_OldPsw = 255;
-    }
-    if (PaswSel_OldPsw!=PaswSel_CntPsw) {
-      PaswSel_OldPsw=PaswSel_CntPsw;
-//      accs = ee_psw[PaswSel_CntPsw].mask;
-//      scr->ShowChar(        7,'0'+PaswSel_CntPsw);
-//      scr->Hex(c_stolbcov + 12,accs);
-    }
-  }
-  */
-    /*
-  void PaswSel_1() {
-    NastSel_i();
-  }
-  void PaswSel_2() {
-    if (PaswSel_CntPsw>0) PaswSel_CntPsw--;
-  }
-  void PaswSel_3() {
-    if (PaswSel_CntPsw<7) PaswSel_CntPsw++;
-  }
-  void PaswSel_4() {
-    PaswSetPsw_i();
-  }
-  */
-    /*
-  //========================================================
-  // установка пароля
-  void PaswSetPsw_i() {
-    mode = md_PaswSetPsw;
-    for (unsigned char i=0;i<5;i++) {
-      if (ee_psw[PaswSel_CntPsw].pin[i]>9) PaswSetPsw_Pasw[i] = 0;
-      else PaswSetPsw_Pasw[i] = ee_psw[PaswSel_CntPsw].pin[i];
-    }
-    PaswSetPsw_Count = 0;
-    scr->Clear();
-    scr->ShowString(             0, "user N   enter");
-    scr->ShowChar  (        7,'0'+PaswSel_CntPsw);
-    scr->ShowString(c_stolbcov + 0, "пароль :");
-  }
-  void PaswSetPsw_0() {
-    unsigned char a = 0;
-    while(a<=PaswSetPsw_Count) {
-      if (a==PaswSetPsw_Count) {
-        scr->ShowChar(c_stolbcov +  9+a, '0'+PaswSetPsw_Pasw[a]);
-        scr->ShowChar(c_stolbcov + 10+a, '_');
-      }
-      else {
-        scr->ShowChar(c_stolbcov +  9+a, '*');
-      }
-      a++;
-    }
-  }
-  void PaswSetPsw_1() {
-  }
-  void PaswSetPsw_2() {
-    if (PaswSetPsw_Pasw[PaswSetPsw_Count]>0) PaswSetPsw_Pasw[PaswSetPsw_Count]--;
-  }
-  void PaswSetPsw_3() {
-    if (PaswSetPsw_Pasw[PaswSetPsw_Count]<9) PaswSetPsw_Pasw[PaswSetPsw_Count]++;
-  }
-  void PaswSetPsw_4() {
-    if (PaswSetPsw_Count==4) PaswSetAcs_i();
-    if (PaswSetPsw_Count<4) PaswSetPsw_Count++;
-  }
-  //========================================================
-  // установка операций
-  void PaswSetAcs_i() {
-    mode = md_PaswSetAcs;
-    PaswSetAcs_mask = 0;
-    PaswSetAcs_count = 0;
-    scr->Clear();
-    scr->ShowString(             0, "user N   enter");
-    scr->ShowChar  (        7,'0'+PaswSel_CntPsw);
-    scr->ShowString(c_stolbcov + 0, "код доступа:");
-  }
-  void PaswSetAcs_0() {
-    unsigned char temp;
-    if (PaswSetAcs_count==0) {
-      temp = (PaswSetAcs_mask & 0xf0) >> 4;
-      if (temp>9) temp += 7;
-      scr->ShowChar(c_stolbcov + 12,'0'+temp);
-      scr->ShowChar(c_stolbcov + 13,'_');
-    }
-    if (PaswSetAcs_count==1) {
-      scr->Hex(c_stolbcov + 12, PaswSetAcs_mask);
-      scr->ShowChar(c_stolbcov + 14,'_');
-    }
-  }
-  void PaswSetAcs_1() {
-  }
-  void PaswSetAcs_2() {
-    if (PaswSetAcs_count==0) {
-      if ( (PaswSetAcs_mask & 0xf0)>0x00 ) PaswSetAcs_mask -= 0x10;
-    }
-    if (PaswSetAcs_count==1) {
-      if ( (PaswSetAcs_mask & 0x0f)>0x00 ) PaswSetAcs_mask -= 0x01;
-    }
-  }
-  */
-    /*
-  void PaswSetAcs_3() {
-      
-    if (mask_menu & (1<<7) ) {
-      if (PaswSetAcs_count==0) {
-        if ( (PaswSetAcs_mask & 0xf0)<0xf0 ) PaswSetAcs_mask += 0x10;
-      }
-      if (PaswSetAcs_count==1) {
-        if ( (PaswSetAcs_mask & 0x0f)<0x0f ) PaswSetAcs_mask += 0x01;
-      }
-    }
-    else {
-      if (PaswSetAcs_count==0) {
-        if ( (PaswSetAcs_mask & 0xf0)<0x70 ) PaswSetAcs_mask += 0x10;
-        if ( (PaswSetAcs_mask & 0xf0)>0x70 ) PaswSetAcs_mask = (PaswSetAcs_mask & 0x0f) + 0x70;
-      }
-      if (PaswSetAcs_count==1) {
-        if ( (PaswSetAcs_mask & 0x0f)<0x0f ) PaswSetAcs_mask += 0x01;
-      }
-    }
-      
-  }
-*/
-    /*
-  void PaswSetAcs_4() {
-    if (PaswSetAcs_count==0) {
-      PaswSetAcs_count++;
-      return;
-    }
-    if (PaswSetAcs_count==1) {
-      T_psw psw;
-//      psw.mask = PaswSetAcs_mask;
-      for(unsigned char i=0;i<5;i++) 
-        psw.pin[i] = PaswSetPsw_Pasw[i];
-      ee_psw[PaswSel_CntPsw] = psw;
-      PaswSel_i();
-    }
-  }
-    */
-    /*
-  //========================================================
-  // установка года
-  void DateYear_i() {
-    mode = md_DateYear;
-    Date_Year = clockrt::time[CT_YEAR];
-    if (Date_Year>99) Date_Year = 0;
-    scr->Clear();
-    scr->ShowString(             0, "уст.года:");
-    scr->ShowString(c_stolbcov + 0, "отм. +1X +1 ввод");
-  }
-  void DateYear_0() {
-    scr->dig_uz(             9, 2, Date_Year);
-  }
-  void DateYear_1() {
-//    NastSel_i();
-  }
-  void DateYear_2() {
-    Date_Year -= Date_Year%10;
-    Date_Year += 10;
-    if (Date_Year>99) Date_Year = 1;
-  }
-  void DateYear_3() {
-    Date_Year++;
-    if (Date_Year>99) Date_Year = 1;
-  }
-  void DateYear_4() {
-    DateMonth_i();
-  }
-  //========================================================
-  // установка месяца
-  void DateMonth_i() {
-    mode = md_DateMonth;
-    Date_Month = clockrt::time[CT_MONTH];
-    if (Date_Month>12) Date_Month = 1;
-    scr->Clear();
-    scr->ShowString(             0, "уст.месяца:");
-    scr->ShowString(c_stolbcov + 0, "отм. +1X +1 ввод");
-  }
-  void DateMonth_0() {
-    scr->dig_uz(             11, 2, Date_Month);
-  }
-  void DateMonth_1() {
-//    NastSel_i();
-  }
-  void DateMonth_2() {
-    Date_Month -= Date_Month%10;
-    Date_Month += 10;
-    if (Date_Month>12) Date_Month = 1;
-  }
-  void DateMonth_3() {
-    Date_Month++;
-    if (Date_Month>12) Date_Month = 1;
-  }
-  void DateMonth_4() {
-    DateDate_i();
-  }
-  //========================================================
-  // установка даты
-  void DateDate_i() {
-    mode = md_DateDate;
-    Date_Date = clockrt::time[CT_DATE];
-    if (Date_Month== 1) DateDate_Max = 31;
-    if (Date_Month== 2) {
-      if ( (Date_Year%4)==0 ) DateDate_Max = 29;
-      else                    DateDate_Max = 28;
-    }
-    if (Date_Month== 3) DateDate_Max = 31;
-    if (Date_Month== 4) DateDate_Max = 30;
-    if (Date_Month== 5) DateDate_Max = 31;
-    if (Date_Month== 6) DateDate_Max = 30;
-    if (Date_Month== 7) DateDate_Max = 31;
-    if (Date_Month== 8) DateDate_Max = 31;
-    if (Date_Month== 9) DateDate_Max = 30;
-    if (Date_Month==10) DateDate_Max = 31;
-    if (Date_Month==11) DateDate_Max = 30;
-    if (Date_Month==12) DateDate_Max = 31;
-    if (Date_Date>DateDate_Max) Date_Date = 1;
-    scr->Clear();
-    scr->ShowString(             0, "уст.даты:");
-    scr->ShowString(c_stolbcov + 0, "отм. +1X +1 ввод");
-  }
-  void DateDate_0() {
-    scr->dig_uz(             9, 2, Date_Date);
-  }
-  void DateDate_1() {
-//    NastSel_i();
-  }
-  void DateDate_2() {
-    Date_Date -= Date_Date%10;
-    Date_Date += 10;
-    if (Date_Date>DateDate_Max) Date_Date = 1;;
-  }
-  void DateDate_3() {
-    Date_Date++;
-    if (Date_Date>DateDate_Max) Date_Date = 1;;
-  }
-  void DateDate_4() {
-    DateHour_i();
-  }
-    */
-    /*
-  //========================================================
-  // установка часов
-  void DateHour_i() {
-    mode = md_DateHour;
-    Date_Hour = clockrt::time[CT_HOUR];
-    if (Date_Hour>23) Date_Hour = 0;
-    scr->Clear();
-    //scr->ShowString( 0, "время чч:мм:сс");
-    scr->ShowString(             0, "уст.часов:");
-    scr->ShowString(c_stolbcov + 0, "отм. +1X +1 ввод");
-  }
-    */
-    /*
-  void DateHour_0() {
-    
-    scr->dig_uz(6, 2, clockrt::time[CT_HOUR]);
-    scr->dig_uz(9, 2, clockrt::time[CT_MINUTE]);
-    scr->dig_uz(12, 2, clockrt::time[CT_SECOND]);
-    
-    scr->dig_uz(             10, 2, Date_Hour);
-  }
-*/
-  void DateHour_1() {
-//    NastSel_i();
-  }
-  /*
-  void DateHour_2() {
-    Date_Hour -= Date_Hour%10;
-    Date_Hour += 10;;
-    if (Date_Hour>23) Date_Hour = 0;
-  }
-  void DateHour_3() {
-    Date_Hour++;
-    if (Date_Hour>23) Date_Hour = 0;
-  }
-  void DateHour_4() {
-    DateMinute_i();
-  }
-  //========================================================
-  // установка минут
-  void DateMinute_i() {
-    mode = md_DateMinute;
-    Date_Minute = clockrt::time[CT_MINUTE];
-    if (Date_Minute>59) Date_Minute = 0;
-    scr->Clear();
-    //scr->ShowString( 0, "время чч:мм:сс");
-    scr->ShowString(             0, "уст.минут:");
-    scr->ShowString(c_stolbcov + 0, "отм. +1X +1 ввод");
-  }
-  */
-  /*
-  void DateMinute_0() {
-    
-    scr->dig_uz(6, 2, clockrt::time[CT_HOUR]);
-    scr->dig_uz(9, 2, clockrt::time[CT_MINUTE]);
-    scr->dig_uz(12, 2, clockrt::time[CT_SECOND]);
-    
-    scr->dig_uz(             10, 2, Date_Minute);
-  }
-  */
-  void DateMinute_1() {
-//    NastSel_i();
-  }
-  /*
-  void DateMinute_2() {
-    Date_Minute -= Date_Minute%10;
-    Date_Minute += 10;
-    if (Date_Minute>59) Date_Minute = 0;
-  }
-  void DateMinute_3() {
-    Date_Minute++;
-    if (Date_Minute>59) Date_Minute = 0;
-  }
-  void DateMinute_4() {
-    DateSet_i();
-  }
-  //========================================================
-  // потверждение или отказ от установки даты
-  void DateSet_i() {
-    mode = md_DateSet;
-    scr->Clear();
-    scr->ShowString( 0,             "уст.Дату/Врея?");
-    //scr->ShowString(c_stolbcov + 0, "обновить ?");
-    scr->ShowString(c_stolbcov + 0, "     Нет Да     ");
-  }
-  void DateSet_2() {
-//    NastSel_i();
-  }
-  */
-  void DateSet_3() {
-    scr->Clear();
-    scr->ShowString( 0, "time set");
-    /*
-    clockrt::RefSav();
-    clockrt::SetYear(Date_Year);
-    clockrt::SetMonth(Date_Month);
-    clockrt::SetDate(Date_Date);
-    clockrt::SetHour(Date_Hour);
-    clockrt::SetMinute(Date_Minute);
-    clockrt::SetZeroSecond();
-    clockrt::Update();
-    */
-//    NastSel_i();
-    /*
-    {
-      CritSec cs;
-      menuTimeOut = 500;
-      TimeOut_i();
-    }
-    */
-  }
-  /*
-  //========================================================
-    void zero()
-    {
-        mode = md_Zero;
+        SetMenuTimeOut(60000);
+        mode = md_ArchivView;
         scr->Clear();
-        scr->ShowString( 0, "БАТАРЕЯ !!!");
-        scr->ShowString( c_stolbcov + 0, "уст. новое время");
+        if (vg::arcSpeedLen>0)
+        {
+            scr->ShowString(            0, "Архив" );
+            archivViewIdx = vg::addrArchivNorm(vg::arcSpeedInd-1);
+            ArchivView_v();
+        }
+        else
+        {
+            scr->ShowString(            0, "Архив пуст" );
+            scr->ShowString(c_stolbcov+ 0, "выход" );
+            SetMenuTimeDelay(TIME_EXIT, md_workscr);
+        }
     }
-  */
-  /*
-  //========================================================
-  // за смену
-  void ZaSmenu_i() {
-    mode = md_ZaSmenu;
-    ZaSmenu_Old = ~0;
-//    K_Metr = vg::ee_K_Metr;
-//    K_Kg = vg::ee_K_Kg;
-//    vg::THourSmena sm;
-//  sm.Year   = clockrt::time[CT_YEAR];
-//  sm.Mounth = clockrt::time[CT_MONTH];
-//  sm.Date   = clockrt::time[CT_DATE];
-//  sm.Hour   = clockrt::time[CT_HOUR];
-    //PowerDown::smena(&sm);
-    scr->Clear();
-    scr->ShowString( 0, "тек.смена");
-//  scr->ShowChar(  9, '1' + sm.Smena);
-    scr->ShowChar( c_stolbcov + 3, '.');
-    scr->ShowString( c_stolbcov + 7, "м");
-    scr->ShowChar(c_stolbcov + 12, '.');
-    scr->ShowChar(c_stolbcov + 14, 'К');
-    scr->ShowChar(c_stolbcov + 15, 'г');
-  }
-  void ZaSmenu_0() {
-    static unsigned long m;
-    static unsigned long kg;
-    static unsigned long temp;
-//    if (ZaSmenu_Old==vg::DataSmena.Impuls) return;
-//    ZaSmenu_Old = vg::DataSmena.Impuls;
-    temp = ZaSmenu_Old;
-//    temp = 2087;
-    imp2data(temp, &m, &kg);
-//    scr->digit_uz(c_stolbcov + 0, 7, 3, m);
-//    scr->dig_uz(c_stolbcov + 0, 7, m );
-    scr->dig_u (c_stolbcov + 0, 3, m/((unsigned long)1000) );
-    scr->dig_uz(c_stolbcov + 4, 3, m%((unsigned long)1000) );
-//    scr->digit_uz(c_stolbcov + 9, 5, 1, kg);
-    scr->dig_u (c_stolbcov +  9, 3, kg/((unsigned long)10) );
-    scr->dig_uz(c_stolbcov + 13, 1, kg%((unsigned long)10) );
-//    if (mask_menu & (1<<7) ) scr->dig_uz(11, 5, temp);
-  }
-  void ZaSmenu_3() {
-//  if (mask_menu & (1<<7) ) vg::DataSmena.Impuls = 0;
-  }
-  //========================================================
-  // архив
-  //unsigned int  ZaSmenu_Old;
-  void Archiv_i() {
-    mode = md_Archiv;
-//  K_Metr = vg::ee_K_Metr;
-//  K_Kg = vg::ee_K_Kg;
-//  vArchivIndx = vg::ee_ArchivIndx;
-    scr->Clear();
-    scr->ShowChar(             2, '.');
-    scr->ShowChar(             5, '.');
-    scr->ShowChar(c_stolbcov + 3, '.');
-    scr->ShowChar(c_stolbcov + 7, 'м');
-    scr->ShowChar(c_stolbcov + 12, '.');
-    scr->ShowChar(c_stolbcov + 14, 'К');
-    scr->ShowChar(c_stolbcov + 15, 'г');
-    scr->ShowString( 9, "смена:");
-    Archiv_s();
-  }
-  */
-  void Archiv_s() {
-    static unsigned long m;
-    static unsigned long kg;
-//  unsigned long temp;
-//    temp = vg::ee_Archiv[vArchivIndx].Impuls;
-    /*
-    if (mask_menu & (1<<7) ) {
-//      scr->dig_uz(0, 2, vg::ee_Archiv[vArchivIndx].Date);
-//      scr->ShowChar(2, 'A' + vg::ee_Archiv[vArchivIndx].Smena);
-//      scr->dig_uz(3, 2, vg::ee_Archiv[vArchivIndx].Mounth);
-//    scr->dig_uz(9, 6, temp);
+    void ArchivViewDig(unsigned char pol, unsigned char dig)
+    {
+        scr->ShowChar  (pol++, '0'+(dig/10));
+        scr->ShowChar  (pol++, '.');
+        scr->ShowChar  (pol  , '0'+(dig%10));
     }
-    else {
-//      scr->dig_uz(0, 2, vg::ee_Archiv[vArchivIndx].Date);
-//      scr->dig_uz(3, 2, vg::ee_Archiv[vArchivIndx].Mounth);
-//    scr->dig_uz(6, 2, vg::ee_Archiv[vArchivIndx].Year);
-//    scr->ShowChar(15, '1' + vg::ee_Archiv[vArchivIndx].Smena);
+    void ArchivView_v()
+    {
+        unsigned char mount, day, hour;
+        unsigned int  min,   max, avg;
+        unsigned char nz;
+        vg::StrSpeed dt;
+        dt = vg::eeArcSpeed[archivViewIdx];
+        dt.Recive(  &mount, &day, &hour,
+                    &min,   &max, &avg, &nz);
+        scr->Clear();
+        scr->ShowString(            0, "n=");
+        scr->dig_uz    (            2, 3, nz );
+        scr->dig_uz    (            6, 2, day );
+        scr->ShowChar  (            8, '.');
+        scr->dig_uz    (            9, 2, mount );
+        scr->dig_uz    (           12, 2, hour );
+        scr->ShowChar  (           14, 'ч');
+        scr->ShowChar  (c_stolbcov+ 0, 'm');
+        ArchivViewDig  (c_stolbcov+ 1, (min+5)/10);
+        scr->ShowChar  (c_stolbcov+ 5, 'M');
+        ArchivViewDig  (c_stolbcov+ 6, (max+5)/10);
+        scr->ShowChar  (c_stolbcov+10, 'A');
+        ArchivViewDig  (c_stolbcov+11, (avg+5)/10);
     }
-    */
-    //scr->dig_u (10, 5, vg::ee_Archiv[vArchivIndx].Impuls);
-//  imp2data(temp, &m, &kg);
-//    scr->digit_uz(c_stolbcov + 0, 7, 3, m);
-    scr->dig_u (c_stolbcov + 0, 3, m/((unsigned long)1000) );
-    scr->dig_uz(c_stolbcov + 4, 3, m%((unsigned long)1000) );
-//    scr->digit_uz(c_stolbcov + 9, 5, 1, kg);
-    scr->dig_u (c_stolbcov +  9, 3, kg/((unsigned long)10) );
-    scr->dig_uz(c_stolbcov + 13, 1, kg%((unsigned long)10) );
-  }
-  /*
-  void Archiv_2() {
-    if (vArchivIndx==0) vArchivIndx = ee_ArchivLen;
-    vArchivIndx--;
-    Archiv_s();
-  }
-  void Archiv_3() {
-    vArchivIndx++;
-    if (vArchivIndx>=ee_ArchivLen) vArchivIndx = 0;
-    Archiv_s();
-  }
-  //========================================================
-  // метровый кофицент
-  void Kmetr_i() {
-    mode = md_Kmetr;
-    unsigned long x;
-//  x = vg::ee_K_Metr;
-    for(unsigned char i=0;i<20;i++) Kedit[i] = 0;
-    for(unsigned char i=0;i<6;i++) {
-      unsigned char j = 5 - i;
-      if (j==2) {
-        Kedit[j] = '.';
-        continue;
-      }
-      unsigned char s = x%((unsigned long)10);
-      Kedit[j] = s + '0';
-      x = x / ((unsigned long)10);
+    void ArchivView_km()
+    {
+        if ( (vg::arcSpeedLen==ee_ArchivLen) || (archivViewIdx>0) )
+        {
+            archivViewIdx = vg::addrArchivNorm(archivViewIdx-1);
+            ArchivView_v();
+        }
+        else
+        {
+            scr->Clear();
+            scr->ShowString(            0, "конец архива");
+            SetMenuTimeDelay(1000, md_ArchivViewV);
+        }
     }
-    Kediti = 0;
-    scr->Clear();
-    scr->ShowString(             7, "мм/имп.");
-    scr->ShowString(c_stolbcov + 0, "отм.  -  +  ввод");
-    Kmetr_s();
-  }
-  void Kmetr_s() {
-    scr->ShowString(0, Kedit);
-  }
-  void Kmetr_0() {
-    //static unsigned int count = 0;
-    //count++;
-    //if (count>=1000) count = 0;
-    if (t_count<500) scr->ShowChar(0 + Kediti, Kedit[Kediti]);
-    else scr->ShowChar(0 + Kediti, '_');
-  }
-  void Kmetr_2() {
-    Kedit[Kediti]--;
-    if (Kedit[Kediti]<'0') Kedit[Kediti] = '9';
-  }
-  void Kmetr_3() {
-    Kedit[Kediti]++;
-    if (Kedit[Kediti]>'9') Kedit[Kediti] = '0';
-  }
-  void Kmetr_4() {
-    if (Kediti<5) {
-      Kediti++;
-      if (Kediti==2) Kediti++;
-      Kmetr_s();
+    void ArchivView_kp()
+    {
+        if ( (vg::arcSpeedLen==ee_ArchivLen) || (archivViewIdx<(vg::arcSpeedInd-1)) )
+        {
+            archivViewIdx=vg::addrArchivNorm(archivViewIdx+1);
+            ArchivView_v();
+        }
+        else
+        {
+            scr->Clear();
+            scr->ShowString(            0, "конец архива");
+            SetMenuTimeDelay(1000, md_ArchivViewV);
+        }
     }
-    else KmetrSav_i();
-  }
-  // метровый кофицент сохранение
-  void KmetrSav_i() {
-    mode = md_KmetrSav;
-    scr->Clear();
-    scr->ShowString(             0, "Сохранить ?");
-    scr->ShowString(c_stolbcov + 0, "     Нет Да     ");
-  }
-  void KmetrSav_2() {
-//    NastSel_i();
-  }
-  void KmetrSav_3() {
-    unsigned long x = 0;
-    for(unsigned char i=0;i<6;i++) {
-      if (i==2) continue;
-      x = x * ((unsigned long)10);
-      x = x + (unsigned long)(Kedit[i] - '0');
+    void ArchivViewV_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_ArchivView;
+        ArchivView_v();
     }
-//  vg::ee_K_Metr = x;
-//    NastSel_i();
-  }
-  //========================================================
-  // метровый кофицент
-  void Kkg_i() {
-    mode = md_Kkg;
-    unsigned long x;
-//  x = vg::ee_K_Kg;
-    for(unsigned char i=0;i<20;i++) Kedit[i] = 0;
-    for(unsigned char i=0;i<6;i++) {
-      unsigned char j = 5 - i;
-      if (j==2) {
-        Kedit[j] = '.';
-        continue;
-      }
-      unsigned char s = x%10;
-      Kedit[j] = s + '0';
-      x = x / ((unsigned long)10);
+// ==================================
+    void SelectInv_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_SelectInv;
+        tempInv = speedmetr::tcInv;
+        scr->Clear();
+        scr->ShowString(            0, "уст.полярности" );
+        scr->ShowString(c_stolbcov+ 0, "in:   out:" );
+        SelectInv_v();
     }
-    Kediti = 0;
-    scr->Clear();
-    scr->ShowString(             7, "г/имп.");
-    scr->ShowString(c_stolbcov + 0, "отм.  -  +  ввод");
-    Kkg_s();
-  }
-  void Kkg_s() {
-    scr->ShowString(             0, Kedit);
-  }
-  void Kkg_0() {
-//    static unsigned int count = 0;
-//    count++;
-//    if (count>=1600) count = 0;
-//    if (count<900) scr->ShowChar(8 + Kediti, Kedit[Kediti]);
-//    else scr->ShowChar(8 + Kediti, '_');
-    if (t_count<500) scr->ShowChar(0 + Kediti, Kedit[Kediti]);
-    else scr->ShowChar(0 + Kediti, '_');
-  }
-  void Kkg_2() {
-    Kedit[Kediti]--;
-    if (Kedit[Kediti]<'0') Kedit[Kediti] = '9';
-  }
-  void Kkg_3() {
-    Kedit[Kediti]++;
-    if (Kedit[Kediti]>'9') Kedit[Kediti] = '0';
-  }
-  void Kkg_4() {
-    if (Kediti<5) {
-      Kediti++;
-      if (Kediti==2) Kediti++;
-      Kkg_s();
+    void SelectInv_v()
+    {
+        scr->ShowChar  (c_stolbcov+ 3, 0);
+        scr->ShowChar  (c_stolbcov+ 4, 1);
+        if (tempInv)
+        {
+            scr->ShowChar  (c_stolbcov+10, 1);
+            scr->ShowChar  (c_stolbcov+11, 0);
+        }
+        else
+        {
+            scr->ShowChar  (c_stolbcov+10, 0);
+            scr->ShowChar  (c_stolbcov+11, 1);
+        }
     }
-    else KkgSav_i();
-  }
-  // кг кофицент сохранение
-  void KkgSav_i() {
-    mode = md_KkgSav;
-    scr->Clear();
-    scr->ShowString(             0, "Сохранить ?");
-    scr->ShowString(c_stolbcov + 0, "     Нет Да     ");
-  }
-  void KkgSav_2() {
-//    NastSel_i();
-  }
-  void KkgSav_3() {
-    unsigned long x = 0;
-    for(unsigned char i=0;i<6;i++) {
-      if (i==2) continue;
-      x = x * ((unsigned long)10);
-      x = x + (unsigned long)(Kedit[i] - '0');
+    void SelectInv_km()
+    {
+        tempInv = false;
+        SelectInv_v();
     }
-//  vg::ee_K_Kg = x;
-//    NastSel_i();
-  }
-  */
+    void SelectInv_kp()
+    {
+        tempInv = true;
+        SelectInv_v();
+    }
+    void SelectInvOk_i()
+    {
+        SetMenuTimeOut(60000);
+        mode = md_SelectInvOk;
+        scr->Clear();
+        scr->ShowString(            0, "уст.полярность" );
+        scr->ShowString(c_stolbcov+ 0, "    нет- да+" );
+    }
+    void SelectInvOk_km()
+    {
+        scr->Clear();
+        scr->ShowString(            0, "уст.полярности" );
+        scr->ShowString(c_stolbcov+ 0, "отмена" );
+        SetMenuTimeDelay(TIME_EXIT, md_workscr);
+    }
+    void SelectInvOk_kp()
+    {
+        {
+            CritSec selectInvCs;
+            speedmetr::tcInv = tempInv;
+        }
+        scr->Clear();
+        scr->ShowString(            0, "уст.полярности" );
+        scr->ShowString(c_stolbcov+ 0, "установлена" );
+        SetMenuTimeDelay(TIME_EXIT, md_workscr);
+    }
   //========================================================
   // установка уровея доступа
   //========================================================
@@ -2250,7 +1455,7 @@ void SelectExit_i()
         { workscr_0,            SelectArchiv_i,     Dummy,              Dummy,              Dummy,              Dummy,              workscr_i },
         // -------------------------------------------------------------------------------------
         // 1 - select archive
-        { Dummy,                workscr_i,          Dummy,              SelectConfig_i,     Dummy,              workscr_i,          SelectArchiv_i },
+        { Dummy,                workscr_i,          Dummy,              SelectConfig_i,     ArchivView_i,       workscr_i,          SelectArchiv_i },
         // 2 - select config
         { Dummy,                workscr_i,          SelectArchiv_i,     SelectExit_i,       PassWrd_i,          workscr_i,          SelectConfig_i },
         // 3 - select exit
@@ -2266,43 +1471,53 @@ void SelectExit_i()
         // 7 - select menu set clock
         { Dummy,                M2Sel_Cansel,       M2SelTOut_i,        M2SelPass_i,        SetClockYear_i,     workscr_i,          M2SelClock_i },
         // 8 - select menu set new password
-        { Dummy,                M2Sel_Cansel,       M2SelClock_i,       M2SelExit_i,        SetPassword_i,      workscr_i,          M2SelPass_i },
-        // 9 - select menu exit
-        { Dummy,                workscr_i,          M2SelPass_i,        Dummy,              workscr_i,          workscr_i,          M2SelExit_i },
+        { Dummy,                M2Sel_Cansel,       M2SelClock_i,       M2SelInv_i,         SetPassword_i,      workscr_i,          M2SelPass_i },
+        // 9 - select invers
+        { Dummy,                workscr_i,          M2SelPass_i,        M2SelExit_i,        SelectInv_i,        workscr_i,          M2SelInv_i },
+        // 10 - select menu exit
+        { Dummy,                workscr_i,          M2SelInv_i,         Dummy,              workscr_i,          workscr_i,          M2SelExit_i },
+//        { Dummy,                workscr_i,          M2SelPass_i,        DebugView_i,        workscr_i,          workscr_i,          M2SelExit_i },
         // -------------------------------------------------------------------------------------
-        // 10 - set clock : Year
+        // 11 - set clock : Year
         { SetClockYear_v,       M2SelExit_i,        SetClockYear_km,    SetClockYear_kp,    SetClockYear_ke,    workscr_i,          SetClockYear_i   },
-        // 11 - set clock : Mount
+        // 12 - set clock : Mount
         { SetClockMount_v,      M2SelExit_i,        SetClockMount_km,   SetClockMount_kp,   SetClockMount_ke,   workscr_i,          SetClockMount_i  },
-        // 12 - set clock : Date
+        // 13 - set clock : Date
         { SetClockDate_v,       M2SelExit_i,        SetClockDate_km,    SetClockDate_kp,    SetClockDate_ke,    workscr_i,          SetClockDate_i   },
-        // 13 - set clock : Hour
+        // 14 - set clock : Hour
         { SetClockHour_v,       M2SelExit_i,        SetClockHour_km,    SetClockHour_kp,    SetClockHour_ke,    workscr_i,          SetClockHour_i   },
-        // 14 - set clock : Minute***
+        // 15 - set clock : Minute***
         { SetClockMinute_v,     M2SelExit_i,        SetClockMinute_km,  SetClockMinute_kp,  SetClockMinute_ke,  workscr_i,          SetClockMinute_i },
-        // 15 - set clock : ask to set 
+        // 16 - set clock : ask to set 
         { SetClockSet_v,        M2SelExit_i,        SetClockSet_km,     SetClockSet_kp,     Dummy,              workscr_i,          SetClockSet_i },
         // -------------------------------------------------------------------------------------
-        // 16 - set password
+        // 17 - set password
         { SetPassword_v,        Dummy,              SetPassword_km,     SetPassword_kp,     SetPassword_e,      workscr_i,          SetPassword_i },
-        // 17 - set password ok ?
+        // 18 - set password ok ?
         { Dummy,                SetPasswordOk_n,    SetPasswordOk_n,    SetPasswordOk_y,    Dummy,              workscr_i,          SetPasswordOk_i },
         // -------------------------------------------------------------------------------------
-        // 18 - len D1D2
+        // 19 - len D1D2
         { SetLenD_v,            M2SelTOut_i,        SetLenD_km,         SetLenD_kp,         SetLenOk_i,         workscr_i,          SetLenD_i },
-        // 19 - len ok
+        // 20 - len ok
         { Dummy,                SetLenOk_km,        SetLenOk_km,        SetLenOk_kp,        Dummy,              workscr_i,          SetLenOk_i },
         // -------------------------------------------------------------------------------------
-        // 20 - set TimeOut
+        // 21 - set TimeOut
         { SetTimeOut_v,         M2SelClock_i,       SetTimeOut_km,      SetTimeOut_kp,      TimeOutOk_i,        workscr_i,          SetTimeOut_i },
-        // 21 - Time Out Ok
+        // 22 - Time Out Ok
         { Dummy,                TimeOutOk_km,       TimeOutOk_km,       TimeOutOk_kp,       Dummy,              workscr_i,          TimeOutOk_i },
         // -------------------------------------------------------------------------------------
-        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
-        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
-        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
-        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
-        { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
+        // 23 - debug view
+        { DebugView_v,          Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              DebugView_i },
+        // -------------------------------------------------------------------------------------
+        // 24 - archiv
+        { Dummy,                workscr_i,          ArchivView_km,      ArchivView_kp,      Dummy,              workscr_i,          ArchivView_i },
+        // 25 - 
+        { Dummy,                workscr_i,          Dummy,              Dummy,              Dummy,              Dummy,              ArchivViewV_i },
+        // -------------------------------------------------------------------------------------
+        // 26 - 
+        { Dummy,                M2SelLen_i,         SelectInv_km,       SelectInv_kp,       SelectInvOk_i,      workscr_i,          SelectInv_i },
+        // 27 -
+        { Dummy,                Dummy,              SelectInvOk_km,     SelectInvOk_kp,     Dummy,              workscr_i,          SelectInvOk_i },
         { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
         { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy },
         { Dummy,                Dummy,              Dummy,              Dummy,              Dummy,              Dummy,              Dummy }

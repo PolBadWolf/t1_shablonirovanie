@@ -8,7 +8,6 @@ void UserTimerDisplay(void);
 
 #ifdef USERTIMERUSER
 void UserTimerUser(void);
-extern unsigned int t_count;
 #endif
 
 #endif
