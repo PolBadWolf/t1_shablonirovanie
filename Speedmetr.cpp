@@ -39,7 +39,7 @@ namespace speedmetr
     void EepromInit()
     {
         // lenght 6000mm
-        lenD_EE = 6000;
+        lenD_EE = 1000;
         
         timeOut_EE = 55000 / timeOutKF;
     }

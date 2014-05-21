@@ -18,8 +18,8 @@ namespace vg
         arcSpeedInd = 0;
         arcSpeedLen = 0;
         zero.Send(0, 0, 0, 0, 0, 0, 0);
-        for(unsigned int i=0; i<ee_ArchivLen; i++)
-            eeArcSpeed[i] = zero;
+        //for(unsigned int i=0; i<ee_ArchivLen; i++)
+        //    eeArcSpeed[i] = zero;
     }
     void init(void)
     {

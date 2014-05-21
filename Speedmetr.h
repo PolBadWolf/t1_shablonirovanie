@@ -8,7 +8,7 @@ namespace speedmetr
     extern unsigned int lenD;
     extern __eeprom unsigned int timeOut_EE;
     extern unsigned int timeOut;
-#define timeOutKF   10
+#define timeOutKF   1
     extern tc_ports *ObjD1;
     extern tc_ports *ObjD2;
     // ==================================================
