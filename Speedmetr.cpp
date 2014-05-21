@@ -132,6 +132,24 @@ namespace speedmetr
             FnUsr();
         }
     }
+    void SendToPc(unsigned int speed)
+    {
+        unsigned char bf[12];
+        bf[ 0] = 0xe6;
+        bf[ 1] = 0x19;
+        bf[ 2] = clockrt::time[CT_YEAR];
+        bf[ 3] = clockrt::time[CT_MONTH];
+        bf[ 4] = clockrt::time[CT_DATE];
+        bf[ 5] = clockrt::time[CT_HOUR];
+        bf[ 6] = clockrt::time[CT_MINUTE];
+        bf[ 7] = clockrt::time[CT_SECOND];
+        bf[ 8] = ((unsigned char *)&speed)[0];
+        bf[ 9] = ((unsigned char *)&speed)[1];
+        bf[10] = crc8_buf(bf, 10);
+        bf[11] = 0x00;
+        for (unsigned char i=0; i<12; i++)
+            PcPort::WriteByte(bf[i]);
+    }
     void Main()
     {
         unsigned char temp;
@@ -153,6 +171,7 @@ namespace speedmetr
                 n++;
                 countSt = 0;
             }
+            SendToPc(lastSpeed);
             newDataSpeed = 1;
         }
         // -----------

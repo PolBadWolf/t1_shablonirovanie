@@ -1085,7 +1085,7 @@ void SelectExit_i()
         scr->Clear();
         scr->ShowString(            0, "дата/время    ");
         scr->ShowString(c_stolbcov+ 0, "установлены");
-        SetMenuTimeDelay(TIME_EXIT, md_workscr);
+        SetMenuTimeDelay(TIME_EXIT, md_M2SelPass);
     }
 // ==================================
     void SetPassword_i()
@@ -1158,7 +1158,7 @@ void SelectExit_i()
         scr->Clear();
         scr->ShowString(            0, "новый пароль  ");
         scr->ShowString(c_stolbcov+ 0, "установлен ");
-        SetMenuTimeDelay(TIME_EXIT, md_workscr);
+        SetMenuTimeDelay(TIME_EXIT, md_M2SelInv);
     }
 // ==================================
     void SetLenD_i()
@@ -1498,7 +1498,7 @@ void SelectExit_i()
         scr->Clear();
         scr->ShowString(            0, "reset default" );
         scr->ShowString(c_stolbcov+ 0, "отмена" );
-        SetMenuTimeDelay(TIME_EXIT, md_M2SelLen);
+        SetMenuTimeDelay(TIME_EXIT, md_workscr);
     }
     void SelReset_kp()
     {
@@ -1507,7 +1507,7 @@ void SelectExit_i()
         // -------------------------------
         scr->Clear();
         scr->ShowString(            0, "reset default" );
-        SetMenuTimeDelay(TIME_EXIT, md_workscr);
+        SetMenuTimeDelay(TIME_EXIT, md_M2SelLen);
     }
   //========================================================
   // установка уровея доступа

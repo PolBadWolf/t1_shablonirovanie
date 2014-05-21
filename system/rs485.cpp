@@ -1,5 +1,4 @@
 
-#include "rs485.h"
 #include "../main.h"
 
 #ifdef RS485
