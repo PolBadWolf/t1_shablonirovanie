@@ -14,7 +14,7 @@ void UserTimerDisplay(void)
 void UserTimerUser(void)
 {
   //PowerDown::timer();
-  og::timer();
+  //og::timer();
   speedmetr::Timer();
 }
 #endif

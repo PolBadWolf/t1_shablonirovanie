@@ -27,11 +27,7 @@ public:
 // часы
 #ifdef CLOCK
 #include "system/clock_rt.h"
-#define DISPLAY_TIMER
-#endif
-//-------------------------------
-#if defined(LCD) && defined(I7S)
-#error LCD & I7S On
+#define USERTIMERDISPLAY
 #endif
 //-------------------------------
 #ifdef LCD

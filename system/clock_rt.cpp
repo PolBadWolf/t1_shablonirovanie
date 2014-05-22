@@ -23,7 +23,7 @@
 #define SCLK_WR_LO  SCLK_WR=0   // Выдать линию тактирования "0"
 #define SDA_WR_LO   SDA_WR=0    // Выдать на линию данных "0"
 
-// задержка 8 микросекунд
+// задержка 20 микросекунд
 #define clockrt_delay 20
 
 namespace clockrt
@@ -74,6 +74,7 @@ namespace clockrt
     }
     void timer()
     {
+        CritSec clockRtCs;
         if (--tikCount>0)
             return;
         tikCount = tikCountMax;

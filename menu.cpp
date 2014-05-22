@@ -1430,22 +1430,20 @@ void SelectExit_i()
         tempInv = speedmetr::tcInv;
         scr->Clear();
         scr->ShowString(            0, "уст.пол€рности" );
-        scr->ShowString(c_stolbcov+ 0, "in:   out:" );
+        scr->ShowString(c_stolbcov+ 6, " -> " );
         SelectInv_v();
     }
     void SelectInv_v()
     {
-        scr->ShowChar  (c_stolbcov+ 3, 0);
-        scr->ShowChar  (c_stolbcov+ 4, 1);
         if (tempInv)
         {
-            scr->ShowChar  (c_stolbcov+10, 1);
-            scr->ShowChar  (c_stolbcov+11, 0);
+            scr->ShowChar  (c_stolbcov+ 6, 0);
+            scr->ShowChar  (c_stolbcov+ 9, 1);
         }
         else
         {
-            scr->ShowChar  (c_stolbcov+10, 0);
-            scr->ShowChar  (c_stolbcov+11, 1);
+            scr->ShowChar  (c_stolbcov+ 6, 1);
+            scr->ShowChar  (c_stolbcov+ 9, 0);
         }
     }
     void SelectInv_km()

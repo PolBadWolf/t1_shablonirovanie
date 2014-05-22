@@ -34,6 +34,7 @@ namespace vg
     extern __eeprom signed char arcSpeedLen;
 #endif
     extern __eeprom StrSpeed eeArcSpeed[];
+    
 }
 
 #endif

@@ -38,10 +38,10 @@ namespace speedmetr
     // fist init
     void EepromInit()
     {
-        // lenght 6000mm
+        // lenght 1000mm
         lenD_EE = 1000;
         
-        timeOut_EE = 55000 / timeOutKF;
+        timeOut_EE = 10000 / timeOutKF;
     }
     // init
     void Init()
@@ -132,23 +132,104 @@ namespace speedmetr
             FnUsr();
         }
     }
+    void DigitToStringZ(unsigned int digit, unsigned char len, unsigned char *adr)
+    {
+        adr = adr + len;
+        unsigned char tmp;
+        for (unsigned char i=0; i<len; i++)
+        {
+            adr--;
+            tmp = digit%10;
+            digit = digit/10;
+            *adr = '0'+tmp;
+        }
+    }
+    void DigitToStringZ(unsigned char digit, unsigned char len, unsigned char *adr)
+    {
+        adr = adr + len;
+        unsigned char tmp;
+        for (unsigned char i=0; i<len; i++)
+        {
+            adr--;
+            tmp = digit%10;
+            digit = digit/10;
+            *adr = '0'+tmp;
+        }
+    }
+    void DigitToString(unsigned int digit, unsigned char len, unsigned char *adr)
+    {
+        adr = adr + len;
+        unsigned char tmp;
+        adr--;
+        tmp = digit%10;
+        *adr = '0'+tmp;
+        digit = digit/10;
+        for (unsigned char i=1; i<len; i++)
+        {
+            adr--;
+            tmp = digit%10;
+            digit = digit/10;
+            if (tmp)
+                *adr = '0'+tmp;
+            else
+                *adr = ' ';
+        }
+    }
+    void DigitToString(unsigned char digit, unsigned char len, unsigned char *adr)
+    {
+        adr = adr + len;
+        unsigned char tmp;
+        adr--;
+        tmp = digit%10;
+        *adr = '0'+tmp;
+        digit = digit/10;
+        for (unsigned char i=1; i<len; i++)
+        {
+            adr--;
+            tmp = digit%10;
+            digit = digit/10;
+            if (tmp)
+                *adr = '0'+tmp;
+            else
+                *adr = ' ';
+        }
+    }
     void SendToPc(unsigned int speed)
     {
-        unsigned char bf[12];
+        const unsigned char bfLen = 38;
+        unsigned char bf[bfLen];
         bf[ 0] = 0xe6;
         bf[ 1] = 0x19;
-        bf[ 2] = clockrt::time[CT_YEAR];
-        bf[ 3] = clockrt::time[CT_MONTH];
-        bf[ 4] = clockrt::time[CT_DATE];
-        bf[ 5] = clockrt::time[CT_HOUR];
-        bf[ 6] = clockrt::time[CT_MINUTE];
-        bf[ 7] = clockrt::time[CT_SECOND];
-        bf[ 8] = ((unsigned char *)&speed)[0];
-        bf[ 9] = ((unsigned char *)&speed)[1];
-        bf[10] = crc8_buf(bf, 10);
-        bf[11] = 0x00;
-        for (unsigned char i=0; i<12; i++)
+        bf[ 2] = 0x00;
+        bf[ 3] = bfLen-5;
+        bf[ 4] = '2';
+        bf[ 5] = '0';
+        DigitToStringZ(clockrt::time[CT_YEAR],   2, &bf[ 6]);
+        bf[ 8] = '.';
+        DigitToStringZ(clockrt::time[CT_MONTH],  2, &bf[ 9]);
+        bf[11] = '.';
+        DigitToStringZ(clockrt::time[CT_DATE],   2, &bf[12]);
+        bf[14] = 0x09;
+        DigitToStringZ(clockrt::time[CT_HOUR],   2, &bf[15]);
+        bf[17] = ':';
+        DigitToStringZ(clockrt::time[CT_MINUTE], 2, &bf[18]);
+        bf[20] = ':';
+        DigitToStringZ(clockrt::time[CT_SECOND], 2, &bf[21]);
+        bf[23] = 0x09;
+        DigitToString(n, 4, &bf[24]);
+        bf[28] = 0x09;
+        DigitToString(speed/1000, 2, &bf[29]);
+        speed = speed%1000;
+        bf[31] = '.';
+        DigitToStringZ(speed, 3, &bf[32]);
+        bf[35] = 0x0d;
+        bf[36] = 0x0a;
+        bf[37] = crc8_buf(bf, bfLen-1);
+        for (unsigned char i=0; i<bfLen; i++)
+        {
             PcPort::WriteByte(bf[i]);
+            CommImitator::WriteByte(bf[i]);
+        }
     }
     void Main()
     {

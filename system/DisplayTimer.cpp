@@ -62,11 +62,8 @@ namespace ns_DisplayTimer
   {
     void f_UserTimerLcd(void);
     TIMSK_OCIE2 = 0;
-    __enable_interrupt();
+    //__enable_interrupt();
     #ifdef LCD
-    scr->for_timer();
-    #endif
-    #ifdef I7S
     scr->for_timer();
     #endif
     #ifdef KEY4

@@ -7,7 +7,7 @@
 //===
 //------------------------------------
 // скорость
-#define rs_baud 115200
+#define rs_baud 9600
 //------------------------------------
 // pariry : disable, even, odd
 #define rs_parity_disable
@@ -17,10 +17,10 @@
 //------------------------------------
 // UART Buffer Defines
 // 1,2,4,8,16,32,64,128 or 256 bytes
-#define UART_RX_BUFFER_SIZE 32
+#define UART_RX_BUFFER_SIZE 8
 #define UART_RX_BUFFER_MASK ( UART_RX_BUFFER_SIZE - 1 )
 // 1,2,4,8,16,32,64,128 or 256 bytes
-#define UART_TX_BUFFER_SIZE 32
+#define UART_TX_BUFFER_SIZE 64
 #define UART_TX_BUFFER_MASK ( UART_TX_BUFFER_SIZE - 1 )
 #if (UART_RX_BUFFER_SIZE & UART_RX_BUFFER_MASK)
 #error RS232 RX buffer size is not a power of 2
@@ -193,11 +193,9 @@ namespace ns_rs232
   //===================================
   unsigned char WriteByte(unsigned char data)
   {
+    CritSec writeByteCs;
     unsigned char tmphead;
     unsigned char stat;
-    unsigned char cs;
-    cs = __save_interrupt();
-    __disable_interrupt();
     tmphead = (TxHead + 1) & UART_TX_BUFFER_MASK; 
     if (tmphead==TxTail)
     {
@@ -212,7 +210,6 @@ namespace ns_rs232
       TxLen++;
       stat = 1;
     }
-    __restore_interrupt(cs);
     return stat;
   }
   //===================================
